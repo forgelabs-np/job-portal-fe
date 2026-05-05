@@ -6,6 +6,7 @@ import { PinInput as ChakraPinInput, Group } from "@chakra-ui/react";
 
 import { FormWrapper } from "../wrapper";
 import { CustomPinInputProps, PinInputProps } from "@/shared/types";
+import { WEBSITE_THEME_COLOR } from "@/constants/color";
 
 const CustomPinInput = React.forwardRef<HTMLInputElement, CustomPinInputProps>(
   function PinInput(props, ref) {
@@ -30,7 +31,7 @@ const CustomPinInput = React.forwardRef<HTMLInputElement, CustomPinInputProps>(
         </ChakraPinInput.Control>
       </ChakraPinInput.Root>
     );
-  }
+  },
 );
 
 export const PinInput = ({ name, label, placeholder = "" }: PinInputProps) => {
@@ -49,10 +50,11 @@ export const PinInput = ({ name, label, placeholder = "" }: PinInputProps) => {
   return (
     <FormWrapper label={label} errorText={errorText}>
       <CustomPinInput
-        type="alphanumeric"
-        count={8}
+        type="numeric"
+        count={6}
         onValueChange={(event) => field.onChange(event.value.join(""))}
         placeholder={placeholder}
+        borderColor={WEBSITE_THEME_COLOR}
       />
     </FormWrapper>
   );

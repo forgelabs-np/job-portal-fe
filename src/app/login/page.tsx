@@ -1,7 +1,5 @@
-"use client";
-
-import { Text } from "@chakra-ui/react";
+import { LoginPage } from "./(components)/Login";
 
 export default function Page() {
-  return <Text>This is Login Page</Text>;
+  return <LoginPage title="Agencies" userType="agency" />;
 }
