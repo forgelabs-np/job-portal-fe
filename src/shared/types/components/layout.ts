@@ -7,9 +7,9 @@ export type LayoutProps = {
 };
 
 export type NavItemProps = {
-  href: string;
-  menuName: string;
-  subMenus?: NavItemProps[];
+  href?: string;
+  menuName?: string;
+  subItems?: NavItemProps[];
 };
 
 export type SidebarProps = {
@@ -18,7 +18,11 @@ export type SidebarProps = {
 };
 
 export type SidebarItemProps = NavItemProps & {
-  isLastChild: boolean;
+  isLastChild?: boolean;
+  name: string;
+  icon?: React.ReactNode;
+  isChild?: boolean;
+  isActive?: boolean;
 };
 
 export type LinkItemProps = {

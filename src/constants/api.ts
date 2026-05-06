@@ -5,4 +5,8 @@ export const api = {
     REGISTER: "/auth/signup",
     VERIFY_REGISTER: "/auth/verify-signup",
   },
+  ADMIN: {
+    GET_AGENCY: "/admin/agencies",
+    APPROVE_REJECT: "/admin/agencies/action",
+  },
 };

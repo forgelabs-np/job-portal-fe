@@ -1,13 +1,12 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { TableOptions } from "@tanstack/react-table";
 
 export type TableProps<T> = {
   data: T[];
-  columns: ColumnDef<T>[];
-  selectedItems: Set<string>;
-  onSelectionChange: (id: string | "clear") => void;
+  columns: TableOptions<T>["columns"];
+  isLoading?: boolean;
 };
 
-export type MetaProps = {
+export interface MetaProps {
   width?: string;
   textAlign?: string;
-};
+}
