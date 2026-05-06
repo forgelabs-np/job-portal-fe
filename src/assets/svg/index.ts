@@ -23,6 +23,7 @@ export { default as CallIcon } from "./call.svg";
 export { default as LocationIcon } from "./location.svg";
 export { default as SmsIcon } from "./sms.svg";
 export { default as MenuIcon } from "./menu.svg";
+export { default as BoxOpenIcon } from "./box-open.svg";
 
 export { default as StarIcon } from "./star.svg";
 export { default as CloseCircleIcon } from "./close-circle.svg";
