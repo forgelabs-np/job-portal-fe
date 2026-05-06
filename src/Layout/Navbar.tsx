@@ -6,6 +6,8 @@ import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { GlobeIcon } from "./Footer";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
 const HamburgerIcon = ({ open }: { open: boolean }) => (
   <svg
@@ -38,6 +40,7 @@ export const Navbar = () => {
   const [loginOpen, setLoginOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   console.log(mobileOpen, "open");
+  const router = useRouter();
 
   return (
     <>
@@ -120,7 +123,8 @@ export const Navbar = () => {
               cursor="pointer"
               fontWeight={600}
               fontSize="15px"
-              onClick={() => setLoginOpen(true)}
+              // onClick={() => setLoginOpen(true)}
+              onClick={() => router.push(ROUTES.LOGIN)}
               _hover={{ color: WEBSITE_THEME_COLOR }}
               transition="color 0.15s ease"
             >
@@ -132,7 +136,7 @@ export const Navbar = () => {
               rounded="2xl"
               fontWeight={600}
               fontSize="15px"
-              onClick={() => setLoginOpen(true)}
+              onClick={() => router.push(ROUTES.SIGNUP)}
             >
               Sign Up
             </Button>

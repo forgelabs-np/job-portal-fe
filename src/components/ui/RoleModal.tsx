@@ -4,6 +4,9 @@ import { useState } from "react";
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { Dialog } from "@/shared";
 import Link from "next/link";
+import { generateNextPath } from "@/utils/router";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
 // Icons
 const AgencyIcon = () => (
@@ -61,6 +64,7 @@ const ArrowRightIcon = () => (
 type AccentType = "green" | "dark";
 
 interface PortalOption {
+  name: string;
   icon: React.ReactNode;
   title: string;
   description: string;
@@ -78,6 +82,7 @@ interface LoginModalProps {
 
 const portals: PortalOption[] = [
   {
+    name: "agency",
     icon: <AgencyIcon />,
     title: "Agency Portal",
     description:
@@ -87,6 +92,7 @@ const portals: PortalOption[] = [
     accent: "green",
   },
   {
+    name: "staff",
     icon: <StaffIcon />,
     title: "Staff Portal",
     description:
@@ -162,83 +168,92 @@ const defaultTokens: Record<
 };
 
 const PortalCard = ({ portal }: { portal: PortalOption }) => {
+  const router = useRouter();
+
   const [hovered, setHovered] = useState(false);
   const t = hovered ? hoverTokens[portal.accent] : defaultTokens[portal.accent];
 
   return (
-    <Link href={portal.href ?? "#"}>
+    // <Link href={portal.href ?? "#"}>
+    <Box
+      as="a"
+      // href={portal.href ?? "#"}
+      bg={t.bg}
+      border="1.5px solid"
+      borderColor={t.border}
+      borderRadius="2xl"
+      p={7}
+      display="flex"
+      flexDirection="column"
+      gap={10}
+      cursor="pointer"
+      textDecoration="none"
+      transition="all 0.22s ease"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ transform: hovered ? "translateY(-2px)" : "translateY(0)" }}
+      boxShadow={hovered ? "0 8px 28px rgba(0,0,0,0.14)" : "none"}
+      onClick={() =>
+        router.push(
+          generateNextPath(ROUTES.LOGIN, {
+            userType: portal?.name,
+          }),
+        )
+      }
+    >
       <Box
-        as="a"
-        // href={portal.href ?? "#"}
-        bg={t.bg}
+        w="52px"
+        h="52px"
+        bg={t.iconBg}
+        borderRadius="xl"
         border="1.5px solid"
-        borderColor={t.border}
-        borderRadius="2xl"
-        p={7}
+        borderColor={
+          hovered ? "transparent" : defaultTokens[portal.accent].border
+        }
         display="flex"
-        flexDirection="column"
-        gap={10}
-        cursor="pointer"
-        textDecoration="none"
+        alignItems="center"
+        justifyContent="center"
+        color={t.iconColor}
+        boxShadow={hovered ? "none" : "0 1px 4px rgba(0,0,0,0.06)"}
         transition="all 0.22s ease"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{ transform: hovered ? "translateY(-2px)" : "translateY(0)" }}
-        boxShadow={hovered ? "0 8px 28px rgba(0,0,0,0.14)" : "none"}
       >
-        <Box
-          w="52px"
-          h="52px"
-          bg={t.iconBg}
-          borderRadius="xl"
-          border="1.5px solid"
-          borderColor={
-            hovered ? "transparent" : defaultTokens[portal.accent].border
-          }
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          color={t.iconColor}
-          boxShadow={hovered ? "none" : "0 1px 4px rgba(0,0,0,0.06)"}
-          transition="all 0.22s ease"
-        >
-          {portal.icon}
-        </Box>
+        {portal.icon}
+      </Box>
 
-        <Box flex={1}>
-          <Text
-            fontWeight="800"
-            fontSize="20px"
-            color={t.text}
-            letterSpacing="-0.02em"
-            mb={2}
-            transition="color 0.22s ease"
-          >
-            {portal.title}
-          </Text>
-          <Text
-            fontSize="14px"
-            color={t.desc}
-            lineHeight="1.65"
-            transition="color 0.22s ease"
-          >
-            {portal.description}
-          </Text>
-        </Box>
-
-        <Flex
-          align="center"
-          gap={1.5}
-          color={t.link}
-          fontWeight="700"
-          fontSize="14px"
+      <Box flex={1}>
+        <Text
+          fontWeight="800"
+          fontSize="20px"
+          color={t.text}
+          letterSpacing="-0.02em"
+          mb={2}
           transition="color 0.22s ease"
         >
-          {portal.linkLabel}
-          <ArrowRightIcon />
-        </Flex>
+          {portal.title}
+        </Text>
+        <Text
+          fontSize="14px"
+          color={t.desc}
+          lineHeight="1.65"
+          transition="color 0.22s ease"
+        >
+          {portal.description}
+        </Text>
       </Box>
-    </Link>
+
+      <Flex
+        align="center"
+        gap={1.5}
+        color={t.link}
+        fontWeight="700"
+        fontSize="14px"
+        transition="color 0.22s ease"
+      >
+        {portal.linkLabel}
+        <ArrowRightIcon />
+      </Flex>
+    </Box>
+    // </Link>
   );
 };
 
