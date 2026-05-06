@@ -1,14 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Box, Flex, Text, Input } from "@chakra-ui/react";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
-import { Button, FormProvider, PasswordInput, TextFieldInput } from "@/shared";
-import { useForm } from "react-hook-form";
-import { OtpPage } from "./OTP";
 import { LoginDetails, LoginType, useLoginMutation } from "@/api/auth";
-import { useRouter } from "next/navigation";
+import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
+import { Button, FormProvider, PasswordInput, TextFieldInput } from "@/shared";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 const ArrowRightIcon = () => (
   <svg

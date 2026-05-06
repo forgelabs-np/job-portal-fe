@@ -69,7 +69,7 @@ export const DashboardLayout = ({
         </Box>
 
         {/* Page Content */}
-        <Box flex={1} p={2} overflowY="auto">
+        <Box flex={1} p={6} overflowY="auto">
           {children}
         </Box>
       </Box>
