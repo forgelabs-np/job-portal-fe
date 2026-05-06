@@ -34,21 +34,21 @@ export const PasswordInput: React.FC<PasswordInputProps> = (props) => {
       placeholder={props.placeholder ?? "********"}
       type={open ? "text" : "password"}
       autoComplete="new-password"
-      // endElement={
-      //   isIconVisible && (
-      //     <Grid
-      //       flexShrink={0}
-      //       placeItems="center"
-      //       boxSize="47px"
-      //       cursor="pointer"
-      //       tabIndex={0}
-      //       onClick={onToggle}
-      //       onKeyDown={handleKeyDown}
-      //     >
-      //       {open ? <EyeCloseIcon /> : <EyeOpenIcon />}
-      //     </Grid>
-      //   )
-      // }
+      endElement={
+        isIconVisible && (
+          <Grid
+            flexShrink={0}
+            placeItems="center"
+            boxSize="47px"
+            cursor="pointer"
+            tabIndex={0}
+            onClick={onToggle}
+            onKeyDown={handleKeyDown}
+          >
+            {open ? <EyeCloseIcon /> : <EyeOpenIcon />}
+          </Grid>
+        )
+      }
     />
   );
 };

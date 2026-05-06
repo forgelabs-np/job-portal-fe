@@ -8,5 +8,8 @@ export const api = {
   ADMIN: {
     GET_AGENCY: "/admin/agencies",
     APPROVE_REJECT: "/admin/agencies/action",
+    APPROVED_COUNTRIES: "/countries/enabled",
+    ALL_COUNTRIES: "/countries/search",
+    TOGGLE_COUNTRY: "/countries/{id}/toggle",
   },
 };

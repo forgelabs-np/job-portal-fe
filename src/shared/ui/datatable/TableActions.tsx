@@ -20,7 +20,7 @@ export const TableActions = ({
           minWidth="6"
           onClick={onView}
         >
-          <img src={EyeCloseIcon} alt="icon" />
+          <EyeOpenIcon />
         </IconButton>
       </Tooltip>
       {/* )} */}

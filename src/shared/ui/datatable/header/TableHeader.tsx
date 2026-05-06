@@ -18,8 +18,8 @@ export const TableHeader = ({
       <HStack>
         {hasSearch && (
           <SearchInput
-            name={searchText ?? ""}
-            // onChange={(searchText) => setSearchText?.(searchText)}
+            value={searchText ?? ""}
+            onChange={(searchText) => setSearchText?.(searchText)}
           />
         )}
 

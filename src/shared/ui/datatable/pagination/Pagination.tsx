@@ -38,7 +38,7 @@ export const Pagination = ({
     >
       {/* <PageSizeSelector pageSize={pageSize} setPageSize={setPageSize} /> */}
 
-      {/* <ReactPaginate
+      <ReactPaginate
         forcePage={currentPage - 1}
         pageCount={pageCount}
         pageRangeDisplayed={pageRangeDisplayed}
@@ -53,7 +53,7 @@ export const Pagination = ({
         onPageChange={(page) => handlePaginationChange(page.selected)}
         className="pagination"
         activeClassName="pagination__link--active"
-      /> */}
+      />
     </HStack>
   );
 };

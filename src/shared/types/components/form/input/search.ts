@@ -1,3 +1,6 @@
-import { PasswordInputProps } from "./password";
+export type SearchInputProps = {
+  value: string;
+  onChange: (value: string) => void;
 
-export type SearchInputProps = PasswordInputProps;
+  placeholder?: string;
+};
