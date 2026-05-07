@@ -30,7 +30,12 @@ const initialAuthState =
         role: initialTokenUser.roles?.[0] ?? null,
         authReady: true,
       }
-    : { user: null, isAuthenticated: false, role: null, authReady: true };
+    : {
+        user: null,
+        isAuthenticated: false,
+        role: null,
+        authReady: true,
+      };
 
 export const useAuthStore = create<AuthStore>((set) => ({
   user: initialAuthState.user,
@@ -46,7 +51,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }),
   logout: () => {
     TokenService.clearToken();
-    set({ user: null, isAuthenticated: false, role: null, authReady: true });
+    set({
+      user: null,
+      isAuthenticated: false,
+      role: null,
+      authReady: true,
+    });
   },
   initializeAuth: () => {
     const user = TokenService.getTokenDetails();
@@ -59,7 +69,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
         authReady: true,
       });
     } else {
-      set({ user: null, isAuthenticated: false, role: null, authReady: true });
+      set({
+        user: null,
+        isAuthenticated: false,
+        role: null,
+        authReady: true,
+      });
     }
   },
 }));

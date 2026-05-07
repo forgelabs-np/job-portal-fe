@@ -1,7 +1,7 @@
 import { api } from "@/constants/api";
 import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
-import TokenService, { TokenDetails } from "@/utils/token";
+import TokenService from "@/utils/token";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
@@ -20,14 +20,6 @@ export interface VerifySignupDetails {
   email: string;
   otp: string;
 }
-
-// --- API endpoints (add to your existing api object) ---
-// api.superAdminLogin = "/api/v1/super-admin/login"
-// api.superAdminRegister = "/api/v1/super-admin/register"
-// api.loginClient = "/api/v1/auth/client/login"
-// api.registerClient = "/api/v1/auth/register/client"
-// api.registerSolo = "/api/v1/auth/register/solo"
-// api.login (existing) = "/api/v1/auth/login"  ← solo login
 
 export type LoginType = "agency" | "admin";
 
@@ -72,7 +64,6 @@ export const useLoginMutation = (type: LoginType) => {
   });
 };
 
-// --- Signup ---
 const initSignup = (data: SignupDetails) => {
   return httpClient.post(api.AUTH.REGISTER, { data });
 };

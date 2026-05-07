@@ -7,6 +7,7 @@ import TokenService from "@/utils/token";
 import { useAuthStore } from "@/store";
 import { ROUTES } from "@/constants/routes";
 import { usePathname } from "next/navigation";
+import { AgencyApprovalGuard } from "./agency/(components)/AgencyApprovalGaurd";
 
 export default function RootLayoutContent({
   children,
@@ -56,7 +57,17 @@ export default function RootLayoutContent({
   }, [authReady, isAuthenticated, isPublicRoute, pathname, router]);
 
   if (isAuthenticated && isDashboardRoute) {
-    return <DashboardLayout>{children}</DashboardLayout>;
+    const isAgency = TokenService.getTokenDetails()?.roles?.[0] === "AGENCY";
+
+    return (
+      <DashboardLayout>
+        {isAgency ? (
+          <AgencyApprovalGuard>{children}</AgencyApprovalGuard>
+        ) : (
+          children
+        )}
+      </DashboardLayout>
+    );
   }
 
   return <Layout>{children}</Layout>;
