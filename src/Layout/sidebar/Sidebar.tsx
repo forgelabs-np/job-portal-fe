@@ -17,6 +17,7 @@ import { useAuthStore } from "@/store";
 import { GlobeIcon } from "../Footer";
 import { SidebarItemProps } from "@/shared/types";
 import { Tooltip } from "@/shared/ui/tooltip";
+import { Users2 } from "lucide-react";
 
 const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.ADMIN_DASHBOARD, icon: <MdDashboard /> },
@@ -31,6 +32,7 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
 
 const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.AGENCY_DASHBOARD, icon: <MdDashboard /> },
+  { name: "My Candidates", href: ROUTES.AGENCY_CANDIDATES, icon: <Users2 /> },
 ];
 
 interface NavItemProps {

@@ -22,5 +22,10 @@ export const api = {
     GET_PROFILE: "/agency/profile",
     APPROVED_PROFILE: "/agency/profile/complete",
     CREATE_PROFILE: "/agency/profile",
+    CANDIDATES: {
+      GET: "/agency/candidates",
+      POST: "/agency/candidates",
+      GET_BY_ID: "/agency/candidates/{id}",
+    },
   },
 };
