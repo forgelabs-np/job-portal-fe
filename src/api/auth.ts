@@ -55,7 +55,7 @@ export const useLoginMutation = (type: LoginType) => {
         TokenService.setToken(tokens);
         localStorage.setItem(
           "lastLoginRole",
-          TokenService.getTokenDetails()?.workspace ?? "",
+          TokenService.getTokenDetails()?.roles?.[0] ?? "",
         );
       } else {
         successNotification("OTP sent to your device");

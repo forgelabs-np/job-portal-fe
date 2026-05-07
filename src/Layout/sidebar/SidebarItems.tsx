@@ -9,12 +9,49 @@ import {
 } from "@/shared";
 import { usePathname } from "next/navigation";
 
+const LinkItemContent = ({
+  name,
+  icon,
+  isChild,
+  isActive,
+  collapsed,
+}: SidebarItemProps) => (
+  <HStack
+    as="div"
+    px="6"
+    py="2"
+    pl={isChild ? "8" : undefined}
+    userSelect="none"
+    width="full"
+    justifyContent={collapsed ? "center" : "flex-start"}
+    _hover={{
+      background: !isActive ? "gray.200" : undefined,
+    }}
+    background={isActive ? "green.600" : undefined}
+    color={isActive ? "white" : "gray.700"}
+  >
+    <Box
+      css={{
+        "&>svg": {
+          width: 5,
+          height: 5,
+        },
+      }}
+    >
+      {icon}
+    </Box>
+
+    {!collapsed && <Text>{name}</Text>}
+  </HStack>
+);
+
 export const LinkItem = ({
   name,
   href,
   icon,
   isChild,
   isActive,
+  collapsed,
 }: SidebarItemProps) => {
   const pathname = usePathname();
   const active = pathname === href;
@@ -27,38 +64,25 @@ export const LinkItem = ({
           width: "100%",
         }}
       >
-        <LinkItem name={name} icon={icon} isChild={isChild} isActive={active} />
+        <LinkItemContent
+          name={name}
+          icon={icon}
+          isChild={isChild}
+          isActive={active}
+          collapsed={collapsed}
+        />
       </Link>
     );
   }
 
   return (
-    <HStack
-      px="6"
-      py="2"
-      pl={isChild ? "8" : undefined}
-      userSelect="none"
-      width="full"
-      _hover={{
-        background: !isActive ? "gray.200" : undefined,
-      }}
-      background={isActive ? "green.600" : undefined}
-      color={isActive ? "white" : "gray.700"}
-      //   color={"black"}
-    >
-      <Box
-        css={{
-          "&>svg": {
-            width: 5,
-            height: 5,
-          },
-        }}
-      >
-        {icon}
-      </Box>
-
-      <Text>{name}</Text>
-    </HStack>
+    <LinkItemContent
+      name={name}
+      icon={icon}
+      isChild={isChild}
+      isActive={active}
+      collapsed={collapsed}
+    />
   );
 };
 
@@ -85,6 +109,7 @@ export const SidebarItem = (props: SidebarItemProps) => {
               key={subItem.menuName}
               {...subItem}
               isChild
+              collapsed={props.collapsed}
             />
           ))}
         </AccordionItemContent>

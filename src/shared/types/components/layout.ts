@@ -23,10 +23,12 @@ export type SidebarItemProps = NavItemProps & {
   icon?: React.ReactNode;
   isChild?: boolean;
   isActive?: boolean;
+  collapsed?: boolean;
 };
 
 export type LinkItemProps = {
   menuName: string;
   href: string;
   isChild?: boolean;
+  collapsed?: boolean;
 };

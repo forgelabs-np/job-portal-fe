@@ -1,8 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Layout } from "@/Layout/Layout";
 import { DashboardLayout } from "@/Layout/DashboardLayout";
+import TokenService from "@/utils/token";
 import { useAuthStore } from "@/store";
+import { ROUTES } from "@/constants/routes";
 import { usePathname } from "next/navigation";
 
 export default function RootLayoutContent({
@@ -10,14 +13,19 @@ export default function RootLayoutContent({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, initializeAuth } = useAuthStore();
+  const router = useRouter();
+  const { isAuthenticated, authReady, initializeAuth } = useAuthStore();
   const pathname = usePathname();
 
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
 
-  const isPublicRoute = ["/login", "/register", "/"].includes(pathname);
+  const isPublicRoute =
+    pathname === "/" ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/register");
+
   const isDashboardRoute =
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/opportunities") ||
@@ -25,6 +33,27 @@ export default function RootLayoutContent({
     pathname.startsWith("/country-management") ||
     pathname.startsWith("/job") ||
     pathname.startsWith("/applications");
+
+  const resolveRedirectPath = () => {
+    const tokenDetails = TokenService.getTokenDetails();
+    const role = tokenDetails?.roles?.[0];
+    if (role === "ADMIN") return ROUTES.ADMIN_DASHBOARD;
+    if (role === "AGENCY") return ROUTES.AGENCY_DASHBOARD;
+    return ROUTES.ADMIN_DASHBOARD;
+  };
+
+  useEffect(() => {
+    if (!authReady) return;
+
+    if (!isAuthenticated && !isPublicRoute) {
+      router.replace(ROUTES.LOGIN);
+      return;
+    }
+
+    if (isAuthenticated && isPublicRoute) {
+      router.replace(resolveRedirectPath());
+    }
+  }, [authReady, isAuthenticated, isPublicRoute, pathname, router]);
 
   if (isAuthenticated && isDashboardRoute) {
     return <DashboardLayout>{children}</DashboardLayout>;
