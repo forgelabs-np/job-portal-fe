@@ -10,20 +10,20 @@ export const TableActions = ({
 }: TableActionsProps) => {
   return (
     <Flex alignItems="center" gap="3">
-      {/* {!!onView && ( */}
-      <Tooltip content="View">
-        <IconButton
-          aria-label="View"
-          background="transparent"
-          _focus={{ backgroundColor: "transparent" }}
-          height="6"
-          minWidth="6"
-          onClick={onView}
-        >
-          <EyeOpenIcon />
-        </IconButton>
-      </Tooltip>
-      {/* )} */}
+      {!!onView && (
+        <Tooltip content="View">
+          <IconButton
+            aria-label="View"
+            background="transparent"
+            _focus={{ backgroundColor: "transparent" }}
+            height="6"
+            minWidth="6"
+            onClick={onView}
+          >
+            <EyeOpenIcon />
+          </IconButton>
+        </Tooltip>
+      )}
 
       {!!onEdit && (
         <Tooltip content="Edit">
@@ -35,6 +35,7 @@ export const TableActions = ({
             }}
             height="6"
             minWidth="6"
+            color={"black"}
           >
             <EditIcon onClick={onEdit} />
           </IconButton>
