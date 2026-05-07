@@ -93,15 +93,19 @@ const Dashboard = () => {
 
       {/* Top Stats */}
       <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} gap={5} mb={6}>
-        <StatCard label="ACTIVE JOBS" value={stats.openJobs} icon={Briefcase} />
+        <StatCard
+          label="ACTIVE JOBS"
+          value={stats?.openJobs}
+          icon={Briefcase}
+        />
 
         <StatCard
           label="TOTAL AGENCIES"
-          value={stats.totalAgencies}
+          value={stats?.totalAgencies}
           icon={Building2}
         />
 
-        <StatCard label="CANDIDATES" value={stats.filledSlots} icon={Users} />
+        <StatCard label="CANDIDATES" value={stats?.filledSlots} icon={Users} />
 
         <StatCard
           label="AVG. FULFILLMENT"

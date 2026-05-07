@@ -18,4 +18,9 @@ export const api = {
       GET_JOB_BY_ID: "/admin/jobs/{id}",
     },
   },
+  AGENCY: {
+    GET_PROFILE: "/agency/profile",
+    APPROVED_PROFILE: "/agency/profile/complete",
+    CREATE_PROFILE: "/agency/profile",
+  },
 };
