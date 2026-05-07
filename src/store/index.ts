@@ -15,35 +15,51 @@ export type AuthStore = {
   user: MofinTokenDetails | null;
   isAuthenticated: boolean;
   role: string | null;
+  authReady: boolean;
   setUser: (user: MofinTokenDetails | null) => void;
   logout: () => void;
   initializeAuth: () => void;
 };
 
+const initialTokenUser = TokenService.getTokenDetails();
+const initialAuthState =
+  initialTokenUser && TokenService.isAuthenticated()
+    ? {
+        user: initialTokenUser,
+        isAuthenticated: true,
+        role: initialTokenUser.roles?.[0] ?? null,
+        authReady: true,
+      }
+    : { user: null, isAuthenticated: false, role: null, authReady: true };
+
 export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  isAuthenticated: false,
-  role: null,
+  user: initialAuthState.user,
+  isAuthenticated: initialAuthState.isAuthenticated,
+  role: initialAuthState.role,
+  authReady: initialAuthState.authReady,
   setUser: (user) =>
     set({
       user,
       isAuthenticated: !!user,
-      role: user?.workspace ?? null,
+      role: user?.roles?.[0] ?? null,
+      authReady: true,
     }),
   logout: () => {
     TokenService.clearToken();
-    set({ user: null, isAuthenticated: false, role: null });
+    set({ user: null, isAuthenticated: false, role: null, authReady: true });
   },
   initializeAuth: () => {
     const user = TokenService.getTokenDetails();
+    console.log(user, "user");
     if (user && TokenService.isAuthenticated()) {
       set({
         user,
         isAuthenticated: true,
-        role: user.workspace,
+        role: user.roles?.[0] ?? null,
+        authReady: true,
       });
     } else {
-      set({ user: null, isAuthenticated: false, role: null });
+      set({ user: null, isAuthenticated: false, role: null, authReady: true });
     }
   },
 }));

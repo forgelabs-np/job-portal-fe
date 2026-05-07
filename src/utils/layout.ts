@@ -1,9 +1,11 @@
-import { SIDEBAR_ITEMS } from "@/Layout/sidebar/Sidebar";
+import { SidebarItemProps } from "@/shared/types";
 
-export const getInitialExpandedSidebarMenu = (): string[] => {
+export const getInitialExpandedSidebarMenu = (
+  sidebarItems: SidebarItemProps[],
+): string[] => {
   const pathname = window.location.pathname;
 
-  const activeMenu = SIDEBAR_ITEMS.find((sidebarItem) =>
+  const activeMenu = sidebarItems.find((sidebarItem) =>
     pathname.startsWith(sidebarItem.href),
   )?.name;
 

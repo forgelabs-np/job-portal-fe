@@ -1,5 +1,6 @@
 "use client";
 
+import TokenService from "@/utils/token";
 import { LoginDetails, LoginType, useLoginMutation } from "@/api/auth";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
@@ -7,6 +8,7 @@ import { Button, FormProvider, PasswordInput, TextFieldInput } from "@/shared";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useAuthStore } from "@/store";
 
 const ArrowRightIcon = () => (
   <svg
@@ -47,11 +49,32 @@ export const LoginPage = ({
 
   const { mutate, isPending } = useLoginMutation(userType);
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const resolveRedirectPath = () => {
+    const tokenDetails = TokenService.getTokenDetails();
+    const role =
+      tokenDetails?.roles?.[0] ?? (userType === "admin" ? "ADMIN" : "AGENCY");
+
+    if (role === "ADMIN") {
+      return ROUTES.ADMIN_DASHBOARD;
+    }
+
+    return ROUTES.AGENCY_DASHBOARD;
+  };
 
   const onSubmit = (data: LoginDetails) => {
     console.log(data, "data");
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => {
+        const tokenDetails = TokenService.getTokenDetails();
+        setUser(tokenDetails);
+        const redirectTo = resolveRedirectPath();
+        router.replace(redirectTo);
+      },
+    });
   };
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Flex minH="90vh" align="center" justify="center" px={4}>

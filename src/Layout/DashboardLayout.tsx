@@ -1,30 +1,36 @@
 "use client";
 import { Box, HStack, Text } from "@chakra-ui/react";
 import { useAuthStore } from "@/store";
-import { useRouter } from "next/navigation";
-import { Avatar, MenuItem, MenuRoot } from "@/shared";
+import { Avatar, MenuRoot } from "@/shared";
 import { Sidebar } from "./sidebar/Sidebar";
+import { useState } from "react";
+
+const SIDEBAR_EXPANDED = "240px";
+const SIDEBAR_COLLAPSED = "72px";
 
 export const DashboardLayout = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const { user, logout } = useAuthStore();
-  const router = useRouter();
-
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
+  const { user } = useAuthStore();
+  const isAdmin = user?.roles?.includes("ADMIN");
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Box display="flex" minH="100vh" bg="gray.50">
-      {/* Sidebar */}
-      <Sidebar />
+      <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
 
-      <Box flex={1} display="flex" flexDirection="column">
-        {/* Header */}
+      <Box
+        flex={1}
+        display="flex"
+        flexDirection="column"
+        ml={collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED}
+        transition="margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)"
+        minH="100vh"
+        minW={0}
+      >
+        {/* Sticky Header */}
         <Box
           bg="white"
           borderBottom="1px solid"
@@ -32,39 +38,35 @@ export const DashboardLayout = ({
           px={6}
           py={4}
           display="flex"
-          justifyContent="space-between"
+          justifyContent="flex-end"
           alignItems="center"
           position="sticky"
           top={0}
           zIndex={10}
+          boxShadow="0 1px 0 rgba(0,0,0,0.06)"
         >
-          <Box />
           <HStack gap={4}>
-            <HStack gap={3}>
-              <Box textAlign="right">
-                <Text fontSize="sm" fontWeight="600" color="gray.900">
-                  {user?.name || "User"}
-                </Text>
-                <Text fontSize="xs" color="gray.500">
-                  {user?.workspace === "gateway" ? "GLOBAL MASTER" : "AGENCY"}
-                </Text>
-              </Box>
-              <MenuRoot>
-                {/* <MenuButton as={Box} cursor="pointer"> */}
-                <Avatar
-                  size="sm"
-                  name={user?.name || "U"}
-                  bg="teal.600"
-                  color="white"
-                />
-                {/* </MenuButton> */}
-                {/* <MenuList> */}
-                {/* <MenuItem value="" onClick={handleLogout}>
-                  Sign Out
-                </MenuItem> */}
-                {/* </MenuList> */}
-              </MenuRoot>
-            </HStack>
+            <Box textAlign="right">
+              <Text fontSize="sm" fontWeight="600" color="gray.900">
+                {user?.name || "User"}
+              </Text>
+              <Text
+                fontSize="xs"
+                color="gray.500"
+                letterSpacing="0.04em"
+                textTransform="uppercase"
+              >
+                {isAdmin ? "Global Master" : "Agency"}
+              </Text>
+            </Box>
+            <MenuRoot>
+              <Avatar
+                size="sm"
+                name={user?.name || "U"}
+                bg="teal.600"
+                color="white"
+              />
+            </MenuRoot>
           </HStack>
         </Box>
 
