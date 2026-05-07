@@ -5,4 +5,5 @@ export const ROUTES = {
   ADMIN_DASHBOARD: "/dashboard",
   AGENCY_NETWORK: "/agency",
   COUNTRY_MANAGEMENT: "/country-management",
+  JOBS: "/job",
 };

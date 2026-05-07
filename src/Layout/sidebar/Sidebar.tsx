@@ -8,7 +8,7 @@ import { SidebarItem } from "./SidebarItems";
 import { GlobeIcon } from "../Footer";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { MdDashboard } from "react-icons/md";
-import { BsHouse } from "react-icons/bs";
+import { BsBag, BsBagDash, BsHouse } from "react-icons/bs";
 import { BiGlobe } from "react-icons/bi";
 
 export const SIDEBAR_ITEMS = [
@@ -26,6 +26,11 @@ export const SIDEBAR_ITEMS = [
     name: "Country Management",
     href: ROUTES.COUNTRY_MANAGEMENT,
     icon: <BiGlobe />,
+  },
+  {
+    name: "Jobs",
+    href: ROUTES.JOBS,
+    icon: <BsBagDash />,
   },
   //   {
   //     name: "User Management",

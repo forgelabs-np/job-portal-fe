@@ -1,7 +1,7 @@
 import React from "react";
 
 export type TextFieldInputProps = {
-  type?: "text" | "password" | "tel";
+  type?: "text" | "password" | "tel" | "date" | "number";
   name: string;
   label?: string;
   placeholder?: string;
@@ -11,7 +11,7 @@ export type TextFieldInputProps = {
   endElement?: React.ReactNode;
   autoComplete?: string;
   borderColor?: string;
-  borderRadius?:string;
+  borderRadius?: string;
   inputRef?: React.Ref<HTMLInputElement>;
   width?: string;
 };

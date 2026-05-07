@@ -11,5 +11,10 @@ export const api = {
     APPROVED_COUNTRIES: "/countries/enabled",
     ALL_COUNTRIES: "/countries/search",
     TOGGLE_COUNTRY: "/countries/{id}/toggle",
+    JOBS: {
+      CREATE: "/admin/jobs",
+      GET_JOB: "/admin/jobs",
+      GET_JOB_BY_ID: "/admin/jobs/{id}",
+    },
   },
 };

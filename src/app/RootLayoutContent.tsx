@@ -23,7 +23,7 @@ export default function RootLayoutContent({
     pathname.startsWith("/opportunities") ||
     pathname.startsWith("/agency") ||
     pathname.startsWith("/country-management") ||
-    pathname.startsWith("/my-listings") ||
+    pathname.startsWith("/job") ||
     pathname.startsWith("/applications");
 
   if (isAuthenticated && isDashboardRoute) {
