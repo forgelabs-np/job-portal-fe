@@ -62,6 +62,7 @@ export const useToggleRoleMutation = () => {
   return useMutation({
     mutationFn: (id: string) => toggleCountry(id),
     onSuccess: (response, id) => {
+      console.log(response?.data?.message, "toast");
       successNotification(response?.data?.message);
       queryClient.invalidateQueries({
         queryKey: [api.ADMIN.APPROVED_COUNTRIES],
