@@ -35,48 +35,40 @@ const CandidatesTable = () => {
       },
       { accessorKey: "maritalStatus", header: "Martial Status" },
       { accessorKey: "trade", header: "Trade" },
-
       {
-        id: "status",
-        header: "Status",
+        accessorKey: "PCC",
+        header: "PCC",
         cell: ({ row }) => {
           const statuses = row.original.statuses;
 
-          return (
-            <Box display="flex" flexDirection="column" gap={2}>
-              <Box display="flex" alignItems="center" gap={2}>
-                <Text fontSize="xs" minW="90px">
-                  PCC
-                </Text>
+          return <StatusBadge status={statuses?.pccStatus} />;
+        },
+      },
+      {
+        accessorKey: "slcStatus",
+        header: "SLC",
+        cell: ({ row }) => {
+          const statuses = row.original.statuses;
 
-                <StatusBadge status={statuses?.pccStatus} />
-              </Box>
+          return <StatusBadge status={statuses?.slcStatus} />;
+        },
+      },
+      {
+        accessorKey: "workPermitStatus",
+        header: "Work Permit Status",
+        cell: ({ row }) => {
+          const statuses = row.original.statuses;
 
-              <Box display="flex" alignItems="center" gap={2}>
-                <Text fontSize="xs" minW="90px">
-                  SLC
-                </Text>
+          return <StatusBadge status={statuses?.workPermitStatus} />;
+        },
+      },
+      {
+        accessorKey: "visaStatus",
+        header: "Visa Status",
+        cell: ({ row }) => {
+          const statuses = row.original.statuses;
 
-                <StatusBadge status={statuses?.slcStatus} />
-              </Box>
-
-              <Box display="flex" alignItems="center" gap={2}>
-                <Text fontSize="xs" minW="90px">
-                  Work Permit
-                </Text>
-
-                <StatusBadge status={statuses?.workPermitStatus} />
-              </Box>
-
-              <Box display="flex" alignItems="center" gap={2}>
-                <Text fontSize="xs" minW="90px">
-                  Visa
-                </Text>
-
-                <StatusBadge status={statuses?.visaStatus} />
-              </Box>
-            </Box>
-          );
+          return <StatusBadge status={statuses?.visaStatus} />;
         },
       },
 
@@ -98,7 +90,7 @@ const CandidatesTable = () => {
   return (
     <>
       <Text fontWeight="bold" fontSize="xl" mb={4}>
-        Agencies
+        Candidates
       </Text>
       <Stack gap={4}>
         <HStack justify="flex-end">

@@ -26,7 +26,18 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
     href: ROUTES.COUNTRY_MANAGEMENT,
     icon: <BiGlobe />,
   },
-  { name: "Jobs", href: ROUTES.JOBS, icon: <BsBagDash /> },
+  {
+    name: "Jobs",
+    href: ROUTES.JOBS,
+    icon: <BsBagDash />,
+    subItems: [
+      {
+        name: "Country Management",
+        href: ROUTES.COUNTRY_MANAGEMENT,
+        icon: <BiGlobe />,
+      },
+    ],
+  },
 ];
 
 const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [

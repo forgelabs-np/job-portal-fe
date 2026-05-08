@@ -165,7 +165,7 @@ export const LoginPage = ({
                 Register
               </Text>
             </Text>
-            <Text
+            {/* <Text
               fontSize="10px"
               fontWeight="700"
               letterSpacing="0.14em"
@@ -177,7 +177,7 @@ export const LoginPage = ({
               onClick={onBackToSelection}
             >
               Back to Selection
-            </Text>
+            </Text> */}
           </Flex>
         </Box>
       </Flex>

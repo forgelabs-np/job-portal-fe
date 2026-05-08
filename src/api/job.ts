@@ -123,6 +123,18 @@ export interface CreateJobPayloadType {
   data: CreateJobFormType;
 }
 
+export interface AssignJobPayload {
+  jobDemandId: number | null;
+  agencyIds?: number[];
+}
+
+export interface AssignJobPayloadType {
+  data: {
+    jobDemandId: number;
+    agencyIds: number[];
+  };
+}
+
 export interface CreateJobFormType {
   title: string;
   countryId: number | null;
@@ -225,5 +237,30 @@ export const useGetJobsById = (id: number) => {
     queryKey: [api.ADMIN.JOBS.GET_JOB],
     select: (resp) => resp?.data?.data,
     enabled: !!id,
+  });
+};
+
+const assignJob = (payload: AssignJobPayloadType) => {
+  return httpClient.post(api.ADMIN.JOBS.ASSIGN, payload);
+};
+
+export const useAssignJobMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: AssignJobPayloadType) => assignJob(payload),
+
+    onSuccess: (response) => {
+      successNotification(response?.data?.message);
+
+      // invalidate jobs list
+      queryClient.invalidateQueries({
+        queryKey: [api.ADMIN.JOBS.GET_JOB],
+      });
+    },
+
+    onError: (error: any) => {
+      errorNotification(error?.response?.data?.message);
+    },
   });
 };

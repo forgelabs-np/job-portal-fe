@@ -1,16 +1,16 @@
 "use client";
 
-import { Candidate, useGetAllCandidates } from "@/api/candidates";
-import { Dialog, FormProvider, TextFieldInput } from "@/shared";
-import { SelectFieldInput } from "@/shared/ui/Select";
-import { Button } from "@/shared";
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import {
   CreateJobPayloadType,
   JobApplicationPayload,
   useCreateApplicationMutation,
 } from "@/api/agency-jobs";
+import { Candidate, useGetAllCandidates } from "@/api/candidates";
+import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { Button, Dialog, FormProvider, TextFieldInput } from "@/shared";
+import { SelectFieldInput } from "@/shared/ui/Select";
+import { HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
 
 interface ApplyCandidateModalProps {
   id: number;
@@ -73,9 +73,9 @@ const ApplyCandidateModal = ({
       <FormProvider methods={methods} onSubmit={onSubmit}>
         <VStack align="stretch" gap={6}>
           {/* Header */}
-          <Box>
+          <Stack>
             <Text
-              fontSize="2xl"
+              fontSize="xl"
               fontWeight="700"
               color="gray.900"
               _dark={{ color: "white" }}
@@ -95,9 +95,8 @@ const ApplyCandidateModal = ({
               </Text>
               .
             </Text>
-          </Box>
+          </Stack>
 
-          {/* Candidate Select */}
           <SelectFieldInput
             name="candidateId"
             label="Candidate"
@@ -106,14 +105,12 @@ const ApplyCandidateModal = ({
             required
           />
 
-          {/* Notes */}
           <TextFieldInput
             name="notes"
             label="Notes (optional)"
             placeholder="Anything the admin should know"
           />
 
-          {/* Footer */}
           <HStack justify="flex-end" gap={3}>
             <Button
               variant="outline"
@@ -128,7 +125,7 @@ const ApplyCandidateModal = ({
               type="submit"
               loading={isPending}
               minW="180px"
-              colorPalette="blue"
+              bg={WEBSITE_THEME_COLOR}
             >
               Submit application
             </Button>

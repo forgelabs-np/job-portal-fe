@@ -16,6 +16,7 @@ export const api = {
       CREATE: "/admin/jobs",
       GET_JOB: "/admin/jobs",
       GET_JOB_BY_ID: "/admin/jobs/{id}",
+      ASSIGN: "/admin/jobs/assign",
     },
   },
   AGENCY: {

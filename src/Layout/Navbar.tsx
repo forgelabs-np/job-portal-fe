@@ -34,7 +34,8 @@ const HamburgerIcon = ({ open }: { open: boolean }) => (
   </svg>
 );
 
-const navLinks = ["Staff Portal", "Agencies", "Platform Admin"];
+// const navLinks = ["Staff Portal", "Agencies", "Platform Admin"];
+// const navLinks = [];
 
 export const Navbar = () => {
   const [loginOpen, setLoginOpen] = useState(false);
@@ -104,7 +105,7 @@ export const Navbar = () => {
           </Flex>
 
           {/* Desktop nav links */}
-          <HStack
+          {/* <HStack
             gap={8}
             color="gray.700"
             fontWeight={600}
@@ -121,7 +122,7 @@ export const Navbar = () => {
                 {link}
               </Text>
             ))}
-          </HStack>
+          </HStack> */}
 
           {/* Desktop CTA */}
           <HStack gap={6} display={{ base: "none", md: "flex" }}>
@@ -209,7 +210,7 @@ export const Navbar = () => {
             py={mobileOpen ? 4 : 0}
             gap={0}
           >
-            {navLinks.map((link) => (
+            {/* {navLinks.map((link) => (
               <Text
                 key={link}
                 py={3.5}
@@ -224,7 +225,7 @@ export const Navbar = () => {
               >
                 {link}
               </Text>
-            ))}
+            ))} */}
 
             {/* Login + Sign Up on xs screens only */}
             <Flex gap={3} pt={4} pb={2} display={{ base: "flex", sm: "none" }}>
