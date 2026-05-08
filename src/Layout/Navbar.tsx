@@ -67,7 +67,13 @@ export const Navbar = () => {
           justify="space-between"
         >
           {/* Logo */}
-          <Flex align="center" gap={2.5} flexShrink={0}>
+          <Flex
+            align="center"
+            gap={2.5}
+            flexShrink={0}
+            onClick={() => router.push("/")}
+            cursor={"pointer"}
+          >
             <Box
               w="36px"
               h="36px"

@@ -111,10 +111,6 @@ export interface CandidateFormType {
     documentLink: string;
     notes: string;
   }[];
-  pccStatus: string;
-  slcStatus: string;
-  workPermitStatus: string;
-  visaStatus: string;
 }
 
 const defaultValues: CandidateFormType = {
@@ -137,10 +133,6 @@ const defaultValues: CandidateFormType = {
       notes: "",
     },
   ],
-  pccStatus: "",
-  slcStatus: "",
-  workPermitStatus: "",
-  visaStatus: "",
 };
 
 interface AddOrEditCandidatesProps {
@@ -149,6 +141,62 @@ interface AddOrEditCandidatesProps {
   id?: number;
   resetId: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
+
+const getStatusStyles = (status?: string) => {
+  switch (status) {
+    case "NOT_STARTED":
+      return {
+        color: "gray.700",
+        bg: "gray.100",
+      };
+
+    case "PENDING":
+      return {
+        color: "orange.700",
+        bg: "orange.100",
+      };
+
+    case "DISPATCHED":
+      return {
+        color: "blue.700",
+        bg: "blue.100",
+      };
+
+    case "RECEIVED":
+      return {
+        color: "green.700",
+        bg: "green.100",
+      };
+
+    default:
+      return {
+        color: "gray.700",
+        bg: "gray.100",
+      };
+  }
+};
+
+export const StatusBadge = ({ status }: { status?: string }) => {
+  const styles = getStatusStyles(status);
+
+  return (
+    <Text
+      px={3}
+      py={1}
+      rounded="full"
+      fontSize="xs"
+      fontWeight="700"
+      width="fit-content"
+      textTransform="capitalize"
+      color={styles.color}
+      bg={styles.bg}
+      border="1px solid"
+      borderColor={styles.bg}
+    >
+      {status?.replaceAll("_", " ") || "-"}
+    </Text>
+  );
+};
 
 const AddOrEditCandidates = ({
   onClose,
@@ -202,10 +250,6 @@ const AddOrEditCandidates = ({
             documentLink: doc.documentLink,
             notes: doc.notes,
           })) ?? [],
-        pccStatus: candidate.statuses?.slcStatus,
-        slcStatus: candidate?.statuses?.slcStatus ?? "",
-        workPermitStatus: candidate?.statuses?.workPermitStatus ?? "",
-        visaStatus: candidate?.statuses?.visaStatus ?? "",
       });
     }
   }, [candidateData, isEdit, methods]);
@@ -224,11 +268,6 @@ const AddOrEditCandidates = ({
       documentsFolderLink: data.documentsFolderLink,
       introVideoLink: data.introVideoLink,
       documents: data.documents,
-      ...(isEdit && {
-        slcStatus: data.slcStatus,
-        workPermitStatus: data.workPermitStatus,
-        visaStatus: data.visaStatus,
-      }),
     };
 
     createCandidate(
@@ -407,34 +446,39 @@ const AddOrEditCandidates = ({
                   label="Candidate Status"
                 />
                 <SimpleGrid columns={2} gap={6} mb={5}>
-                  <SelectFieldInput
-                    name="pccStatus"
-                    label="PCC Status"
-                    options={DOCUMENT_STATUS_OPTIONS}
-                    placeholder="Select status"
-                    required
-                  />
-                  <SelectFieldInput
-                    name="slcStatus"
-                    label="SLC Status"
-                    options={DOCUMENT_STATUS_OPTIONS}
-                    placeholder="Select status"
-                    required
-                  />
-                  <SelectFieldInput
-                    name="workPermitStatus"
-                    label="Work Permission Status"
-                    options={DOCUMENT_STATUS_OPTIONS}
-                    placeholder="Select status"
-                    required
-                  />
-                  <SelectFieldInput
-                    name="visaStatus"
-                    label="Visa Status"
-                    options={DOCUMENT_STATUS_OPTIONS}
-                    placeholder="Select status"
-                    required
-                  />
+                  <Box>
+                    <Text fontSize="sm" color="gray.500" mb={1}>
+                      PCC Status
+                    </Text>
+
+                    <StatusBadge status={candidateData?.statuses?.pccStatus} />
+                  </Box>
+
+                  <Box>
+                    <Text fontSize="sm" color="gray.500" mb={1}>
+                      SLC Status
+                    </Text>
+
+                    <StatusBadge status={candidateData?.statuses.slcStatus} />
+                  </Box>
+
+                  <Box>
+                    <Text fontSize="sm" color="gray.500" mb={1}>
+                      Work Permit Status
+                    </Text>
+
+                    <StatusBadge
+                      status={candidateData?.statuses.workPermitStatus}
+                    />
+                  </Box>
+
+                  <Box>
+                    <Text fontSize="sm" color="gray.500" mb={1}>
+                      Visa Status
+                    </Text>
+
+                    <StatusBadge status={candidateData?.statuses.visaStatus} />
+                  </Box>
                 </SimpleGrid>
               </>
             )}

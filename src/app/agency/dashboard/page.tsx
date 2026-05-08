@@ -2,6 +2,7 @@
 
 import { Box, Flex, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { useAuthStore } from "@/store";
+import { WEBSITE_THEME_COLOR } from "@/constants/color";
 
 export default function AgencyDashboardPage() {
   const { user } = useAuthStore();
@@ -29,7 +30,7 @@ export default function AgencyDashboardPage() {
           <Text fontSize="sm" fontWeight="700" color="gray.500" mb={3}>
             Account status
           </Text>
-          <Text fontSize="3xl" fontWeight="800" color="teal.600">
+          <Text fontSize="3xl" fontWeight="800" color={WEBSITE_THEME_COLOR}>
             Active
           </Text>
           <Text mt={3} color="gray.600">

@@ -1,23 +1,22 @@
 "use client";
-import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
-import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { ROUTES } from "@/constants/routes";
+import { SidebarItemProps } from "@/shared/types";
+import { Tooltip } from "@/shared/ui/tooltip";
+import { useAuthStore } from "@/store";
+import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Users2 } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { BiGlobe } from "react-icons/bi";
+import { BsBagDash, BsHouse } from "react-icons/bs";
 import {
   MdChevronLeft,
   MdChevronRight,
   MdDashboard,
   MdLogout,
 } from "react-icons/md";
-import { BsBagDash, BsHouse } from "react-icons/bs";
-import { BiGlobe } from "react-icons/bi";
-import { useAuthStore } from "@/store";
 import { GlobeIcon } from "../Footer";
-import { SidebarItemProps } from "@/shared/types";
-import { Tooltip } from "@/shared/ui/tooltip";
-import { Users2 } from "lucide-react";
 
 const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.ADMIN_DASHBOARD, icon: <MdDashboard /> },
@@ -32,7 +31,12 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
 
 const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.AGENCY_DASHBOARD, icon: <MdDashboard /> },
-  { name: "My Candidates", href: ROUTES.AGENCY_CANDIDATES, icon: <Users2 /> },
+  {
+    name: "My Candidates",
+    href: ROUTES.AGENCY_CANDIDATES,
+    icon: <Users2 size={20} />,
+  },
+  { name: "Jobs", href: ROUTES.AGENCY_JOBS, icon: <BsBagDash /> },
 ];
 
 interface NavItemProps {
@@ -62,7 +66,7 @@ const NavItem = ({ item, collapsed, isActive }: NavItemProps) => {
         color: "white",
         transform: "translateX(2px)",
       }}
-      sx={{
+      css={{
         "&::before": isActive
           ? {
               content: '""',
@@ -72,7 +76,7 @@ const NavItem = ({ item, collapsed, isActive }: NavItemProps) => {
               transform: "translateY(-50%)",
               width: "3px",
               height: "60%",
-              bg: "white",
+              background: "white",
               borderRadius: "0 4px 4px 0",
             }
           : {},
@@ -82,7 +86,7 @@ const NavItem = ({ item, collapsed, isActive }: NavItemProps) => {
         fontSize="18px"
         flexShrink={0}
         opacity={isActive ? 1 : 0.8}
-        sx={{ "& > svg": { width: "18px", height: "18px" } }}
+        css={{ "& > svg": { width: "18px", height: "18px" } }}
       >
         {item.icon}
       </Box>
@@ -152,14 +156,12 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
       transition="width 0.25s cubic-bezier(0.4, 0, 0.2, 1)"
       overflow="hidden"
       flexShrink={0}
-      // Deep forest green gradient
       bgGradient="linear(to-b, #0d4a2e, #0a3d24, #072d1a)"
       boxShadow="1px 0 5px rgba(0,0,0,0.25)"
       display="flex"
       flexDirection="column"
       bg={"white"}
     >
-      {/* Logo area */}
       <Flex
         align="center"
         justify={collapsed ? "center" : "space-between"}
@@ -169,7 +171,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         borderColor="rgba(255,255,255,0.08)"
         flexShrink={0}
       >
-        <Flex align="center" gap={2.5} overflow="hidden">
+        <Flex align="center" gap={2.5}>
           <Box
             w="36px"
             h="36px"
@@ -215,7 +217,6 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         )}
       </Flex>
 
-      {/* Expand button when collapsed */}
       {collapsed && (
         <Flex justify="center" pt={2} pb={1}>
           <Button
@@ -232,7 +233,6 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         </Flex>
       )}
 
-      {/* Section label */}
       {!collapsed && (
         <Box px={6} pt={5} pb={2}>
           <Text
@@ -256,7 +256,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         pt={collapsed ? 3 : 1}
         overflowY="auto"
         overflowX="hidden"
-        sx={{
+        css={{
           "&::-webkit-scrollbar": { width: "3px" },
           "&::-webkit-scrollbar-track": { bg: "transparent" },
           "&::-webkit-scrollbar-thumb": {
@@ -277,12 +277,12 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
 
       <Box
         borderTop="1px solid"
-        borderColor={WEBSITE_THEME_COLOR}
+        borderColor={"gray.200"}
         px={collapsed ? 1 : 3}
         py={3}
         flexShrink={0}
       >
-        {!collapsed && (
+        {/* {!collapsed && (
           <Flex align="center" gap={3} px={2} py={2} mb={1}>
             <Box
               w="32px"
@@ -317,7 +317,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
               </Text>
             </Box>
           </Flex>
-        )}
+        )} */}
 
         {collapsed ? (
           <Tooltip content="Logout">
