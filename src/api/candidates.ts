@@ -3,6 +3,7 @@ import { ApiResponse } from "@/shared/types/response";
 import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export type MaritalStatus = "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED";
 
@@ -126,7 +127,11 @@ export const useCreateCandidateMutation = () => {
       });
     },
 
-    onError: (error: any) => {
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
       errorNotification(error?.response?.data?.message);
     },
   });

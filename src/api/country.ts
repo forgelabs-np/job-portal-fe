@@ -3,6 +3,7 @@ import { ApiResponse } from "@/shared/types/response";
 import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export interface CountriesApiType {
   id: number;
@@ -69,10 +70,12 @@ export const useToggleRoleMutation = () => {
       });
       queryClient.invalidateQueries({ queryKey: [`role-${id}`] });
     },
-    // onError: (error: ApiErrorResponse) => {
-    //   const errorMessage =
-    //     error?.response?.data?.error?.errorMessage ?? "Something went wrong!";
-    //   errorNotification(errorMessage);
-    // },
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
+      errorNotification(error?.response?.data?.message);
+    },
   });
 };

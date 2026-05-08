@@ -10,12 +10,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BiGlobe } from "react-icons/bi";
 import { BsBagDash, BsHouse } from "react-icons/bs";
+import { FaFileSignature } from "react-icons/fa";
 import {
   MdChevronLeft,
   MdChevronRight,
   MdDashboard,
   MdLogout,
-  MdSettingsApplications,
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
 
@@ -35,7 +35,7 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   {
     name: "Applications",
     href: ROUTES.APPLICATIONS,
-    icon: <MdSettingsApplications />,
+    icon: <FaFileSignature />,
   },
 ];
 

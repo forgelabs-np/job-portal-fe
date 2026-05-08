@@ -4,15 +4,14 @@ import { ApiResponse } from "@/shared/types/response";
 import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
-// params for GET
 interface JobsParams {
   keyword?: string;
   page?: number;
   size?: number;
 }
 
-// Job item (simplified but structured)
 export interface JobType {
   id: number;
   title: string;
@@ -219,7 +218,11 @@ export const useCreateJobMutation = () => {
       });
     },
 
-    onError: (error: any) => {
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
       errorNotification(error?.response?.data?.message);
     },
   });
@@ -259,7 +262,11 @@ export const useAssignJobMutation = () => {
       });
     },
 
-    onError: (error: any) => {
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
       errorNotification(error?.response?.data?.message);
     },
   });

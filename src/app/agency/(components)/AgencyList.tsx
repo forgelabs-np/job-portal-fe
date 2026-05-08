@@ -11,6 +11,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useCallback, useMemo, useState } from "react";
 import { LuCheck, LuX } from "react-icons/lu";
 import { Row } from "@tanstack/react-table";
+import { WEBSITE_THEME_COLOR } from "@/constants/color";
 
 const TAB_STATUSES = ["PENDING", "APPROVED", "REJECTED"] as const;
 type Status = (typeof TAB_STATUSES)[number];
@@ -116,10 +117,15 @@ const AgencyList = () => {
         value={activeTab}
         onValueChange={(e) => setActiveTab(e.value as Status)}
         variant="enclosed"
+        // colorPalette={"green"}
       >
         <Tabs.List>
           {TAB_STATUSES.map((status) => (
-            <Tabs.Trigger key={status} value={status}>
+            <Tabs.Trigger
+              key={status}
+              value={status}
+              color={activeTab === status ? WEBSITE_THEME_COLOR : "black"}
+            >
               {status.charAt(0) + status.slice(1).toLowerCase()}
             </Tabs.Trigger>
           ))}
