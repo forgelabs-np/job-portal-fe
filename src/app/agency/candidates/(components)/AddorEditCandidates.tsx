@@ -75,13 +75,6 @@ const MARITAL_STATUS_OPTIONS = [
   { label: "Widowed", value: "WIDOWED" },
 ];
 
-const DOCUMENT_STATUS_OPTIONS = [
-  { label: "Not Started", value: "NOT_STARTED" },
-  { label: "Pending", value: "PENDING" },
-  { label: "Dispatched", value: "DISPATCHED" },
-  { label: "Received", value: "RECEIVED" },
-];
-
 const DOCUMENT_TYPE_OPTIONS = [
   { label: "PCC", value: "PCC" },
   { label: "SLC", value: "SLC" },
@@ -445,7 +438,7 @@ const AddOrEditCandidates = ({
                   icon={<FileText size={15} />}
                   label="Candidate Status"
                 />
-                <SimpleGrid columns={2} gap={6} mb={5}>
+                <SimpleGrid columns={2} gap={6} mb={5} p={5}>
                   <Box>
                     <Text fontSize="sm" color="gray.500" mb={1}>
                       PCC Status

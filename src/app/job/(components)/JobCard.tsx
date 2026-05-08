@@ -10,6 +10,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { BsSendFill } from "react-icons/bs";
+import { CgAssign } from "react-icons/cg";
 
 interface Country {
   name: string;
@@ -56,6 +57,7 @@ interface JobCardProps {
   onEdit: (job: Job) => void;
   onDelete: (job: Job) => void;
   onApply?: (job: Job) => void;
+  onAssign: (job: Job) => void;
 }
 
 export function JobCard({
@@ -64,6 +66,7 @@ export function JobCard({
   onEdit,
   onDelete,
   onApply,
+  onAssign,
 }: JobCardProps) {
   const benefitIcons = [
     job.accommodationProvided && "🏠",
@@ -168,7 +171,6 @@ export function JobCard({
           </Text>
         </Box>
 
-        {/* Vacancies progress */}
         <Box>
           <HStack justify="space-between" mb={1.5}>
             <HStack gap={1} color="gray.500" fontSize="xs">
@@ -204,7 +206,6 @@ export function JobCard({
           </Text>
         </Box>
 
-        {/* Benefits pills */}
         {benefitIcons.length > 0 && (
           <HStack gap={1.5} flexWrap="wrap">
             {benefitIcons.map((icon, i) => (
@@ -295,6 +296,19 @@ export function JobCard({
                 variant="outline"
                 size="sm"
                 borderRadius="lg"
+                // colorPalette="green"
+                fontSize="xs"
+                fontWeight="600"
+                onClick={() => onAssign(job)}
+                px={3}
+              >
+                <Icon as={CgAssign} boxSize={3.5} />
+                Assign
+              </Button>
+              {/* <Button
+                variant="outline"
+                size="sm"
+                borderRadius="lg"
                 colorPalette="red"
                 fontSize="xs"
                 fontWeight="600"
@@ -302,7 +316,7 @@ export function JobCard({
                 px={3}
               >
                 <Icon as={Trash2} boxSize={3.5} />
-              </Button>
+              </Button> */}
             </>
           )}
         </HStack>

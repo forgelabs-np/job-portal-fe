@@ -24,6 +24,7 @@ export type SidebarItemProps = NavItemProps & {
   isChild?: boolean;
   isActive?: boolean;
   collapsed?: boolean;
+  subItems?: SidebarItemProps[];
 };
 
 export type LinkItemProps = {
