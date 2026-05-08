@@ -27,5 +27,9 @@ export const api = {
       POST: "/agency/candidates",
       GET_BY_ID: "/agency/candidates/{id}",
     },
+    JOBS: {
+      APPLY: "/agency/applications",
+      GET_JOBS: "/agency/jobs/assigned",
+    },
   },
 };

@@ -8,10 +8,10 @@ import {
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { Button } from "@/shared";
 import { Datatable, TableActions } from "@/shared/ui/datatable";
-import { HStack, Image, Stack, Text } from "@chakra-ui/react";
+import { Box, HStack, Image, Stack, Text } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useState } from "react";
-import AddOrEditCandidates from "./AddorEditCandidates";
+import AddOrEditCandidates, { StatusBadge } from "./AddorEditCandidates";
 
 const CandidatesTable = () => {
   const { data, isLoading } = useGetAllCandidates();
@@ -35,6 +35,51 @@ const CandidatesTable = () => {
       },
       { accessorKey: "maritalStatus", header: "Martial Status" },
       { accessorKey: "trade", header: "Trade" },
+
+      {
+        id: "status",
+        header: "Status",
+        cell: ({ row }) => {
+          const statuses = row.original.statuses;
+
+          return (
+            <Box display="flex" flexDirection="column" gap={2}>
+              <Box display="flex" alignItems="center" gap={2}>
+                <Text fontSize="xs" minW="90px">
+                  PCC
+                </Text>
+
+                <StatusBadge status={statuses?.pccStatus} />
+              </Box>
+
+              <Box display="flex" alignItems="center" gap={2}>
+                <Text fontSize="xs" minW="90px">
+                  SLC
+                </Text>
+
+                <StatusBadge status={statuses?.slcStatus} />
+              </Box>
+
+              <Box display="flex" alignItems="center" gap={2}>
+                <Text fontSize="xs" minW="90px">
+                  Work Permit
+                </Text>
+
+                <StatusBadge status={statuses?.workPermitStatus} />
+              </Box>
+
+              <Box display="flex" alignItems="center" gap={2}>
+                <Text fontSize="xs" minW="90px">
+                  Visa
+                </Text>
+
+                <StatusBadge status={statuses?.visaStatus} />
+              </Box>
+            </Box>
+          );
+        },
+      },
+
       {
         accessorKey: "action",
         header: "Action",
@@ -68,7 +113,7 @@ const CandidatesTable = () => {
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           id={id}
-          resetId={() => {}}
+          resetId={setId}
         />
       </Stack>
     </>

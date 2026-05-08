@@ -79,7 +79,7 @@ export interface CandidatesResponse {
 }
 
 const getAllCandidates = () => {
-  return httpClient.get<ApiResponse<CandidatesResponse[]>>(
+  return httpClient.get<ApiResponse<CandidatesResponse>>(
     api.AGENCY.CANDIDATES.GET,
   );
 };
@@ -101,7 +101,7 @@ const getCandidateById = (id: number) => {
 export const useGetCandidateById = (id: number) => {
   return useQuery({
     queryFn: () => getCandidateById(id),
-    queryKey: [api.AGENCY.CANDIDATES.GET],
+    queryKey: [api.AGENCY.CANDIDATES.GET_BY_ID],
     select: (resp) => resp?.data?.data,
     enabled: !!id,
   });
