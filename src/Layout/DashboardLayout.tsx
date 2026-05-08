@@ -48,7 +48,7 @@ export const DashboardLayout = ({
           <HStack gap={4}>
             <Box textAlign="right">
               <Text fontSize="sm" fontWeight="600" color="gray.900">
-                {user?.name || "User"}
+                {user?.sub}
               </Text>
               <Text
                 fontSize="xs"
@@ -56,7 +56,7 @@ export const DashboardLayout = ({
                 letterSpacing="0.04em"
                 textTransform="uppercase"
               >
-                {isAdmin ? "Global Master" : "Agency"}
+                {isAdmin ? "Admin" : "Agency"}
               </Text>
             </Box>
             <MenuRoot>

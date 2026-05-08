@@ -16,6 +16,7 @@ export interface MofinTokenDetails {
   email: string;
   id: null | number;
   name: string;
+  sub?: string;
   profilePic: string;
   roles: string[];
   roleId: null | number;

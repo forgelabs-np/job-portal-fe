@@ -297,7 +297,7 @@ const AddOrEditCandidates = ({
 
               <TextFieldInput name="lastName" label="Last Name" required />
 
-              <TextFieldInput name="trade" label="Trade" required />
+              <TextFieldInput name="trade" label="Job" required />
 
               <TextFieldInput
                 name="dateOfBirth"

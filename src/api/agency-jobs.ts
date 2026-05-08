@@ -4,6 +4,7 @@ import { ApiResponse } from "@/shared/types/response";
 import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 // params for GET
 interface JobsParams {
@@ -215,7 +216,11 @@ export const useCreateApplicationMutation = () => {
       });
     },
 
-    onError: (error: any) => {
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
       errorNotification(error?.response?.data?.message);
     },
   });

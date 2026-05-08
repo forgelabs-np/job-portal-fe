@@ -32,6 +32,7 @@ import {
 } from "recharts";
 
 import { RecentAgency, RecentJob, useGetDashboardQuery } from "@/api/dashboard";
+import { WEBSITE_THEME_COLOR } from "@/constants/color";
 
 const Dashboard = () => {
   const { data, isLoading } = useGetDashboardQuery();
@@ -91,7 +92,6 @@ const Dashboard = () => {
         </Text>
       </VStack>
 
-      {/* Top Stats */}
       <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} gap={5} mb={6}>
         <StatCard
           label="ACTIVE JOBS"
@@ -144,7 +144,12 @@ const Dashboard = () => {
                     startAngle={180}
                     endAngle={0}
                   >
-                    <RadialBar background dataKey="value" cornerRadius={20} />
+                    <RadialBar
+                      background
+                      dataKey="value"
+                      cornerRadius={20}
+                      fill={WEBSITE_THEME_COLOR}
+                    />
                   </RadialBarChart>
                 </ResponsiveContainer>
 
@@ -155,7 +160,7 @@ const Dashboard = () => {
                   transform="translate(-50%, -30%)"
                   gap={0}
                 >
-                  <Text fontSize="5xl" fontWeight="800" color="green.600">
+                  <Text fontSize="5xl" fontWeight="800">
                     {fulfillmentRate}%
                   </Text>
 
@@ -258,6 +263,7 @@ const Dashboard = () => {
                   }
                   size="sm"
                   borderRadius="full"
+                  colorPalette={"green"}
                 >
                   <Progress.Track borderRadius="full">
                     <Progress.Range borderRadius="full" />
