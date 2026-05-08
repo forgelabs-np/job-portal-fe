@@ -18,6 +18,9 @@ export const api = {
       GET_JOB_BY_ID: "/admin/jobs/{id}",
       ASSIGN: "/admin/jobs/assign",
     },
+    APPLICATIONS: {
+      GET: "/admin/applications",
+    },
   },
   AGENCY: {
     GET_PROFILE: "/agency/profile",
