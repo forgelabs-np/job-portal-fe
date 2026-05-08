@@ -15,6 +15,7 @@ import {
   MdChevronRight,
   MdDashboard,
   MdLogout,
+  MdSettingsApplications,
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
 
@@ -30,13 +31,11 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
     name: "Jobs",
     href: ROUTES.JOBS,
     icon: <BsBagDash />,
-    subItems: [
-      {
-        name: "Country Management",
-        href: ROUTES.COUNTRY_MANAGEMENT,
-        icon: <BiGlobe />,
-      },
-    ],
+  },
+  {
+    name: "Applications",
+    href: ROUTES.APPLICATIONS,
+    icon: <MdSettingsApplications />,
   },
 ];
 
