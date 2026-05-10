@@ -1,9 +1,10 @@
-import { HStack } from "@chakra-ui/react";
+import { HStack, Box, Text, Button } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
 
 import "@/shared/styles/pagination.css";
 
 import { TablePaginationIcon } from "./TablePaginationIcon";
+import { PageSizeSelector } from "./PageSizeSelector";
 import { TablePaginationProps } from "@/shared/datatable";
 
 export const Pagination = ({
@@ -22,38 +23,75 @@ export const Pagination = ({
   };
 
   return (
-    <HStack
-      flexDirection={{
-        base: "column",
-        md: "row",
-      }}
-      alignItems={{
-        base: "center",
-      }}
-      gap="4"
+    <Box
+      display="flex"
       justifyContent="space-between"
-      userSelect="none"
-      padding="4"
-      flexShrink={0}
+      alignItems="center"
+      flexDirection={{ base: "column", md: "row" }}
+      gap={4}
+      py={4}
+      px={2}
+      borderTop="1px solid"
+      borderColor="gray.200"
+      bg="white"
     >
-      {/* <PageSizeSelector pageSize={pageSize} setPageSize={setPageSize} /> */}
+      <PageSizeSelector pageSize={pageSize} setPageSize={setPageSize} />
 
-      <ReactPaginate
-        forcePage={currentPage - 1}
-        pageCount={pageCount}
-        pageRangeDisplayed={pageRangeDisplayed}
-        marginPagesDisplayed={marginPagesDisplayed}
-        previousLabel={<TablePaginationIcon isDisabled={currentPage === 1} />}
-        nextLabel={
-          <TablePaginationIcon
-            isRight={true}
-            isDisabled={currentPage === pageCount}
-          />
-        }
-        onPageChange={(page) => handlePaginationChange(page.selected)}
-        className="pagination"
-        activeClassName="pagination__link--active"
-      />
-    </HStack>
+      <HStack gap={2} alignItems="center">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => handlePaginationChange(currentPage - 2)}
+          disabled={currentPage === 1}
+          borderRadius="md"
+          borderColor="gray.300"
+          color="gray.600"
+          _hover={{
+            bg: "gray.50",
+            borderColor: "gray.400",
+          }}
+          _disabled={{
+            opacity: 0.5,
+            cursor: "not-allowed",
+          }}
+        >
+          Previous
+        </Button>
+
+        <ReactPaginate
+          forcePage={currentPage - 1}
+          pageCount={pageCount}
+          pageRangeDisplayed={2}
+          marginPagesDisplayed={1}
+          previousLabel={<></>}
+          nextLabel={<></>}
+          onPageChange={(page) => handlePaginationChange(page.selected)}
+          className="pagination-custom"
+          activeClassName="pagination-custom__link--active"
+          breakLabel="..."
+          breakClassName="pagination-custom__break"
+        />
+
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => handlePaginationChange(currentPage)}
+          disabled={currentPage === pageCount}
+          borderRadius="md"
+          borderColor="gray.300"
+          color="gray.600"
+          _hover={{
+            bg: "gray.50",
+            borderColor: "gray.400",
+          }}
+          _disabled={{
+            opacity: 0.5,
+            cursor: "not-allowed",
+          }}
+        >
+          Next
+        </Button>
+      </HStack>
+    </Box>
   );
 };

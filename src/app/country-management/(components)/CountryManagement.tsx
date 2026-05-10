@@ -1,15 +1,25 @@
 "use client";
-import { CountriesApiType, useGetApprovedCountries } from "@/api/country";
+import { CountriesApiType, PaginatedCountriesResponse, useGetAllCountries } from "@/api/country";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { Button } from "@/shared";
 import { Datatable } from "@/shared/ui/datatable";
+import { PaginationState } from "@/shared/datatable";
 import { HStack, Image, Stack, Text } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useMemo, useState } from "react";
 import { RegisterDestinationModal } from "./AddCountryModal";
 
 const CountryManagement = () => {
-  const { data, isLoading } = useGetApprovedCountries();
+  const [pageParams, setPageParams] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 15,
+  });
+  
+  const { data, isLoading } = useGetAllCountries({
+    page: pageParams.pageIndex,
+    size: pageParams.pageSize,
+    
+  }, true);
   console.log(data, "data");
 
   const columns = useMemo<ColumnDef<CountriesApiType>[]>(
@@ -58,7 +68,21 @@ const CountryManagement = () => {
           </Button>
         </HStack>
 
-        <Datatable columns={columns} data={data ?? []} isLoading={isLoading} />
+        <Datatable 
+          columns={columns} 
+          data={data?.content ?? []} 
+          isLoading={isLoading}
+          serverPagination={{
+            currentPage: pageParams.pageIndex,
+            totalPages: data?.totalPages ?? 0,
+            totalElements: data?.totalElements ?? 0,
+            pageSize: pageParams.pageSize,
+          }}
+          header={{
+            title: "Countries",
+            hasSearch: true,
+          }}
+        />
 
         <RegisterDestinationModal
           open={modalOpen}

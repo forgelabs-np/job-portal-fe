@@ -1,11 +1,13 @@
 "use client";
 import {
   AgencyListType,
+  PaginatedAgencyResponse,
   useApproveRejectAgencyMutation,
   useGetAgenciesQuery,
 } from "@/api/admin";
 import { ConfirmationDialog } from "@/components/ui/confirmationDialog";
 import { Datatable } from "@/shared/ui/datatable";
+import { PaginationState } from "@/shared/datatable";
 import { HStack, Tabs, Text, useDisclosure } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useCallback, useMemo, useState } from "react";
@@ -17,7 +19,16 @@ const TAB_STATUSES = ["PENDING", "APPROVED", "REJECTED"] as const;
 type Status = (typeof TAB_STATUSES)[number];
 
 const AgencyTable = ({ status }: { status: Status }) => {
-  const { data, isLoading } = useGetAgenciesQuery({ status });
+  const [pageParams, setPageParams] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 15,
+  });
+  
+  const { data, isLoading } = useGetAgenciesQuery({ 
+    status,
+    page: pageParams.pageIndex,
+    size: pageParams.pageSize,
+  });
   const { onClose, onOpen, open } = useDisclosure();
   const { mutate: approveRejectAgency, isPending } =
     useApproveRejectAgencyMutation();
@@ -91,7 +102,21 @@ const AgencyTable = ({ status }: { status: Status }) => {
   );
   return (
     <>
-      <Datatable columns={columns} data={data ?? []} isLoading={isLoading} />
+      <Datatable 
+        columns={columns} 
+        data={data?.content ?? []} 
+        isLoading={isLoading}
+        serverPagination={{
+          currentPage: pageParams.pageIndex,
+          totalPages: data?.totalPages ?? 0,
+          totalElements: data?.totalElements ?? 0,
+          pageSize: pageParams.pageSize,
+        }}
+        header={{
+          title: `Agencies - ${status.charAt(0) + status.slice(1).toLowerCase()}`,
+          hasSearch: true,
+        }}
+      />
       <ConfirmationDialog
         open={open}
         onClose={onClose}

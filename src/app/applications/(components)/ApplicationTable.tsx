@@ -2,20 +2,27 @@
 
 import {
   ApplicationType,
+  PaginatedApplicationResponse,
   useGetApplicationQuery,
 } from "@/api/admin-applcations";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { Datatable } from "@/shared/ui/datatable";
+import { PaginationState } from "@/shared/datatable";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { ApplicationModal, StatusBadge } from "./ApplicationModal";
 
 const ApplicationsTable = () => {
+  const [pageParams, setPageParams] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 15,
+  });
+  
   const { data, isLoading } = useGetApplicationQuery({
     pageable: {
-      page: 0,
-      size: 100,
+      page: pageParams.pageIndex,
+      size: pageParams.pageSize,
     },
   });
   console.log(data, "data");
@@ -128,6 +135,16 @@ const ApplicationsTable = () => {
           columns={columns}
           data={data?.content ?? []}
           isLoading={isLoading}
+          serverPagination={{
+            currentPage: pageParams.pageIndex,
+            totalPages: data?.totalPages ?? 0,
+            totalElements: data?.totalElements ?? 0,
+            pageSize: pageParams.pageSize,
+          }}
+          header={{
+            title: "Applications",
+            hasSearch: true,
+          }}
         />
       </Stack>
 

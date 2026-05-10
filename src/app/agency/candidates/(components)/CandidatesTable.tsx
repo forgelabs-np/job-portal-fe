@@ -2,21 +2,29 @@
 
 import {
   Candidate,
-  CandidatesResponse,
-  useGetAllCandidates,
+  PaginatedCandidatesResponse,
+  useGetPaginatedCandidates,
 } from "@/api/candidates";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { Button } from "@/shared";
 import { Datatable, TableActions } from "@/shared/ui/datatable";
+import { PaginationState } from "@/shared/datatable";
 import { Box, HStack, Image, Stack, Text } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useState } from "react";
 import AddOrEditCandidates, { StatusBadge } from "./AddorEditCandidates";
 
 const CandidatesTable = () => {
-  const { data, isLoading } = useGetAllCandidates();
+  const [pageParams, setPageParams] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 15,
+  });
+  
+  const { data, isLoading } = useGetPaginatedCandidates(pageParams.pageIndex, pageParams.pageSize);
   const [id, setId] = useState<number>();
   const [modalOpen, setModalOpen] = useState(false);
+
+  
   const handleEdit = useCallback((candidateId: number) => {
     setId(candidateId);
     setModalOpen(true);
@@ -99,7 +107,17 @@ const CandidatesTable = () => {
           </Button>
         </HStack>
 
-        <Datatable columns={columns} data={data ?? []} isLoading={isLoading} />
+        <Datatable 
+          columns={columns} 
+          data={data?.data?.content ?? []} 
+          isLoading={isLoading}
+          serverPagination={{
+            currentPage: pageParams.pageIndex,
+            totalPages: data?.data?.totalPages ?? 0,
+            totalElements: data?.data?.totalElements ?? 0,
+            pageSize: pageParams.pageSize,
+          }}
+        />
 
         <AddOrEditCandidates
           open={modalOpen}

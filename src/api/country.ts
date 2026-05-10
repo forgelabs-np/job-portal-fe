@@ -14,6 +14,14 @@ export interface CountriesApiType {
   isEnabled: boolean;
 }
 
+export interface PaginatedCountriesResponse {
+  content: CountriesApiType[];
+  size: number;
+  page: number;
+  totalPages: number;
+  totalElements: number;
+}
+
 const getApprovedCountries = () => {
   return httpClient.get<ApiResponse<CountriesApiType[]>>(
     api.ADMIN.APPROVED_COUNTRIES,
@@ -36,7 +44,7 @@ interface CountriesParams {
 }
 
 const getAllCountries = (params: CountriesParams) => {
-  return httpClient.get<ApiResponse<CountriesApiType[]>>(
+  return httpClient.get<ApiResponse<PaginatedCountriesResponse>>(
     api.ADMIN.ALL_COUNTRIES,
     { params },
   );
@@ -49,7 +57,7 @@ export const useGetAllCountries = (
   return useQuery({
     queryFn: () => getAllCountries(params),
     queryKey: [api.ADMIN.ALL_COUNTRIES, params],
-    select: (resp) => resp?.data?.data?.content,
+    select: (resp) => resp?.data,
     enabled: !!isOpen,
   });
 };

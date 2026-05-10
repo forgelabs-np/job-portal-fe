@@ -14,13 +14,27 @@ export interface AgencyListType {
   userId: number;
 }
 
-const getAgencies = (params: { status: string }) => {
-  return httpClient.get<ApiResponse<AgencyListType[]>>(api.ADMIN.GET_AGENCY, {
+export interface PaginatedAgencyResponse {
+  content: AgencyListType[];
+  size: number;
+  page: number;
+  totalPages: number;
+  totalElements: number;
+}
+
+interface GetAgenciesParams {
+  status: string;
+  page?: number;
+  size?: number;
+}
+
+const getAgencies = (params: GetAgenciesParams) => {
+  return httpClient.get<ApiResponse<PaginatedAgencyResponse>>(api.ADMIN.GET_AGENCY, {
     params,
   });
 };
 
-export const useGetAgenciesQuery = (params: { status: string }) => {
+export const useGetAgenciesQuery = (params: GetAgenciesParams) => {
   return useQuery({
     queryFn: () => getAgencies(params),
     queryKey: [api.ADMIN.GET_AGENCY, params],

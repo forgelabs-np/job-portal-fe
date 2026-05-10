@@ -73,10 +73,16 @@ export interface Candidate {
   updatedAt: string;
 }
 
+export interface PaginatedCandidatesResponse {
+  content: Candidate[];
+  size: number;
+  page: number;
+  totalPages: number;
+  totalElements: number;
+}
+
 export interface CandidatesResponse {
-  data: {
-    content: Candidate[];
-  };
+  data: Candidate[];
 }
 
 const getAllCandidates = () => {
@@ -90,6 +96,26 @@ export const useGetAllCandidates = () => {
     queryFn: () => getAllCandidates(),
     queryKey: [api.AGENCY.CANDIDATES.GET],
     select: (resp) => resp?.data?.data?.content,
+  });
+};
+
+const getPaginatedCandidates = (page: number = 0, size: number = 10) => {
+  return httpClient.get<ApiResponse<PaginatedCandidatesResponse>>(
+    api.AGENCY.CANDIDATES.GET,
+    {
+      params: {
+        page,
+        size,
+      },
+    }
+  );
+};
+
+export const useGetPaginatedCandidates = (page: number = 0, size: number = 10) => {
+  return useQuery({
+    queryFn: () => getPaginatedCandidates(page, size),
+    queryKey: [api.AGENCY.CANDIDATES.GET, page, size],
+    select: (resp) => resp?.data,
   });
 };
 
