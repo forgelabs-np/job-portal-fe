@@ -1,7 +1,7 @@
 import { api } from "@/constants/api";
 import { ApiResponse } from "@/shared/types/response";
 import { httpClient } from "@/utils/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface ApplicationType {
   id: number;
@@ -59,5 +59,52 @@ export const useGetApplicationQuery = (params: GetApplicationParams) => {
     queryKey: [api.ADMIN.APPLICATIONS.GET, params],
     queryFn: () => getApplication(params),
     select: (resp) => resp.data.data,
+  });
+};
+
+const getApplicationById = (id: number) => {
+  return httpClient.get<ApiResponse<ApplicationType>>(
+    api.ADMIN.APPLICATIONS.GET_BY_ID.replace("{id}", String(id)),
+  );
+};
+
+export const useGetApplicationByIdQuery = (id: number | null) => {
+  return useQuery({
+    queryKey: [api.ADMIN.APPLICATIONS.GET_BY_ID, id],
+    queryFn: () => getApplicationById(id!),
+    enabled: id !== null,
+    select: (resp) => resp.data.data,
+  });
+};
+
+
+export interface UpdateApplicationStatusPayload {
+  status: "PENDING" | "APPROVED" | "SHORTLISTED" | "REJECTED";
+  rejectionReason?: string;
+}
+
+const updateApplicationStatus = (
+  id: number,
+  payload: UpdateApplicationStatusPayload,
+) => {
+  return httpClient.patch<ApiResponse<ApplicationType>>(
+    api.ADMIN.APPLICATIONS.UPDATE_STATUS.replace("{id}", String(id)),
+    { data: payload },
+  );
+};
+
+export const useUpdateApplicationStatusMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: number;
+      payload: UpdateApplicationStatusPayload;
+    }) => updateApplicationStatus(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.ADMIN.APPLICATIONS.GET] });
+    },
   });
 };

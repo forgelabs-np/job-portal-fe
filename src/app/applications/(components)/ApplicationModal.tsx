@@ -28,7 +28,7 @@ export interface JobApplication {
   candidateTrade: string;
   candidatePassportNumber: string;
   notes: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: "PENDING" | "APPROVED" | "REJECTED" | "SHORTLISTED";
   appliedAt: string;
   rejectionReason: string | null;
   reviewedBy: string | null;
@@ -42,6 +42,7 @@ const statusConfig: Record<
   { color: string; bg: string; label: string }
 > = {
   PENDING: { color: "#b45309", bg: "#fef3c7", label: "Pending" },
+  SHORTLISTED: { color: "#ffffffff", bg: "#40a600ff", label: "Shortlisted" },
   APPROVED: { color: "#065f46", bg: "#d1fae5", label: "Approved" },
   REJECTED: { color: "#991b1b", bg: "#fee2e2", label: "Rejected" },
 };
