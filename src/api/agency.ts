@@ -5,20 +5,28 @@ import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
+export interface AgencyProfile {
+  id: number;
+  email: string;
+  fullName: string;
+  companyName: string;
+  companyDescription: string;
+  companyWebsite: string;
+  companyLogoUrl: string;
+  companyAddress: string;
+  companyPhone: string;
+  registrationNumber: string;
+  taxId: string;
+  contactPersonName: string;
+  contactPersonEmail: string;
+  contactPersonPhone: string;
+  approvalStatus: "PENDING" | "APPROVED" | "REJECTED";
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AgencyProfileRequest {
-  data: {
-    companyName: string;
-    companyDescription: string;
-    companyWebsite: string;
-    companyLogoUrl: string;
-    companyAddress: string;
-    companyPhone: string;
-    registrationNumber: string;
-    taxId: string;
-    contactPersonName: string;
-    contactPersonEmail: string;
-    contactPersonPhone: string;
-  };
+  data: Partial<Omit<AgencyProfile, "id" | "email" | "approvalStatus" | "createdAt" | "updatedAt">>;
 }
 
 const createAgencyProfile = (payload: AgencyProfileRequest) => {
@@ -63,7 +71,7 @@ export const useGetApprovedAgency = (options?: { enabled?: boolean }) => {
 };
 
 const getAgencyProfile = () => {
-  return httpClient.get<ApiResponse<boolean>>(api.AGENCY.GET_PROFILE);
+  return httpClient.get<ApiResponse<AgencyProfile>>(api.AGENCY.GET_PROFILE);
 };
 
 export const useGetAgencyProfile = () => {
@@ -72,5 +80,36 @@ export const useGetAgencyProfile = () => {
     queryKey: [api.AGENCY.GET_PROFILE],
     select: (resp) => resp?.data?.data,
     // enabled: !!params?.status,
+  });
+};
+
+const updateAgencyProfile = (payload: AgencyProfileRequest) => {
+  return httpClient.patch(api.AGENCY.UPDATE_PROFILE, payload);
+};
+
+export const useUpdateAgencyProfile = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: AgencyProfileRequest) => updateAgencyProfile(payload),
+
+    onSuccess: (response) => {
+      successNotification(response?.data?.message);
+
+      queryClient.invalidateQueries({
+        queryKey: [api.AGENCY.GET_PROFILE],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [api.AGENCY.APPROVED_PROFILE],
+      });
+    },
+
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
+      errorNotification(error?.response?.data?.message);
+    },
   });
 };

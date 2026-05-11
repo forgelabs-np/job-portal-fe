@@ -7,6 +7,7 @@ export const ROUTES = {
   AGENCY_CANDIDATES: "/agency/candidates",
   AGENCY_JOBS: "/agency/jobs",
   AGENCY_NETWORK: "/agency",
+  AGENCY_APPLICATIONS: "/agency/applications",
   COUNTRY_MANAGEMENT: "/country-management",
   JOBS: "/job",
   APPLICATIONS: "/applications",

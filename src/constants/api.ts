@@ -26,6 +26,7 @@ export const api = {
   },
   AGENCY: {
     GET_PROFILE: "/agency/profile",
+    UPDATE_PROFILE: "/agency/profile",
     APPROVED_PROFILE: "/agency/profile/complete",
     CREATE_PROFILE: "/agency/profile",
     CANDIDATES: {
@@ -36,6 +37,9 @@ export const api = {
     JOBS: {
       APPLY: "/agency/applications",
       GET_JOBS: "/agency/jobs/assigned",
+      GET_APPLICATIONS: "/agency/applications",
+      GET_APPLICATION_BY_ID: "/agency/applications/{id}",
+      WITHDRAW: "/agency/applications/{id}/withdraw",
     },
   },
 };
