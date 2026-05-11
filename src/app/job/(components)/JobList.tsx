@@ -13,10 +13,13 @@ import {
   SkeletonText,
   Text,
   useDisclosure,
+  NativeSelect,
+  Stack,
 } from "@chakra-ui/react";
 import { Job, JobCard } from "./JobCard";
 import { JobModal } from "./JobModal";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { Pagination } from "@/shared/components/pagination/Pagination";
 
 function JobCardSkeleton() {
   return (
@@ -50,9 +53,16 @@ function JobCardSkeleton() {
 }
 
 const JobList = () => {
-  const { data, isLoading } = useGetJobs();
+  const [page, setPage] = useState(0);
+  const [status, setStatus] = useState("");
+  const pageSize = 6;
 
-  // Add / Edit job modal
+  const { data, isLoading } = useGetJobs({
+    page: page,
+    size: pageSize,
+    status: status || undefined,
+  });
+
   const {
     onClose: onAddClose,
     onOpen: onAddOpen,
@@ -60,10 +70,8 @@ const JobList = () => {
   } = useDisclosure();
   const [selectedJobId, setSelectedJobId] = useState<number | undefined>();
 
-  // View job detail modal
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
-  // Assign job modal
   const {
     onClose: onAssignClose,
     onOpen: onAssignOpen,
@@ -86,13 +94,32 @@ const JobList = () => {
     onAssignClose();
   };
 
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
-    <>
-      <HStack justify="space-between" mb={8}>
+    <Stack gap={6}>
+      <HStack justify="space-between">
         <Text fontWeight="bold" fontSize="xl">
           Jobs
         </Text>
-        <HStack>
+        <HStack gap={4}>
+          <NativeSelect.Root w="200px">
+            <NativeSelect.Field
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(0);
+              }}
+              bg="white"
+            >
+              <option value="">All Statuses</option>
+              <option value="OPEN">Open</option>
+              <option value="CLOSED">Closed</option>
+            </NativeSelect.Field>
+            <NativeSelect.Indicator />
+          </NativeSelect.Root>
           <Button bg={WEBSITE_THEME_COLOR} onClick={onAddOpen}>
             Add Jobs
           </Button>
@@ -102,17 +129,26 @@ const JobList = () => {
       <SimpleGrid columns={{ base: 1, md: 2, "2xl": 3 }} gap={3}>
         {isLoading
           ? Array.from({ length: 6 }).map((_, i) => <JobCardSkeleton key={i} />)
-          : data?.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onView={setSelectedJob}
-                onEdit={() => handleJobEdit(job.id)}
-                onAssign={() => handleAssignJob(job)}
-                onDelete={(j) => console.log("delete", j.id)}
-              />
-            ))}
+          : data?.content?.map((job) => (
+            <JobCard
+              key={job.id}
+              job={job}
+              onView={setSelectedJob}
+              onEdit={() => handleJobEdit(job.id)}
+              onAssign={() => handleAssignJob(job)}
+              onDelete={(j) => console.log("delete", j.id)}
+            />
+          ))}
       </SimpleGrid>
+
+      {!isLoading && data && data.totalPages > 1 && (
+        <Pagination
+          totalPages={data.totalPages}
+          currentPage={page}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       <JobModal
         job={selectedJob}
@@ -133,7 +169,7 @@ const JobList = () => {
         jobId={assignJob?.id ?? null}
         jobTitle={assignJob?.title}
       />
-    </>
+    </Stack>
   );
 };
 
