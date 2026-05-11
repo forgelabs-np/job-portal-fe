@@ -20,6 +20,8 @@ export const api = {
     },
     APPLICATIONS: {
       GET: "/admin/applications",
+      GET_BY_ID: "/admin/applications/{id}",
+      UPDATE_STATUS: "/admin/applications/{id}/status",
     },
   },
   AGENCY: {
