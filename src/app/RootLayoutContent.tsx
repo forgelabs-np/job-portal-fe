@@ -35,6 +35,13 @@ export default function RootLayoutContent({
   const isPublicRoute =
     pathname === "/" ||
     pathname.startsWith("/login") ||
+    pathname.startsWith("/register") ||
+    pathname.startsWith("/globe-demo");
+
+  /** Logged-in users are redirected away from these (marketing / auth entry only). */
+  const authExclusivePublicRoute =
+    pathname === "/" ||
+    pathname.startsWith("/login") ||
     pathname.startsWith("/register");
 
   const isDashboardRoute =
@@ -61,10 +68,17 @@ export default function RootLayoutContent({
       return;
     }
 
-    if (isAuthenticated && isPublicRoute) {
+    if (isAuthenticated && authExclusivePublicRoute) {
       router.replace(resolveRedirectPath());
     }
-  }, [authReady, isAuthenticated, isPublicRoute, pathname, router]);
+  }, [
+    authReady,
+    isAuthenticated,
+    isPublicRoute,
+    authExclusivePublicRoute,
+    pathname,
+    router,
+  ]);
 
   if (isAuthenticated && isDashboardRoute) {
     const isAgency = TokenService.getTokenDetails()?.roles?.[0] === "AGENCY";
