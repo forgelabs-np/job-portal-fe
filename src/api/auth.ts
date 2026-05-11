@@ -1,10 +1,60 @@
 import { api } from "@/constants/api";
+import { ApiResponse } from "@/shared/types/response";
+import type { CurrentUser } from "@/shared/types/auth/currentUser";
+import { useCurrentUserStore } from "@/store/currentUserStore";
 import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
 import TokenService from "@/utils/token";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import router from "next/router";
 
+export const getCurrentUser = () => {
+  return httpClient.get<ApiResponse<CurrentUser>>(api.AUTH.ME);
+};
+
+export const postLogout = (refreshToken: string) => {
+  return httpClient.post(api.AUTH.LOGOUT, {
+    data: { refreshToken },
+  });
+};
+
+export const fetchAndStoreCurrentUser = async () => {
+  const { setProfile, setProfileLoading, clearProfile } =
+    useCurrentUserStore.getState();
+  setProfileLoading(true);
+ 
+  try {
+    const res = await getCurrentUser();
+    const profile = res.data?.data;
+    if (profile) {
+      setProfile(profile);
+      console.log(profile, "clearProfile");
+    } else {
+      clearProfile();
+    }
+  } catch {
+    clearProfile();
+  } finally {
+    setProfileLoading(false);
+  }
+};
+
+export const useLogoutUserMutation = () => {
+  return useMutation({
+    mutationFn: () => postLogout(TokenService.getToken()?.refresh_token ?? ""),
+    onSuccess: () => {
+      useCurrentUserStore.getState().clearProfile();
+      TokenService.clearToken();
+      successNotification("Logged out successfully");
+      router.push("/login");
+    },
+    onError: () => {
+      TokenService.clearToken();
+      useCurrentUserStore.getState().clearProfile();
+    },
+  });
+};
 export interface LoginDetails {
   email: string;
   password: string;

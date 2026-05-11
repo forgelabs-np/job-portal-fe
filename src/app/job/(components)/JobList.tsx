@@ -114,7 +114,7 @@ const JobList = () => {
               }}
               bg="white"
             >
-              <option value="">All Statuses</option>
+              <option value="">All Status</option>
               <option value="OPEN">Open</option>
               <option value="CLOSED">Closed</option>
             </NativeSelect.Field>
