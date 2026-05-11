@@ -10,6 +10,7 @@ interface JobsParams {
   keyword?: string;
   page?: number;
   size?: number;
+  status?: string;
 }
 
 export interface JobType {
@@ -190,11 +191,14 @@ const getJobs = (params: JobsParams) => {
   });
 };
 
-export const useGetJobs = (params: JobsParams = {}, isOpen: boolean = true) => {
+export const useGetJobs = (
+  params: JobsParams = {},
+  isOpen: boolean = true,
+) => {
   return useQuery({
-    queryFn: () => getJobs(params),
+    queryFn: () => getJobs({ size: 6, ...params }),
     queryKey: [api.ADMIN.JOBS.GET_JOB, params],
-    select: (resp) => resp?.data?.data?.content,
+    select: (resp) => resp?.data?.data,
     enabled: !!isOpen,
   });
 };

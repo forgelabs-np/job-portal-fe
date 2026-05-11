@@ -168,7 +168,7 @@ const ApplicationsTable = () => {
               bg="white"
             >
               <option value="">All Jobs</option>
-              {jobs?.map((job) => (
+              {jobs?.content?.map((job) => (
                 <option key={job.id} value={job.id}>
                   {job.title}
                 </option>
