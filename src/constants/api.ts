@@ -25,6 +25,7 @@ export const api = {
     },
   },
   AGENCY: {
+    DASHBOARD: "/agency/dashboard",
     GET_PROFILE: "/agency/profile",
     UPDATE_PROFILE: "/agency/profile",
     APPROVED_PROFILE: "/agency/profile/complete",

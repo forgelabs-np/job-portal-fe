@@ -16,6 +16,7 @@ import {
   MdChevronRight,
   MdDashboard,
   MdLogout,
+  MdPerson,
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
 
@@ -52,6 +53,7 @@ const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
     icon: <FaFileSignature size={18} />,
   },
   { name: "Jobs", href: ROUTES.AGENCY_JOBS, icon: <BsBagDash /> },
+  { name: "Profile", href: ROUTES.AGENCY_PROFILE, icon: <MdPerson /> },
 ];
 
 interface NavItemProps {

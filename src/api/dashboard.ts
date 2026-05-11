@@ -64,6 +64,70 @@ export interface DashboardResponse {
   weeklyActivity: WeeklyActivity;
 }
 
+export interface AgencyDashboardStats {
+  totalCandidates: number;
+  enabledCandidates: number;
+  disabledCandidates: number;
+  totalApplications: number;
+  pendingApplications: number;
+  reviewedApplications: number;
+  shortlistedApplications: number;
+  rejectedApplications: number;
+  withdrawnApplications: number;
+  assignedJobs: number;
+  openJobs: number;
+  completedJobs: number;
+  approvalRate: number;
+}
+
+export interface RecentApplication {
+  id: number;
+  jobTitle: string;
+  candidateName: string;
+  status: string;
+  appliedAt: string;
+}
+
+export interface RecentCandidate {
+  id: number;
+  fullName: string;
+  trade: string;
+  isEnabled: boolean;
+  createdAt: string;
+}
+
+export interface AgencyRecentJob {
+  id: number;
+  title: string;
+  country: string;
+  totalSlots: number;
+  remainingSlots: number;
+  status: string;
+}
+
+export interface AgencyStatusDistribution {
+  pending: number;
+  reviewed: number;
+  shortlisted: number;
+  rejected: number;
+  withdrawn: number;
+}
+
+export interface AgencyWeeklyActivity {
+  days: string[];
+  applicationsSubmitted: number[];
+  applicationsShortlisted: number[];
+}
+
+export interface AgencyDashboardResponse {
+  stats: AgencyDashboardStats;
+  recentApplications: RecentApplication[];
+  recentCandidates: RecentCandidate[];
+  recentJobs: AgencyRecentJob[];
+  statusDistribution: AgencyStatusDistribution;
+  weeklyActivity: AgencyWeeklyActivity;
+}
+
 const getDashboardData = () => {
   return httpClient.get<ApiResponse<DashboardResponse>>(api.ADMIN.DASHBOARD);
 };
@@ -72,6 +136,18 @@ export const useGetDashboardQuery = () => {
   return useQuery({
     queryFn: getDashboardData,
     queryKey: [api.ADMIN.JOBS.GET_JOB],
+    select: (resp) => resp?.data?.data,
+  });
+};
+
+const getAgencyDashboardData = () => {
+  return httpClient.get<ApiResponse<AgencyDashboardResponse>>(api.AGENCY.DASHBOARD);
+};
+
+export const useGetAgencyDashboardQuery = () => {
+  return useQuery({
+    queryFn: getAgencyDashboardData,
+    queryKey: [api.AGENCY.DASHBOARD],
     select: (resp) => resp?.data?.data,
   });
 };
