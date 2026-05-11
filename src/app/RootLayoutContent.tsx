@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import { Layout } from "@/Layout/Layout";
 import { DashboardLayout } from "@/Layout/DashboardLayout";
 import TokenService from "@/utils/token";
-import { useAuthStore } from "@/store";
+import { useAuthStore, useCurrentUserStore } from "@/store";
 import { ROUTES } from "@/constants/routes";
 import { usePathname } from "next/navigation";
 import { AgencyApprovalGuard } from "./agency/(components)/AgencyApprovalGaurd";
+import { fetchAndStoreCurrentUser } from "@/api/auth";
 
 export default function RootLayoutContent({
   children,
@@ -21,6 +22,15 @@ export default function RootLayoutContent({
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
+
+  useEffect(() => {
+    if (!authReady) return;
+    if (!isAuthenticated) {
+      useCurrentUserStore.getState().clearProfile();
+      return;
+    }
+    void fetchAndStoreCurrentUser();
+  }, [authReady, isAuthenticated]);
 
   const isPublicRoute =
     pathname === "/" ||

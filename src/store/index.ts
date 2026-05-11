@@ -1,5 +1,8 @@
 import { create } from "zustand";
+import { useCurrentUserStore } from "@/store/currentUserStore";
 import TokenService, { MofinTokenDetails } from "@/utils/token";
+
+export { useCurrentUserStore } from "@/store/currentUserStore";
 
 export type OtpEmailStore = {
   otpEmail: string;
@@ -51,6 +54,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }),
   logout: () => {
     TokenService.clearToken();
+    useCurrentUserStore.getState().clearProfile();
     set({
       user: null,
       isAuthenticated: false,

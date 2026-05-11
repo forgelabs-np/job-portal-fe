@@ -36,7 +36,8 @@ export const AgencyVerificationModal = ({
   const { logout } = useAuthStore();
   const router = useRouter();
 
-  const handleLogout = () => {
+
+  const handleLogout = async () => {
     logout();
     router.push("/login");
   };

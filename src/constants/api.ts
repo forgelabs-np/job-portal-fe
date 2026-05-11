@@ -4,6 +4,8 @@ export const api = {
     ADMIN_LOGIN: "/auth/admin/login",
     REGISTER: "/auth/signup",
     VERIFY_REGISTER: "/auth/verify-signup",
+    ME: "/auth/me",
+    LOGOUT: "/auth/logout",
   },
   ADMIN: {
     GET_AGENCY: "/admin/agencies",
