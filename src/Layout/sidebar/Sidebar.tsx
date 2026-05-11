@@ -46,6 +46,11 @@ const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
     href: ROUTES.AGENCY_CANDIDATES,
     icon: <Users2 size={20} />,
   },
+  {
+    name: "My Applications",
+    href: ROUTES.AGENCY_APPLICATIONS,
+    icon: <FaFileSignature size={18} />,
+  },
   { name: "Jobs", href: ROUTES.AGENCY_JOBS, icon: <BsBagDash /> },
 ];
 

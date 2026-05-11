@@ -240,3 +240,90 @@ export const useGetJobsById = (id: number) => {
     enabled: !!id,
   });
 };
+
+export interface AgencyApplicationType {
+  id: number;
+  jobDemandId: number;
+  jobTitle: string;
+  jobCountry: string;
+  jobCity: string;
+  candidateId: number;
+  candidateName: string;
+  candidateTrade: string;
+  notes: string;
+  status: "PENDING" | "APPROVED" | "REJECTED" | "SHORTLISTED";
+  appliedAt: string;
+  rejectionReason: string | null;
+  reviewedBy: number | null;
+  reviewedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PaginatedAgencyApplicationResponse {
+  content: AgencyApplicationType[];
+  size: number;
+  page: number;
+  totalPages: number;
+  totalElements: number;
+}
+
+const getAgencyApplications = (params: { status?: string }) => {
+  return httpClient.get<ApiResponse<PaginatedAgencyApplicationResponse>>(
+    api.AGENCY.JOBS.GET_APPLICATIONS,
+    { params },
+  );
+};
+
+export const useGetAgencyApplications = (params: { status?: string } = {}) => {
+  return useQuery({
+    queryFn: () => getAgencyApplications(params),
+    queryKey: [api.AGENCY.JOBS.GET_APPLICATIONS, params],
+    select: (resp) => resp?.data?.data?.content,
+  });
+};
+
+const getAgencyApplicationById = (id: number) => {
+  return httpClient.get<ApiResponse<AgencyApplicationType>>(
+    api.AGENCY.JOBS.GET_APPLICATION_BY_ID.replace("{id}", `${id}`),
+  );
+};
+
+export const useGetAgencyApplicationById = (id: number) => {
+  return useQuery({
+    queryFn: () => getAgencyApplicationById(id),
+    queryKey: [api.AGENCY.JOBS.GET_APPLICATION_BY_ID, id],
+    select: (resp) => resp?.data?.data,
+    enabled: !!id,
+  });
+};
+
+const withdrawApplication = (id: number) => {
+  return httpClient.delete<ApiResponse<null>>(
+    api.AGENCY.JOBS.WITHDRAW.replace("{id}", `${id}`),
+  );
+};
+
+export const useWithdrawApplicationMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => withdrawApplication(id),
+
+    onSuccess: (response) => {
+      successNotification(response?.data?.message ?? "Application withdrawn successfully");
+
+      queryClient.invalidateQueries({
+        queryKey: [api.AGENCY.JOBS.GET_APPLICATIONS],
+      });
+    },
+
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
+      errorNotification(error?.response?.data?.message ?? "Failed to withdraw application");
+    },
+  });
+};
