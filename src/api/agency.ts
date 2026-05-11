@@ -7,8 +7,7 @@ import { AxiosError } from "axios";
 
 export interface AgencyProfile {
   id: number;
-  email: string;
-  fullName: string;
+  userId: number;
   companyName: string;
   companyDescription: string;
   companyWebsite: string;
@@ -20,7 +19,7 @@ export interface AgencyProfile {
   contactPersonName: string;
   contactPersonEmail: string;
   contactPersonPhone: string;
-  approvalStatus: "PENDING" | "APPROVED" | "REJECTED";
+  profileComplete: boolean;
   createdAt: string;
   updatedAt: string;
 }

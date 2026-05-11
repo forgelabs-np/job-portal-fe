@@ -8,6 +8,7 @@ export const ROUTES = {
   AGENCY_JOBS: "/agency/jobs",
   AGENCY_NETWORK: "/agency",
   AGENCY_APPLICATIONS: "/agency/applications",
+  AGENCY_PROFILE: "/agency/profile",
   COUNTRY_MANAGEMENT: "/country-management",
   JOBS: "/job",
   APPLICATIONS: "/applications",
