@@ -1,7 +1,12 @@
 "use client";
 
 import { landingColors } from "@/components/Landing/landingTheme";
-import { InteractiveGlobe } from "@/components/ui/interactive-globe";
+import {
+  DEFAULT_LANDING_GLOBE_ARCS,
+  DEFAULT_LANDING_GLOBE_MARKERS,
+  Globe,
+  landingGlobeColors,
+} from "@/components/ui/cobe-globe";
 import { ROUTES } from "@/constants/routes";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
@@ -149,15 +154,16 @@ export function LandingHero() {
             >
               <Box w="full" h="full" p={{ base: 2, md: 3 }}>
                 <Box w="full" h="full" minH={{ base: "260px", md: "320px" }}>
-                  <InteractiveGlobe
-                    size={640}
-                    dotColor="rgba(212, 175, 55, ALPHA)"
-                    arcColor="rgba(212, 175, 55, 0.42)"
-                    markerColor="rgba(244, 208, 108, 1)"
-                    glowInner="rgba(212, 175, 55, 0.09)"
-                    glowOuter="rgba(212, 175, 55, 0)"
-                    rimColor="rgba(212, 175, 55, 0.14)"
-                    autoRotateSpeed={reduce ? 0 : 0.00135}
+                  <Globe
+                    markers={DEFAULT_LANDING_GLOBE_MARKERS}
+                    arcs={DEFAULT_LANDING_GLOBE_ARCS}
+                    markerColor={landingGlobeColors.markerColor}
+                    arcColor={landingGlobeColors.arcColor}
+                    baseColor={landingGlobeColors.baseColor}
+                    glowColor={landingGlobeColors.glowColor}
+                    dark={landingGlobeColors.dark}
+                    mapBrightness={landingGlobeColors.mapBrightness}
+                    speed={reduce ? 0 : 0.00135}
                   />
                 </Box>
               </Box>

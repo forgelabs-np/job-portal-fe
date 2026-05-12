@@ -5,7 +5,7 @@ import { LandingCtaBanner } from "@/components/Landing/LandingCtaBanner";
 import { LandingDashboardPreview } from "@/components/Landing/LandingDashboardPreview";
 import { LandingDestinations } from "@/components/Landing/LandingDestinations";
 import { LandingFeatures } from "@/components/Landing/LandingFeatures";
-import { LandingGlobe } from "@/components/Landing/LandingGlobe";
+import { LandingJobCategories } from "@/components/Landing/jobCategories/LandingJobCategories";
 import { LandingFooter } from "@/components/Landing/LandingFooter";
 import { LandingHero } from "@/components/Landing/LandingHero";
 import { LandingNav } from "@/components/Landing/LandingNav";
@@ -20,7 +20,7 @@ export function GlobalTalentLanding() {
       <LandingNav />
       <LandingHero />
       <LandingStats />
-      <LandingGlobe />
+      <LandingJobCategories />
       <LandingFeatures />
       <LandingDestinations />
       <LandingProcess />
