@@ -20,6 +20,9 @@ export interface AgencyProfile {
   contactPersonEmail: string;
   contactPersonPhone: string;
   profileComplete: boolean;
+  profileApprovalStatus: "PENDING" | "APPROVED" | "REJECTED";
+  profileRejectionReason?: string | null;
+  documents?: any[];
   createdAt: string;
   updatedAt: string;
 }
@@ -28,8 +31,28 @@ export interface AgencyProfileRequest {
   data: Partial<Omit<AgencyProfile, "id" | "email" | "approvalStatus" | "createdAt" | "updatedAt">>;
 }
 
+export type AgencyDocumentType =
+  | "TRADE_LICENCE"
+  | "COMPANY_REGISTRATION"
+  | "MOU"
+  | "OWNER_CITIZENSHIP";
+
+export interface AgencyDocumentUploadRequest {
+  documentType: AgencyDocumentType;
+  file: File;
+}
+
 const createAgencyProfile = (payload: AgencyProfileRequest) => {
   return httpClient.post(api.AGENCY.CREATE_PROFILE, payload);
+};
+
+const uploadAgencyDocument = ({ documentType, file }: AgencyDocumentUploadRequest) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  return httpClient.post(api.AGENCY.UPLOAD_DOCUMENT, formData, {
+    params: { documentType },
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
 
 export const useCreateAgencyProfile = () => {
@@ -52,6 +75,22 @@ export const useCreateAgencyProfile = () => {
       error: AxiosError<{ message: string; error: string }>;
     }) => {
       errorNotification(error?.response?.data?.message);
+    },
+  });
+};
+
+export const useUploadAgencyDocument = () => {
+  return useMutation({
+    mutationFn: (payload: AgencyDocumentUploadRequest) => uploadAgencyDocument(payload),
+    onSuccess: (response) => {
+      successNotification(response?.data?.message ?? "Document uploaded successfully");
+    },
+    onError: ({
+      error,
+    }: {
+      error: AxiosError<{ message: string; error: string }>;
+    }) => {
+      errorNotification(error?.response?.data?.message ?? "Document upload failed");
     },
   });
 };

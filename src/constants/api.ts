@@ -8,8 +8,10 @@ export const api = {
     LOGOUT: "/auth/logout",
   },
   ADMIN: {
-    GET_AGENCY: "/admin/agencies",
-    APPROVE_REJECT: "/admin/agencies/action",
+    GET_AGENCY: "/admin/agency/profiles",
+    GET_AGENCY_PROFILE_DETAILS: "/admin/agency/profiles/{userId}",
+    PROCESS_AGENCY_PROFILE: "/admin/agency/profiles/process",
+    PROCESS_AGENCY_DOCUMENT: "/admin/agency/documents/process",
     APPROVED_COUNTRIES: "/countries/enabled",
     ALL_COUNTRIES: "/countries/search",
     TOGGLE_COUNTRY: "/countries/{id}/toggle",
@@ -32,6 +34,7 @@ export const api = {
     UPDATE_PROFILE: "/agency/profile",
     APPROVED_PROFILE: "/agency/profile/complete",
     CREATE_PROFILE: "/agency/profile",
+    UPLOAD_DOCUMENT: "/agency/documents/upload",
     CANDIDATES: {
       GET: "/agency/candidates",
       POST: "/agency/candidates",
