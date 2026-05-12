@@ -17,10 +17,10 @@ export const AgencyApprovalGuard = ({
 }) => {
   const { role } = useAuthStore();
   const router = useRouter();
-  const [isApproved, setIsApproved] = useState<boolean | null>(null); // null = still checking
+  const [isApproved, setIsApproved] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (role !== "AGENCY") return; // only check for agency users
+    if (role !== "AGENCY") return;
 
     httpClient
       .get<ApiResponse<boolean>>(api.AGENCY.APPROVED_PROFILE)
@@ -43,7 +43,6 @@ export const AgencyApprovalGuard = ({
 
   return (
     <>
-      {/* Blur/block content if not approved */}
       <Box
         filter={isApproved === false ? "blur(4px)" : "none"}
         pointerEvents={isApproved === false ? "none" : "auto"}
@@ -53,12 +52,11 @@ export const AgencyApprovalGuard = ({
         {children}
       </Box>
 
-      {/* Modal is unaffected by blur since it's rendered outside the blurred box */}
       <AgencyVerificationModal
         isOpen={isApproved === false}
-        onClose={() => {}} // no close — they must verify
+        onClose={() => { }}
         onSuccess={() => {
-          setIsApproved(true); // unblock UI
+          setIsApproved(true);
         }}
       />
     </>
