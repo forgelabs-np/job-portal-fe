@@ -74,8 +74,7 @@ export const AgencyProfileReviewDialog = ({
   const [imageList, setImageList] = useState<{ src: string }[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const baseImageUrl = "http://localhost:8080/"
-
+  const baseImageUrl = process.env.NEXT_PUBLIC_API_IMAGE_ENDPOINT;
 
 
   const openImages = (startIndex: number) => {
