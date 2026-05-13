@@ -8,6 +8,7 @@ type ApprovalStatus = "APPROVED" | "REJECTED";
 export interface AgencyListType {
   email: string;
   userId: number;
+  companyName: string;
 }
 
 export interface AgencyDocument {
@@ -34,6 +35,7 @@ export interface AgencyProfileDetails extends AgencyListType {
   contactPersonPhone?: string;
   approvalStatus?: string;
   profileStatus?: string;
+  profileApprovalStatus?: string;
   status?: string;
   rejectionReason?: string | null;
   documents?: AgencyDocument[];

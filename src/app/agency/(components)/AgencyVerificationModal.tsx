@@ -51,7 +51,7 @@ export const AgencyVerificationModal = ({
   const [stepOverride, setStepOverride] = useState<number | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [documents, setDocuments] = useState<
-    Record<AgencyDocumentType, File | null>
+    Record<AgencyDocumentType, any | null>
   >({
     TRADE_LICENCE: null,
     COMPANY_REGISTRATION: null,
@@ -101,6 +101,17 @@ export const AgencyVerificationModal = ({
     });
   }, [agencyProfile, activeStep, methods]);
 
+  useEffect(() => {
+    if (!agencyProfile?.documents || agencyProfile.documents.length === 0)
+      return;
+
+    const newDocs: any = { ...documents };
+    agencyProfile.documents.forEach((doc: any) => {
+      newDocs[doc.documentType] = doc;
+    });
+    setDocuments(newDocs);
+  }, [agencyProfile]);
+
   const handleLogout = async () => {
     logout();
     router.push("/login");
@@ -146,12 +157,16 @@ export const AgencyVerificationModal = ({
     }
 
     await Promise.all(
-      REQUIRED_DOCUMENTS.map((doc) =>
-        uploadDocument({
-          documentType: doc.type,
-          file: documents[doc.type] as File,
-        }),
-      ),
+      REQUIRED_DOCUMENTS.map((doc) => {
+        const file = documents[doc.type];
+        if (file instanceof File) {
+          return uploadDocument({
+            documentType: doc.type,
+            file: file,
+          });
+        }
+        return Promise.resolve();
+      }),
     );
 
     await refetchAgencyProfile();

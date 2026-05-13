@@ -4,3 +4,4 @@ export * from "./input";
 export * from "./provider";
 export * from "./select";
 export * from "./textarea";
+export * from "./dropzone";
