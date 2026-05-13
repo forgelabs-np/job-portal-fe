@@ -9,6 +9,7 @@ import {
   Box,
   Flex,
   HStack,
+  Image,
   Input,
   Link,
   SimpleGrid,
@@ -17,6 +18,8 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { useState } from "react";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 type ModalMode = "view" | "edit";
 type ConfirmAction = "Approve" | "Reject";
@@ -68,17 +71,18 @@ export const AgencyProfileReviewDialog = ({
   const profileStatus = getProfileStatus(profile);
   const documents = profile?.documents ?? [];
   const [isOpenImage, setIsOpenImage] = useState(false);
-  const [imageList, setImageList] = useState<string[]>([]);
+  const [imageList, setImageList] = useState<{ src: string }[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const baseImageUrl = "http://192.168.1.109:8080/"
+  const baseImageUrl = "http://localhost:8080/"
+
 
 
   const openImages = (startIndex: number) => {
     setImageList(
-      documents.map(
-        (doc) => `${baseImageUrl}${getDocumentUrl(doc)}`,
-      ),
+      documents.map((doc) => ({
+        src: `${baseImageUrl}${getDocumentUrl(doc)}`,
+      })),
     );
     setLightboxIndex(startIndex);
     setIsOpenImage(true);
@@ -262,33 +266,18 @@ export const AgencyProfileReviewDialog = ({
                               </VStack>
                               <HStack gap={2}>
                                 {docUrl ? (
-                                  <Link
-                                    href={`${baseImageUrl}${docUrl}`}
-                                    target="_blank"
-                                    color={WEBSITE_THEME_COLOR}
-                                  >
-                                    View File
-                                  </Link>
+                                  <Image
+                                    src={`${baseImageUrl}${docUrl}`}
+                                    height="50px"
+                                    width="50px"
+                                    objectFit="cover"
+                                    rounded="md"
+                                    cursor="pointer"
+                                    _hover={{ opacity: 0.8 }}
+                                    onClick={() => openImages(index)}
+                                    alt={doc.documentType}
+                                  />
                                 ) : (
-                                  // <Image
-                                  //   src={`http://192.168.1.109:8080/${docUrl}`}
-                                  //   height="40px"
-                                  //   width="40px"
-                                  //   objectFit="cover"
-                                  //   rounded="md"
-                                  //   // Remove openImages function entirely, just do it inline:
-                                  //   onClick={(e) => {
-                                  //     e.stopPropagation(); // 👈 add this
-                                  //     const allUrls =
-                                  //       profile?.documents?.map(
-                                  //         (d) =>
-                                  //           `http://192.168.1.109:8080/${getDocumentUrl(d)}`,
-                                  //       ) ?? [];
-                                  //     setImageList(allUrls);
-                                  //     setLightboxIndex(index);
-                                  //     setIsOpenImage(true);
-                                  //   }}
-                                  // />
                                   <Text fontSize="sm" color="gray.500">
                                     File unavailable
                                   </Text>
@@ -343,14 +332,13 @@ export const AgencyProfileReviewDialog = ({
           )}
         </Box>
       </Dialog>
-      {/* <Lightbox
+      <Lightbox
         open={isOpenImage}
         close={() => setIsOpenImage(false)}
         slides={imageList}
-        index={lightboxIndex ?? 0}
+        index={lightboxIndex}
         styles={{ root: { zIndex: 9999 } }}
-        // zoom={{ maxZoomPixelRatio: 10 }}
-      /> */}
+      />
     </>
   );
 };
