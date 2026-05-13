@@ -42,6 +42,13 @@ export interface AgencyDocumentUploadRequest {
   file: File;
 }
 
+export const REQUIRED_DOCUMENTS: { type: AgencyDocumentType; label: string }[] = [
+  { type: "TRADE_LICENCE", label: "Trade Licence" },
+  { type: "COMPANY_REGISTRATION", label: "Company Registration" },
+  { type: "MOU", label: "MOU" },
+  { type: "OWNER_CITIZENSHIP", label: "Owner Citizenship" },
+];
+
 const createAgencyProfile = (payload: AgencyProfileRequest) => {
   return httpClient.post(api.AGENCY.CREATE_PROFILE, payload);
 };
@@ -112,12 +119,13 @@ const getAgencyProfile = () => {
   return httpClient.get<ApiResponse<AgencyProfile>>(api.AGENCY.GET_PROFILE);
 };
 
-export const useGetAgencyProfile = () => {
+export const useGetAgencyProfile = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryFn: () => getAgencyProfile(),
     queryKey: [api.AGENCY.GET_PROFILE],
     select: (resp) => resp?.data?.data,
-    // enabled: !!params?.status,
+    enabled: options?.enabled ?? true,
+    retry: false,
   });
 };
 
