@@ -44,9 +44,15 @@ import {
   useGetAgencyDashboardQuery,
 } from "@/api/dashboard";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { useCurrentUserStore } from "@/store";
 
 const AgencyDashboard = () => {
-  const { data: dashboard, isLoading } = useGetAgencyDashboardQuery();
+  const { profile } = useCurrentUserStore();
+  const isApproved = profile?.profileApprovalStatus === "APPROVED";
+
+  const { data: dashboard, isLoading } = useGetAgencyDashboardQuery({ enabled: isApproved });
+
+  if (!isApproved) return null;
 
   if (isLoading) {
     return (

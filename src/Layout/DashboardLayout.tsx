@@ -10,8 +10,10 @@ const SIDEBAR_COLLAPSED = "72px";
 
 export const DashboardLayout = ({
   children,
+  hideNavigation = false,
 }: {
   children: React.ReactNode;
+  hideNavigation?: boolean;
 }) => {
   const { user } = useAuthStore();
   const isAdmin = user?.roles?.includes("ADMIN");
@@ -19,19 +21,22 @@ export const DashboardLayout = ({
 
   return (
     <Box display="flex" minH="100vh" bg="gray.50">
-      <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
+      {!hideNavigation && (
+        <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
+      )}
 
       <Box
         flex={1}
         display="flex"
         flexDirection="column"
-        ml={collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED}
+        ml={hideNavigation ? 0 : collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_EXPANDED}
         transition="margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)"
         minH="100vh"
         minW={0}
       >
         {/* Sticky Header */}
-        <Box
+        {!hideNavigation && (
+          <Box
           bg="white"
           borderBottom="1px solid"
           borderBottomColor="gray.200"
@@ -69,6 +74,7 @@ export const DashboardLayout = ({
             </MenuRoot>
           </HStack>
         </Box>
+        )}
 
         {/* Page Content */}
         <Box flex={1} p={6} overflowY="auto">
