@@ -74,22 +74,30 @@ export interface Candidate {
 }
 
 export interface CandidatesResponse {
-  data: {
-    content: Candidate[];
-  };
+  content: Candidate[];
+  size: number;
+  page: number;
+  totalPages: number;
+  totalElements: number;
 }
 
-const getAllCandidates = () => {
+interface GetAllCandidatesParams {
+  page?: number;
+  size?: number;
+}
+
+const getAllCandidates = (params?: GetAllCandidatesParams) => {
   return httpClient.get<ApiResponse<CandidatesResponse>>(
     api.AGENCY.CANDIDATES.GET,
+    { params },
   );
 };
 
-export const useGetAllCandidates = () => {
+export const useGetAllCandidates = (params?: GetAllCandidatesParams) => {
   return useQuery({
-    queryFn: () => getAllCandidates(),
-    queryKey: [api.AGENCY.CANDIDATES.GET],
-    select: (resp) => resp?.data?.data?.content,
+    queryFn: () => getAllCandidates(params),
+    queryKey: [api.AGENCY.CANDIDATES.GET, params],
+    select: (resp) => resp?.data?.data,
   });
 };
 
