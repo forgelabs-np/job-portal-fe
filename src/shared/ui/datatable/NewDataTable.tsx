@@ -19,6 +19,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { DataTableProps, MetaProps } from "./DataTable.types";
 import { NewPagination } from "./NewPagination";
+import { LuExpand } from "react-icons/lu";
+import { BiCollapse } from "react-icons/bi";
 
 export function DataTable<T extends object>({
   columns,
@@ -154,7 +156,9 @@ export function DataTable<T extends object>({
               cursor: "pointer",
             }}
           >
-            {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+            {isFullscreen ?<BiCollapse />
+ : <LuExpand />
+            }
           </IconButton>
         </HStack>
       </HStack>

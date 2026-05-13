@@ -35,9 +35,10 @@ const ApplyCandidateModal = ({
   const { reset } = methods;
 
   const { data: candidatesData } = useGetAllCandidates();
+  console.log(candidatesData, "candidatesData");
 
   const candidateOptions =
-    candidatesData?.map((candidate: Candidate) => ({
+    candidatesData?.content?.map((candidate: Candidate) => ({
       label: candidate.fullName,
       value: candidate.id,
     })) ?? [];
