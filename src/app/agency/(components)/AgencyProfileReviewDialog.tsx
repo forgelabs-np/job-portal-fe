@@ -174,36 +174,48 @@ export const AgencyProfileReviewDialog = ({
                           </Badge>
                         </Flex>
                         {mode === "edit" && (
-                          <HStack gap={3}>
-                            <Button
-                              bg={WEBSITE_THEME_COLOR}
-                              _hover={{ opacity: 0.9 }}
-                              onClick={() =>
-                                onActionClick({
-                                  scope: "PROFILE",
-                                  action: "Approve",
-                                  id: profile?.userId ?? 0,
-                                })
-                              }
-                              disabled={!profile?.userId}
-                            >
-                              Approve Profile
-                            </Button>
-                            <Button
-                              variant="outline"
-                              colorPalette="red"
-                              onClick={() =>
-                                onActionClick({
-                                  scope: "PROFILE",
-                                  action: "Reject",
-                                  id: profile?.userId ?? 0,
-                                })
-                              }
-                              disabled={!profile?.userId}
-                            >
-                              Reject Profile
-                            </Button>
-                          </HStack>
+                          <VStack align="stretch" gap={3}>
+                            {documents.length > 0 &&
+                              !documents.every((doc) => doc.status === "APPROVED") && (
+                                <Text color="red.500" fontSize="sm" fontWeight="medium">
+                                  Please approve all documents before approving the profile.
+                                </Text>
+                              )}
+                            <HStack gap={3}>
+                              <Button
+                                bg={WEBSITE_THEME_COLOR}
+                                _hover={{ opacity: 0.9 }}
+                                onClick={() =>
+                                  onActionClick({
+                                    scope: "PROFILE",
+                                    action: "Approve",
+                                    id: profile?.userId ?? 0,
+                                  })
+                                }
+                                disabled={
+                                  !profile?.userId ||
+                                  documents.length === 0 ||
+                                  !documents.every((doc) => doc.status === "APPROVED")
+                                }
+                              >
+                                Approve Profile
+                              </Button>
+                              <Button
+                                variant="outline"
+                                colorPalette="red"
+                                onClick={() =>
+                                  onActionClick({
+                                    scope: "PROFILE",
+                                    action: "Reject",
+                                    id: profile?.userId ?? 0,
+                                  })
+                                }
+                                disabled={!profile?.userId}
+                              >
+                                Reject Profile
+                              </Button>
+                            </HStack>
+                          </VStack>
                         )}
                       </Box>
                     </VStack>

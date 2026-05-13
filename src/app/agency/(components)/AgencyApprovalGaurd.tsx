@@ -1,13 +1,7 @@
 // components/AgencyApprovalGuard.tsx
 "use client";
-import { useEffect, useState } from "react";
-import { httpClient } from "@/utils/axios";
-import { api } from "@/constants/api";
-import { ApiResponse } from "@/shared/types/response";
 import { AgencyVerificationModal } from "@/app/agency/(components)/AgencyVerificationModal";
-import { useAuthStore } from "@/store";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/routes";
+import { useAuthStore, useCurrentUserStore } from "@/store";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 
 export const AgencyApprovalGuard = ({
@@ -16,24 +10,13 @@ export const AgencyApprovalGuard = ({
   children: React.ReactNode;
 }) => {
   const { role } = useAuthStore();
-  const router = useRouter();
-  const [isApproved, setIsApproved] = useState<boolean | null>(null);
+  const { profile, isProfileLoading } = useCurrentUserStore();
 
-  useEffect(() => {
-    if (role !== "AGENCY") return;
-
-    httpClient
-      .get<ApiResponse<boolean>>(api.AGENCY.APPROVED_PROFILE)
-      .then((response) => {
-        setIsApproved(response.data.data);
-      })
-      .catch(() => {
-        setIsApproved(false);
-      });
-  }, [role]);
+  const isApproved = profile?.profileApprovalStatus === "APPROVED";
+  const profileComplete = profile?.profileComplete;
 
   // Still checking — show nothing (or a spinner)
-  if (role === "AGENCY" && isApproved === null) {
+  if (role === "AGENCY" && (isProfileLoading || !profile)) {
     return (
       <Flex minH="100vh" align="center" justify="center">
         <Spinner size="xl" color="green.500" />
@@ -41,22 +24,24 @@ export const AgencyApprovalGuard = ({
     );
   }
 
+  const showModal = !profileComplete || !isApproved;
+
   return (
     <>
       <Box
-        filter={isApproved === false ? "blur(4px)" : "none"}
-        pointerEvents={isApproved === false ? "none" : "auto"}
-        userSelect={isApproved === false ? "none" : "auto"}
+        filter={showModal ? "blur(4px)" : "none"}
+        pointerEvents={showModal ? "none" : "auto"}
+        userSelect={showModal ? "none" : "auto"}
         transition="filter 0.2s"
       >
         {children}
       </Box>
 
       <AgencyVerificationModal
-        isOpen={isApproved === false}
+        isOpen={showModal}
         onClose={() => { }}
         onSuccess={() => {
-          setIsApproved(true);
+          // This might be handled by refetching the me api elsewhere
         }}
       />
     </>

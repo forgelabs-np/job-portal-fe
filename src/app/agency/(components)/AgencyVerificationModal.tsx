@@ -5,25 +5,18 @@ import {
   useCreateAgencyProfile,
   useGetAgencyProfile,
   useUploadAgencyDocument,
+  REQUIRED_DOCUMENTS,
 } from "@/api/agency";
-import { Button, Dialog, FormProvider, TextFieldInput } from "@/shared";
-import { useAuthStore } from "@/store";
+import { Button, Dialog } from "@/shared";
+import { fetchAndStoreCurrentUser } from "@/api/auth";
+import { useAuthStore, useCurrentUserStore } from "@/store";
+import { AgencyVerificationStatus } from "./AgencyVerificationStatus";
 import { errorNotification } from "@/utils/toast";
-import {
-  Box,
-  Flex,
-  HStack,
-  Input,
-  Skeleton,
-  Spinner,
-  Steps,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import { LuCircleAlert, LuClock } from "react-icons/lu";
+import { Box, Flex, HStack, Skeleton, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AgencyVerificationForm } from "./AgencyVerificationForm";
 
 interface AgencyVerificationModalProps {
   isOpen: boolean;
@@ -31,7 +24,7 @@ interface AgencyVerificationModalProps {
   onSuccess: () => void;
 }
 
-interface AgencyProfileForm {
+export interface AgencyProfileForm {
   companyName: string;
   companyDescription: string;
   companyWebsite: string;
@@ -45,12 +38,6 @@ interface AgencyProfileForm {
   contactPersonPhone: string;
 }
 
-const REQUIRED_DOCUMENTS: { type: AgencyDocumentType; label: string }[] = [
-  { type: "TRADE_LICENCE", label: "Trade Licence" },
-  { type: "COMPANY_REGISTRATION", label: "Company Registration" },
-  { type: "MOU", label: "MOU" },
-  { type: "OWNER_CITIZENSHIP", label: "Owner Citizenship" },
-];
 
 export const AgencyVerificationModal = ({
   isOpen,
@@ -62,6 +49,7 @@ export const AgencyVerificationModal = ({
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [stepOverride, setStepOverride] = useState<number | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [documents, setDocuments] = useState<
     Record<AgencyDocumentType, File | null>
   >({
@@ -71,14 +59,27 @@ export const AgencyVerificationModal = ({
     OWNER_CITIZENSHIP: null,
   });
 
+  const { profile } = useCurrentUserStore();
   const {
-    data: agencyProfile,
+    data: agencyProfileData,
     refetch: refetchAgencyProfile,
     isLoading: isProfileLoading,
-  } = useGetAgencyProfile();
-  const profileCompleted = Boolean(agencyProfile?.profileComplete);
-  const isPendingReview = agencyProfile?.profileApprovalStatus === "PENDING";
-  const isRejected = agencyProfile?.profileApprovalStatus === "REJECTED";
+  } = useGetAgencyProfile({ enabled: !!profile?.profileComplete });
+
+  const agencyProfile = agencyProfileData || profile?.agencyProfile;
+
+  const hasDocuments = (agencyProfile?.documents?.length ?? 0) > 0;
+  const anyDocumentRejected = agencyProfile?.documents?.some(
+    (doc: any) => doc.status === "REJECTED",
+  );
+  const profileCompleted = Boolean(profile?.profileComplete);
+  const isProfileRejected = profile?.profileApprovalStatus === "REJECTED";
+  const isRejected = isProfileRejected || anyDocumentRejected;
+  const isPendingReview =
+    profile?.profileApprovalStatus === "PENDING" &&
+    hasDocuments &&
+    !anyDocumentRejected;
+
   const activeStep = stepOverride ?? (profileCompleted ? 1 : currentStep);
 
   useEffect(() => {
@@ -115,6 +116,7 @@ export const AgencyVerificationModal = ({
         onSuccess: () => {
           setCurrentStep(1);
           setStepOverride(1);
+          // void fetchAndStoreCurrentUser();
         },
       },
     );
@@ -152,8 +154,9 @@ export const AgencyVerificationModal = ({
       ),
     );
 
-    onSuccess();
-    onClose();
+    await refetchAgencyProfile();
+    await fetchAndStoreCurrentUser();
+    setIsEditing(false);
   };
 
   const handlePrevious = async () => {
@@ -175,12 +178,12 @@ export const AgencyVerificationModal = ({
       open={isOpen}
       onClose={onClose}
       hasCloseTrigger={false}
-      size={isPendingReview || isRejected ? "md" : "xl"}
+      size={(isPendingReview || isRejected) && !isEditing ? "md" : "xl"}
     >
       <Box
         display="flex"
         flexDirection="column"
-        h={isPendingReview || isRejected || isProfileLoading ? "auto" : "75vh"}
+        h={(isPendingReview || isRejected) && !isEditing ? "auto" : "75vh"}
         overflow="hidden"
       >
         {isProfileLoading ? (
@@ -239,332 +242,30 @@ export const AgencyVerificationModal = ({
               <Skeleton height="10" width="40" />
             </Flex>
           </VStack>
-        ) : isPendingReview || isRejected ? (
-          <VStack gap={6} py={10} textAlign="center" flex={1} justify="center">
-            <Box
-              bg={isRejected ? "red.50" : "green.50"}
-              p={6}
-              borderRadius="full"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              position="relative"
-            >
-              {isRejected ? (
-                <LuCircleAlert size={48} color="#e53e3e" />
-              ) : (
-                <LuClock size={48} color="#0d6944" />
-              )}
-              {/* {!isRejected && (
-                <Spinner
-                  size="xl"
-                  thickness="4px"
-                  speed="0.65s"
-                  emptyColor="gray.200"
-                  color="#0d6944"
-                  position="absolute"
-                  width="72px"
-                  height="72px"
-                />
-              )} */}
-            </Box>
-            <VStack gap={2} px={4}>
-              <Text fontSize="xl" fontWeight="bold">
-                {isRejected
-                  ? "Verification Rejected"
-                  : "Verification Under Review"}
-              </Text>
-              <Text color="gray.600">
-                {isRejected
-                  ? "Unfortunately, your profile verification has been rejected."
-                  : "Your profile verification is currently under review by our team. This usually takes 24-48 hours. We'll notify you once it's approved."}
-              </Text>
-
-              {isRejected && agencyProfile?.profileRejectionReason && (
-                <Box
-                  mt={2}
-                  p={4}
-                  bg="red.50"
-                  borderRadius="md"
-                  borderWidth="1px"
-                  borderColor="red.100"
-                  width="100%"
-                  textAlign="left"
-                >
-                  <Text
-                    fontWeight="semibold"
-                    color="red.700"
-                    fontSize="sm"
-                    mb={1}
-                  >
-                    Reason for Rejection:
-                  </Text>
-                  <Text color="red.600" fontSize="sm">
-                    {agencyProfile.profileRejectionReason}
-                  </Text>
-                </Box>
-              )}
-            </VStack>
-            <Button
-              variant="outline"
-              onClick={handleLogout}
-              mt={4}
-              borderColor="gray.300"
-              _hover={{ bg: "gray.50" }}
-            >
-              Log Out
-            </Button>
-          </VStack>
+        ) : (isPendingReview || isRejected) && !isEditing ? (
+          <AgencyVerificationStatus
+            isRejected={isRejected}
+            isProfileRejected={isProfileRejected}
+            anyDocumentRejected={anyDocumentRejected}
+            agencyProfile={agencyProfile}
+            handleLogout={handleLogout}
+            onUpdate={(step) => {
+              setIsEditing(true);
+              setStepOverride(step);
+            }}
+          />
         ) : (
-          <>
-            <Steps.Root step={activeStep} count={2} mb={4} px={1} flexShrink={0}>
-              <Steps.List>
-                <Steps.Item index={0} title="Profile">
-                  <Steps.Indicator />
-                  <Box>
-                    <Steps.Title>Profile Details</Steps.Title>
-                    <Steps.Description>
-                      Complete agency profile information
-                    </Steps.Description>
-                  </Box>
-                  <Steps.Separator />
-                </Steps.Item>
-                <Steps.Item index={1} title="Documents">
-                  <Steps.Indicator />
-                  <Box>
-                    <Steps.Title>Upload Documents</Steps.Title>
-                    <Steps.Description>
-                      Upload all required verification files
-                    </Steps.Description>
-                  </Box>
-                  <Steps.Separator />
-                </Steps.Item>
-              </Steps.List>
-            </Steps.Root>
-
-            {activeStep === 0 ? (
-              <Box
-                display="flex"
-                flexDirection="column"
-                flex={1}
-                minH={0}
-                css={{
-                  "& form": {
-                    display: "flex",
-                    flexDirection: "column",
-                    flex: 1,
-                    minHeight: 0,
-                    overflow: "hidden",
-                  },
-                }}
-              >
-                <FormProvider methods={methods} onSubmit={onSubmit}>
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    flex={1}
-                    minH={0}
-                  >
-                    <Box overflowY="auto" flex={1} px={1} pb={2} minH={0}>
-                      <VStack gap={4} align="stretch">
-                        <Text fontSize="sm" color="gray.600">
-                          To access the dashboard, please complete your agency profile
-                          information first.
-                        </Text>
-
-                        <Flex gap={4}>
-                          <TextFieldInput
-                            name="companyName"
-                            label="Company Name"
-                            placeholder="Enter company name"
-                            required
-                          />
-                          <TextFieldInput
-                            name="companyWebsite"
-                            label="Company Website"
-                            placeholder="https://example.com"
-                          />
-                        </Flex>
-
-                        <TextFieldInput
-                          name="companyDescription"
-                          label="Company Description"
-                          placeholder="Brief description of your company"
-                          required
-                        />
-
-                        <Flex gap={4}>
-                          <TextFieldInput
-                            name="companyAddress"
-                            label="Company Address"
-                            placeholder="Full company address"
-                            required
-                          />
-                          <TextFieldInput
-                            name="companyPhone"
-                            label="Company Phone"
-                            placeholder="+1 (555) 123-4567"
-                            required
-                          />
-                        </Flex>
-
-                        <Flex gap={4}>
-                          <TextFieldInput
-                            name="registrationNumber"
-                            label="Registration Number"
-                            placeholder="Company registration number"
-                            required
-                          />
-                          <TextFieldInput
-                            name="taxId"
-                            label="Tax ID"
-                            placeholder="Tax identification number"
-                            required
-                          />
-                        </Flex>
-
-                        <Text fontSize="md" fontWeight="semibold">
-                          Contact Person Information
-                        </Text>
-
-                        <Flex gap={4}>
-                          <TextFieldInput
-                            name="contactPersonName"
-                            label="Contact Person Name"
-                            placeholder="Full name"
-                            required
-                          />
-                          <TextFieldInput
-                            name="contactPersonEmail"
-                            label="Contact Person Email"
-                            placeholder="email@company.com"
-                            required
-                          />
-                        </Flex>
-
-                        <TextFieldInput
-                          name="contactPersonPhone"
-                          label="Contact Person Phone"
-                          placeholder="+1 (555) 123-4567"
-                          required
-                        />
-
-                        <TextFieldInput
-                          name="companyLogoUrl"
-                          label="Company Logo URL"
-                          placeholder="https://example.com/logo.png"
-                        />
-                      </VStack>
-                    </Box>
-                    <Flex
-                      justify="flex-end"
-                      gap={3}
-                      pt={4}
-                      mt="auto"
-                      borderTop="1px solid"
-                      borderColor="gray.200"
-                      flexShrink={0}
-                      bg="white"
-                    >
-                      <Button
-                        variant="outline"
-                        onClick={handleLogout}
-                        disabled={isBusy}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        type="submit"
-                        loading={isPending}
-                        bg="#0d6944"
-                        _hover={{ bg: "#0a5535" }}
-                      >
-                        Save Profile & Continue
-                      </Button>
-                    </Flex>
-                  </Box>
-                </FormProvider>
-              </Box>
-            ) : (
-              <Box
-                display="flex"
-                flexDirection="column"
-                flex={1}
-                minH={0}
-                overflow="hidden"
-              >
-                <Box overflowY="auto" flex={1} minH={0} px={1} pb={4}>
-                  <VStack gap={4} align="stretch">
-                    <Text fontSize="sm" color="gray.600">
-                      Upload all required documents: Trade Licence, Company
-                      Registration, MOU, and Owner Citizenship.
-                    </Text>
-                    {REQUIRED_DOCUMENTS.map((doc) => (
-                      <Box key={doc.type}>
-                        <Text fontSize="sm" fontWeight="semibold" mb={2}>
-                          {doc.label}{" "}
-                          <Text as="span" color="red.500">
-                            *
-                          </Text>
-                        </Text>
-                        <Input
-                          type="file"
-                          accept=".pdf,.png,.jpg,.jpeg"
-                          onChange={(e) =>
-                            handleDocumentChange(
-                              doc.type,
-                              e.target.files?.[0] ?? null,
-                            )
-                          }
-                          p={1}
-                          disabled={isBusy}
-                        />
-                        {documents[doc.type] ? (
-                          <Text fontSize="xs" mt={1} color="gray.600">
-                            Selected: {documents[doc.type]?.name}
-                          </Text>
-                        ) : null}
-                      </Box>
-                    ))}
-                  </VStack>
-                </Box>
-
-                <Flex
-                  justify="flex-end"
-                  gap={3}
-                  pt={4}
-                  mt={2}
-                  borderTop="1px solid"
-                  borderColor="gray.200"
-                  flexShrink={0}
-                >
-                  <Button
-                    variant="outline"
-                    onClick={handlePrevious}
-                    disabled={isBusy}
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={handleLogout}
-                    disabled={isBusy}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    onClick={handleUploadDocuments}
-                    loading={isUploading}
-                    bg="#0d6944"
-                    _hover={{ bg: "#0a5535" }}
-                    disabled={!allRequiredDocumentsSelected}
-                  >
-                    Submit for Verification
-                  </Button>
-                </Flex>
-              </Box>
-            )}
-          </>
+          <AgencyVerificationForm
+            activeStep={activeStep}
+            methods={methods}
+            documents={documents}
+            setDocuments={setDocuments}
+            onSubmit={onSubmit}
+            onUploadDocuments={handleUploadDocuments}
+            onPrevious={handlePrevious}
+            isBusy={isBusy}
+            handleLogout={handleLogout}
+          />
         )}
       </Box>
     </Dialog>
