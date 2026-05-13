@@ -1,10 +1,9 @@
 import { AgencyDocumentType, REQUIRED_DOCUMENTS } from "@/api/agency";
-import { Button, TextFieldInput } from "@/shared";
+import { Button, FileDropzone, TextFieldInput } from "@/shared";
 import {
   Box,
   Flex,
   HStack,
-  Input,
   Steps,
   Text,
   VStack,
@@ -204,26 +203,13 @@ export const AgencyVerificationForm = ({
                 <VStack gap={5} align="stretch">
                   {REQUIRED_DOCUMENTS.map((doc) => (
                     <Box key={doc.type}>
-                      <Text fontSize="sm" fontWeight="semibold" mb={2}>
-                        {doc.label}{" "}
-                        <Text as="span" color="red.500">
-                          *
-                        </Text>
-                      </Text>
-                      <Input
-                        type="file"
-                        accept="image/*,application/pdf"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0] || null;
-                          setDocuments((prev) => ({ ...prev, [doc.type]: file }));
-                        }}
-                        p={1}
-                        height="auto"
-                        fontSize="sm"
-                        borderColor="gray.200"
-                        _hover={{ borderColor: "green.500" }}
+                      <FileDropzone
+                        value={documents[doc.type]}
+                        onChange={(file) =>
+                          setDocuments((prev) => ({ ...prev, [doc.type]: file }))
+                        }
+                        label={doc.label}
                       />
-
                     </Box>
                   ))}
                 </VStack>

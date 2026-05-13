@@ -36,9 +36,7 @@ interface AgencyProfileReviewDialogProps {
 }
 
 const getProfileStatus = (profile?: AgencyProfileDetails) =>
-  profile?.approvalStatus ??
-  profile?.profileStatus ??
-  profile?.status ??
+  profile?.profileApprovalStatus ??
   "PENDING";
 
 const getDocumentUrl = (document: AgencyDocument) =>
@@ -295,7 +293,7 @@ export const AgencyProfileReviewDialog = ({
                                     File unavailable
                                   </Text>
                                 )}
-                                {mode === "edit" && (
+                                {mode === "edit" && doc.status === "PENDING" && (
                                   <>
                                     <Button
                                       size="sm"

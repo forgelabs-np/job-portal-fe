@@ -41,7 +41,7 @@ const AssignJobModal = ({
 
   const agencyOptions =
     agencies?.map((agency) => ({
-      label: agency.email,
+      label: agency.companyName,
       value: agency.userId,
     })) ?? [];
 
