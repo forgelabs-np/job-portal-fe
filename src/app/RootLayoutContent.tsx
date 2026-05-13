@@ -66,11 +66,16 @@ export default function RootLayoutContent({
     }
   }, [authReady, isAuthenticated, isPublicRoute, pathname, router]);
 
+  const { profile } = useCurrentUserStore();
+
   if (isAuthenticated && isDashboardRoute) {
     const isAgency = TokenService.getTokenDetails()?.roles?.[0] === "AGENCY";
+    const isApproved = profile?.profileApprovalStatus === "APPROVED";
+    const profileComplete = profile?.profileComplete;
+    const hideNavigation = isAgency && (!isApproved || !profileComplete);
 
     return (
-      <DashboardLayout>
+      <DashboardLayout hideNavigation={hideNavigation}>
         {isAgency ? (
           <AgencyApprovalGuard>{children}</AgencyApprovalGuard>
         ) : (

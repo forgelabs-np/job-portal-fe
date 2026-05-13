@@ -144,10 +144,11 @@ const getAgencyDashboardData = () => {
   return httpClient.get<ApiResponse<AgencyDashboardResponse>>(api.AGENCY.DASHBOARD);
 };
 
-export const useGetAgencyDashboardQuery = () => {
+export const useGetAgencyDashboardQuery = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryFn: getAgencyDashboardData,
     queryKey: [api.AGENCY.DASHBOARD],
     select: (resp) => resp?.data?.data,
+    enabled: options?.enabled,
   });
 };
