@@ -186,7 +186,7 @@ const ApplicationsTable = () => {
               <option value="">All Agencies</option>
               {agencies?.map((agency) => (
                 <option key={agency.userId} value={agency.userId}>
-                  {agency.email}
+                  {agency.companyName}
                 </option>
               ))}
             </NativeSelect.Field>
@@ -198,9 +198,8 @@ const ApplicationsTable = () => {
               onChange={(e) => setStatus(e.target.value)}
               bg="white"
             >
-              <option value="">All Statuses</option>
+              <option value="">All Status</option>
               <option value="PENDING">Pending</option>
-              <option value="APPROVED">Approved</option>
               <option value="REJECTED">Rejected</option>
               <option value="SHORTLISTED">Shortlisted</option>
             </NativeSelect.Field>
