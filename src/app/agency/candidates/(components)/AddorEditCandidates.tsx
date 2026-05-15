@@ -75,6 +75,26 @@ const MARITAL_STATUS_OPTIONS = [
   { label: "Widowed", value: "WIDOWED" },
 ];
 
+
+
+const SALARY_PERIOD_OPTIONS = [
+  {
+    label: "hourly", value: "HOURLY"
+
+  },
+  {
+    label: "Weekly", value: "WEEKLY"
+
+  }
+  , {
+    label: "Monthly", value: "MONTHLY"
+
+  }, {
+    label: "Annually", value: "ANNUALLY"
+
+  }
+]
+
 const DOCUMENT_TYPE_OPTIONS = [
   { label: "PCC", value: "PCC" },
   { label: "SLC", value: "SLC" },
