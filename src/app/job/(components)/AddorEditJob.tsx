@@ -43,6 +43,24 @@ const GENDER_OPTIONS = [
   { label: "Any", value: "ANY" },
 ];
 
+const SALARY_PERIOD_OPTIONS = [
+  {
+    label: "hourly", value: "HOURLY"
+
+  },
+  {
+    label: "Weekly", value: "WEEKLY"
+
+  }
+  , {
+    label: "Monthly", value: "MONTHLY"
+
+  }, {
+    label: "Annually", value: "ANNUALLY"
+
+  }
+]
+
 function SectionHeader({ icon, label, step }: SectionHeaderProps) {
   return (
     <HStack gap={3} mb={4} mt={6}>
@@ -176,9 +194,9 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
         genderPreference: data.genderPreference,
         preferredNationalities: data.preferredNationalities
           ? data.preferredNationalities
-              .split(",")
-              .map((s: string) => s.trim())
-              .filter(Boolean)
+            .split(",")
+            .map((s: string) => s.trim())
+            .filter(Boolean)
           : [],
         workingHoursPerWeek: Number(data.workingHoursPerWeek),
         minExperienceYears:
@@ -275,14 +293,18 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
                 label="Total Slots"
                 type="number"
                 required
+                placeholder="Enter total slots"
+
               />
               <TextFieldInput
                 name="salaryAmount"
                 label="Salary Amount"
                 type="number"
                 required
+                placeholder="Enter salary amount"
               />
-              <TextFieldInput name="salaryPeriod" label="Salary Period" />
+              <SelectFieldInput name="salaryPeriod" label="Salary Period" options={SALARY_PERIOD_OPTIONS} placeholder="Select salary period"
+              />
             </SimpleGrid>
 
             <SectionHeader
