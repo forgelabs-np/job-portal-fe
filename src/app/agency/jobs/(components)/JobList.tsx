@@ -17,6 +17,7 @@ import { Job, JobCard } from "@/app/job/(components)/JobCard";
 import { JobModal } from "@/app/job/(components)/JobModal";
 import { useGetAgencyJobs } from "@/api/agency-jobs";
 import ApplyCandidateModal from "./ApplyJobModal";
+import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 
 export const jobsDummyResponse = {
   success: true,
@@ -252,19 +253,24 @@ const JobList = () => {
       </HStack>
 
       <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, "2xl": 4 }} gap={4}>
-        {" "}
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => <JobCardSkeleton key={i} />)
-          : data?.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onView={setSelectedJob}
-                onEdit={() => handleJobEdit(job.id)}
-                onDelete={(j) => console.log("delete", j.id)}
-                onApply={() => handleJobEdit(job.id)}
-              />
-            ))}
+        {isLoading ? (
+          Array.from({ length: 6 }).map((_, i) => <JobCardSkeleton key={i} />)
+        ) : !data || data.length === 0 ? (
+          <Box gridColumn="1 / -1">
+            <PageNoData title="No jobs found" description="There are currently no jobs available." />
+          </Box>
+        ) : (
+          data.map((job) => (
+            <JobCard
+              key={job.id}
+              job={job}
+              onView={setSelectedJob}
+              onEdit={() => handleJobEdit(job.id)}
+              onDelete={(j) => console.log("delete", j.id)}
+              onApply={() => handleJobEdit(job.id)}
+            />
+          ))
+        )}
       </SimpleGrid>
 
       <JobModal

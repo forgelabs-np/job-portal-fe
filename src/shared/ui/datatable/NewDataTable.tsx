@@ -224,7 +224,7 @@ export function DataTable<T extends object>({
                   </Stack>
                 </ChakraTable.Cell>
               </ChakraTable.Row>
-            ) : data?.length === 0 ? (
+            ) : !data || data.length === 0 ? (
               <ChakraTable.Row>
                 <ChakraTable.Cell
                   colSpan={table.getHeaderGroups()[0].headers.length}
