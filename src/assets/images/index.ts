@@ -14,7 +14,9 @@ export { default as OnlinPaymentImage } from "./onlinePayment.png";
 export { default as MastercardImage } from "./mastercard.png";
 export { default as VisaImage } from "./visa.png";
 export { default as IpayImage } from "./ipay.png";
+export { default as NoDataFoundImage } from "./no-connection.png";
 export { default as PaypalImage } from "./paypal.png";
+
 
 // empty state
 export { default as EmptyStateImage } from "./empty-state.png";

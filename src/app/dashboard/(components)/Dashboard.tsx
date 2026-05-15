@@ -33,6 +33,7 @@ import {
 
 import { RecentAgency, RecentJob, useGetDashboardQuery } from "@/api/dashboard";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 
 const Dashboard = () => {
   const { data, isLoading } = useGetDashboardQuery();
@@ -233,11 +234,13 @@ const Dashboard = () => {
               Recent Jobs
             </Text>
 
-            <Badge colorScheme="green">{recentJobs.length} Jobs</Badge>
+            <Badge colorScheme="green">{recentJobs?.length} Jobs</Badge>
           </HStack>
 
           <VStack gap={4} align="stretch">
-            {recentJobs.map((job: RecentJob) => (
+            {recentJobs?.length === 0 ? (
+              <PageNoData title="No Recent Jobs" description="There are no recent jobs to display." />
+            ) : recentJobs?.map((job: RecentJob) => (
               <Box
                 key={job.id}
                 p={4}
@@ -340,7 +343,9 @@ const Dashboard = () => {
         </HStack>
 
         <VStack gap={4} align="stretch">
-          {recentAgencies.map((agency: RecentAgency) => (
+          {recentAgencies?.length === 0 ? (
+            <PageNoData title="No Recent Agencies" description="There are no recent agencies to display." />
+          ) : recentAgencies?.map((agency: RecentAgency) => (
             <Box
               key={agency.id}
               p={4}

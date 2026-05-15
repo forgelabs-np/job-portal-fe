@@ -5,6 +5,7 @@ import { Button } from "@/shared";
 import React, { useState } from "react";
 import AddorEditJob from "./AddorEditJob";
 import AssignJobModal from "./AssignJobModal";
+import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 import {
   Box,
   HStack,
@@ -127,9 +128,14 @@ const JobList = () => {
       </HStack>
 
       <SimpleGrid columns={{ base: 1, md: 2, "2xl": 3 }} gap={3}>
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => <JobCardSkeleton key={i} />)
-          : data?.content?.map((job) => (
+        {isLoading ? (
+          Array.from({ length: 6 }).map((_, i) => <JobCardSkeleton key={i} />)
+        ) : !data?.content || data.content.length === 0 ? (
+          <Box gridColumn="1 / -1">
+            <PageNoData title="No jobs found" description="There are currently no jobs matching your criteria." />
+          </Box>
+        ) : (
+          data.content.map((job) => (
             <JobCard
               key={job.id}
               job={job}
@@ -138,7 +144,8 @@ const JobList = () => {
               onAssign={() => handleAssignJob(job)}
               onDelete={(j) => console.log("delete", j.id)}
             />
-          ))}
+          ))
+        )}
       </SimpleGrid>
 
       {!isLoading && data && data.totalPages > 1 && (

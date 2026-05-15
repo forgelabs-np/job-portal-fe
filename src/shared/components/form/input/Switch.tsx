@@ -44,6 +44,7 @@ export const SwitchFieldInput: React.FC<SwitchFieldInputProps> = ({
           checked={!!value}
           onCheckedChange={(e) => onChange(e.checked)}
           disabled={disabled}
+          colorPalette={"green"}
         >
           <Switch.HiddenInput />
           <Switch.Control />

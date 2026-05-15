@@ -45,6 +45,7 @@ import {
 } from "@/api/dashboard";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { useCurrentUserStore } from "@/store";
+import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 
 const AgencyDashboard = () => {
   const { profile } = useCurrentUserStore();
@@ -73,9 +74,7 @@ const AgencyDashboard = () => {
 
   if (!dashboard) {
     return (
-      <Box p={6}>
-        <Text>No dashboard data found</Text>
-      </Box>
+      <PageNoData title="No Dashobard Data Found" description="There are no recent dashboard datas to display." />
     );
   }
 
@@ -258,7 +257,9 @@ const AgencyDashboard = () => {
           </HStack>
 
           <VStack gap={4} align="stretch">
-            {recentApplications.map((app: RecentApplication) => (
+            {recentApplications.length === 0 ? (
+              <PageNoData title="No Recent Applications" description="There are no recent applications to display." />
+            ) : recentApplications.map((app: RecentApplication) => (
               <Box
                 key={app.id}
                 p={4}
@@ -313,7 +314,9 @@ const AgencyDashboard = () => {
           </HStack>
 
           <VStack gap={4} align="stretch">
-            {recentCandidates.map((candidate: RecentCandidate) => (
+            {recentCandidates.length === 0 ? (
+              <PageNoData title="No Recent Candidates" description="There are no recent candidates to display." />
+            ) : recentCandidates.map((candidate: RecentCandidate) => (
               <Box
                 key={candidate.id}
                 p={4}
@@ -356,7 +359,11 @@ const AgencyDashboard = () => {
         </HStack>
 
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
-          {recentJobs.map((job: AgencyRecentJob) => (
+          {recentJobs.length === 0 ? (
+            <Box gridColumn="1 / -1">
+              <PageNoData title="No Assigned Jobs" description="There are no assigned jobs to display." />
+            </Box>
+          ) : recentJobs.map((job: AgencyRecentJob) => (
             <Box
               key={job.id}
               p={4}
