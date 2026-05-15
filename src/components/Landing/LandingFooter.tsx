@@ -55,11 +55,11 @@ export function LandingFooter() {
         >
           <Box>
             <Flex align="baseline" gap={1} mb={4}>
-              <Text fontWeight="800" fontSize="xl" color={landingColors.text}>
-                Global
+              <Text fontWeight="800" fontSize="2xl" color={landingColors.text}>
+                Oozo
               </Text>
-              <Text fontWeight="600" fontSize="xl" color={landingColors.gold}>
-                Talent
+              <Text fontWeight="600" fontSize="2xl" color={landingColors.gold}>
+                HR
               </Text>
             </Flex>
             <Text fontSize="sm" color={landingColors.textMuted} lineHeight="1.8" maxW="320px">

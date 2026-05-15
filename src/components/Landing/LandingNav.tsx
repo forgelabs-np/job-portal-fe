@@ -47,11 +47,11 @@ export function LandingNav() {
       >
         <Link href="/">
           <Flex align="baseline" gap={1}>
-            <Text fontWeight="800" fontSize="xl" color={landingColors.text}>
-              Global
+            <Text fontWeight="800" fontSize="3xl" color={landingColors.text}>
+              Oozo
             </Text>
-            <Text fontWeight="600" fontSize="xl" color={landingColors.gold}>
-              Talent
+            <Text fontWeight="600" fontSize="3xl" color={landingColors.gold}>
+              HR
             </Text>
           </Flex>
         </Link>
