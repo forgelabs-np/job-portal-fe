@@ -17,6 +17,7 @@ import {
   Separator,
   Stack,
   Skeleton,
+  Image,
 } from "@chakra-ui/react";
 import {
   Globe,
@@ -254,6 +255,71 @@ const AgencyProfile = () => {
             </VStack>
           </Box>
         </SimpleGrid>
+
+        {/* Documents */}
+        <Box
+          bg="white"
+          _dark={{ bg: "gray.800" }}
+          borderRadius="2xl"
+          p={8}
+          boxShadow="sm"
+          border="1px solid"
+          borderColor="gray.100"
+        >
+          <SectionHeader title="Documents" />
+          {profile?.documents && profile.documents.length > 0 ? (
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6}>
+              {profile.documents.map((doc: any) => (
+                <Box key={doc.id} p={4} borderWidth="1px" borderRadius="lg" borderColor="gray.200" _hover={{ shadow: "md" }} transition="all 0.2s">
+                  <VStack align="center" gap={3}>
+                    <Box
+                      w="full"
+                      h="150px"
+                      bg="gray.50"
+                      borderRadius="md"
+                      overflow="hidden"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_API_IMAGE_ENDPOINT}${doc.documentPath || doc.fileUrl || doc.url || ""}`}
+                        alt={doc.documentName}
+                        objectFit="cover"
+                        w="full"
+                        h="full"
+                      />
+                    </Box>
+                    <VStack gap={1} w="full" align="flex-start">
+                      <Text fontWeight="600" fontSize="sm" lineClamp={1}>
+                        {doc.documentName}
+                      </Text>
+                      <HStack justify="space-between" w="full">
+                        <Text fontSize="xs" color="gray.500" fontWeight="500">
+                          {doc.documentType}
+                        </Text>
+                        <Badge
+                          colorPalette={
+                            doc.status === "APPROVED"
+                              ? "green"
+                              : doc.status === "REJECTED"
+                                ? "red"
+                                : "orange"
+                          }
+                          fontSize="2xs"
+                        >
+                          {doc.status}
+                        </Badge>
+                      </HStack>
+                    </VStack>
+                  </VStack>
+                </Box>
+              ))}
+            </SimpleGrid>
+          ) : (
+            <Text color="gray.500">No documents available.</Text>
+          )}
+        </Box>
       </Stack>
     </Container>
   );
