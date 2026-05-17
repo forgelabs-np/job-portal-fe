@@ -62,7 +62,7 @@ export interface LoginDetails {
 export interface SignupDetails {
   fullName: string;
   email: string;
-  roleEnums: ["ADMIN"] | ["AGENCY"];
+  roleEnums: ["ADMIN"] | ["AGENCY"] | ["CANDIDATE"];
   password: string;
 }
 
@@ -71,11 +71,12 @@ export interface VerifySignupDetails {
   otp: string;
 }
 
-export type LoginType = "agency" | "admin";
+export type LoginType = "agency" | "admin" | "candidate";
 
 const loginEndpointMap: Record<LoginType, string> = {
   agency: api.AUTH.AGENCY_LOGIN,
   admin: api.AUTH.ADMIN_LOGIN,
+  candidate: api.AUTH.CANDIDATE_LOGIN,
 };
 
 const initLogin = (data: LoginDetails, type: LoginType) => {

@@ -39,6 +39,7 @@ const HamburgerIcon = ({ open }: { open: boolean }) => (
 
 export const Navbar = () => {
   const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   console.log(mobileOpen, "open");
   const router = useRouter();
@@ -124,14 +125,12 @@ export const Navbar = () => {
             ))}
           </HStack> */}
 
-          {/* Desktop CTA */}
           <HStack gap={6} display={{ base: "none", md: "flex" }}>
             <Text
               cursor="pointer"
               fontWeight={600}
               fontSize="15px"
-              // onClick={() => setLoginOpen(true)}
-              onClick={() => router.push(ROUTES.LOGIN)}
+              onClick={() => setLoginOpen(true)}
               _hover={{ color: WEBSITE_THEME_COLOR }}
               transition="color 0.15s ease"
             >
@@ -143,7 +142,7 @@ export const Navbar = () => {
               rounded="2xl"
               fontWeight={600}
               fontSize="15px"
-              onClick={() => router.push(ROUTES.SIGNUP)}
+              onClick={() => setRegisterOpen(true)}
             >
               Sign Up
             </Button>
@@ -171,7 +170,7 @@ export const Navbar = () => {
               fontSize="13px"
               px={4}
               h="36px"
-              onClick={() => setLoginOpen(true)}
+              onClick={() => setRegisterOpen(true)}
               display={{ base: "none", sm: "flex" }}
             >
               Sign Up
@@ -260,7 +259,7 @@ export const Navbar = () => {
                 cursor="pointer"
                 border="none"
                 onClick={() => {
-                  setLoginOpen(true);
+                  setRegisterOpen(true);
                   setMobileOpen(false);
                 }}
               >
@@ -271,7 +270,8 @@ export const Navbar = () => {
         </Box>
       </Box>
 
-      <RoleModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+      <RoleModal open={loginOpen} onClose={() => setLoginOpen(false)} mode="login" />
+      <RoleModal open={registerOpen} onClose={() => setRegisterOpen(false)} mode="register" />
     </>
   );
 };

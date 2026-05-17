@@ -17,6 +17,7 @@ export const DashboardLayout = ({
 }) => {
   const { user } = useAuthStore();
   const isAdmin = user?.roles?.includes("ADMIN");
+  const isCandidate = user?.roles?.includes("CANDIDATE");
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -61,7 +62,7 @@ export const DashboardLayout = ({
                 letterSpacing="0.04em"
                 textTransform="uppercase"
               >
-                {isAdmin ? "Admin" : "Agency"}
+                {isAdmin ? "Admin" : isCandidate ? "Candidate" : "Agency"}
               </Text>
             </Box>
             <MenuRoot>
