@@ -2,43 +2,70 @@
 
 import { landingColors } from "@/components/Landing/landingTheme";
 import { MotionSection } from "@/components/Landing/MotionSection";
-import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import RadialOrbitalTimeline from "@/shared/components/RadialOrbitalTimeline";
+import { Box, Text } from "@chakra-ui/react";
 import { BarChart3, Building2, Globe, Plane, Shield } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
-type LandingFeature = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  chart?: boolean;
-};
-
-const features: LandingFeature[] = [
+const timelineData = [
   {
+    id: 1,
     title: "Global Listings",
-    description: "Access curated talent pools across regions with unified search and matching.",
+    date: "Feature 01",
+    content:
+      "Access curated talent pools across regions with unified search and matching.",
+    category: "Discovery",
     icon: Globe,
+    relatedIds: [2, 3],
+    status: "completed" as const,
+    energy: 100,
   },
   {
+    id: 2,
     title: "Agency Portal",
-    description: "Operate placements, compliance, and communications from one command surface.",
+    date: "Feature 02",
+    content:
+      "Operate placements, compliance, and communications from one command surface.",
+    category: "Operations",
     icon: Building2,
+    relatedIds: [1, 3],
+    status: "completed" as const,
+    energy: 88,
   },
   {
+    id: 3,
     title: "Verified Credentials",
-    description: "Immutable documentation trails with audit-ready verification workflows.",
+    date: "Feature 03",
+    content:
+      "Immutable documentation trails with audit-ready verification workflows.",
+    category: "Compliance",
     icon: Shield,
+    relatedIds: [2, 4],
+    status: "completed" as const,
+    energy: 95,
   },
   {
+    id: 4,
     title: "Visa Automation",
-    description: "Integrated legal checkpoints and document flows to accelerate deployment.",
+    date: "Feature 04",
+    content:
+      "Integrated legal checkpoints and document flows to accelerate deployment.",
+    category: "Legal",
     icon: Plane,
+    relatedIds: [3, 5],
+    status: "in-progress" as const,
+    energy: 72,
   },
   {
+    id: 5,
     title: "Predictive Analytics",
-    description: "Forecast pipeline health, conversion, and time-to-hire with live signals.",
+    date: "Feature 05",
+    content:
+      "Forecast pipeline health, conversion, and time-to-hire with live signals.",
+    category: "Intelligence",
     icon: BarChart3,
-    chart: true,
+    relatedIds: [1, 4],
+    status: "in-progress" as const,
+    energy: 60,
   },
 ];
 
@@ -65,54 +92,20 @@ export function LandingFeatures() {
           color={landingColors.textMuted}
           maxW="640px"
           mx="auto"
-          mb={14}
+          mb={0}
         >
           Modular capabilities engineered for agencies operating at global scale.
         </Text>
+      </Box>
 
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
-          {features.map((f, i) => (
-            <MotionSection
-              key={f.title}
-              bg={landingColors.card}
-              border="1px solid"
-              borderColor={landingColors.border}
-              borderRadius="2xl"
-              p={8}
-              transition="border-color 0.25s, box-shadow 0.25s"
-              _hover={{
-                borderColor: landingColors.gold,
-                boxShadow: `0 0 0 1px ${landingColors.goldMuted}, 0 24px 48px rgba(0,0,0,0.45)`,
-              }}
-              delay={i * 0.06}
-            >
-              <Box color={landingColors.gold} mb={4}>
-                <f.icon size={28} strokeWidth={1.75} />
-              </Box>
-              <Text fontSize="lg" fontWeight="700" color={landingColors.text} mb={2}>
-                {f.title}
-              </Text>
-              <Text fontSize="sm" color={landingColors.textMuted} lineHeight="1.7">
-                {f.description}
-              </Text>
-              {f.chart && (
-                <Flex gap={1.5} mt={6} align="flex-end" h="48px">
-                  {[40, 65, 45, 80, 55, 90].map((h, j) => (
-                    <Box
-                      key={j}
-                      flex={1}
-                      borderRadius="sm"
-                      bg={`linear-gradient(180deg, ${landingColors.gold} 0%, rgba(212,175,55,0.25) 100%)`}
-                      h={`${h}%`}
-                      opacity={0.9}
-                    />
-                  ))}
-                </Flex>
-              )}
-            </MotionSection>
-          ))}
-        </SimpleGrid>
+      {/* Full-width orbital timeline — click any node to expand its detail card */}
+      <Box w="full" h="600px" mt={-6}>
+        <RadialOrbitalTimeline timelineData={timelineData} />
       </Box>
     </MotionSection>
   );
 }
+
+export default {
+  LandingFeatures,
+};
