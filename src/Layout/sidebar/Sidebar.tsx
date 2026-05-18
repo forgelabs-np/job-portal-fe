@@ -58,13 +58,14 @@ const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
 
 const CANDIDATE_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.CANDIDATE_DASHBOARD, icon: <MdDashboard /> },
-  { name: "Profile", href: ROUTES.CANDIDATE_PROFILE, icon: <MdPerson /> },
   {
     name: "My Applications",
     href: ROUTES.CANDIDATE_APPLICATIONS,
     icon: <FaFileSignature size={18} />,
   },
   { name: "Jobs", href: ROUTES.CANDIDATE_JOBS, icon: <BsBagDash /> },
+  { name: "Profile", href: ROUTES.CANDIDATE_PROFILE, icon: <MdPerson /> },
+
 ];
 
 interface NavItemProps {

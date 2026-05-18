@@ -12,12 +12,12 @@ import {
   VStack,
   Badge,
   Input,
+  Image,
 } from "@chakra-ui/react";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import {
   useGetCandidateProfile,
-  useUpdateCandidateProfileMutation,
-  UpdateCandidateProfilePayload,
+
 } from "@/api/candidate-api";
 import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 import { Button, FormProvider, TextFieldInput } from "@/shared";
@@ -32,14 +32,16 @@ import {
   Globe,
   Video,
 } from "lucide-react";
+import Link from "next/link";
 
 const CandidateProfile = () => {
   const { data: profile, isLoading } = useGetCandidateProfile();
-  const { mutate: updateProfile, isPending } =
-    useUpdateCandidateProfileMutation();
+
   const [isEditing, setIsEditing] = useState(false);
 
-  const methods = useForm<UpdateCandidateProfilePayload>();
+  const methods = useForm();
+
+  const imageURL = process.env.NEXT_PUBLIC_API_IMAGE_ENDPOINT
 
   useEffect(() => {
     if (profile) {
@@ -80,13 +82,7 @@ const CandidateProfile = () => {
     );
   }
 
-  const onSubmit = (data: UpdateCandidateProfilePayload) => {
-    updateProfile(data, {
-      onSuccess: () => {
-        setIsEditing(false);
-      },
-    });
-  };
+  const onSubmit = () => { }
 
   const InfoItem = ({
     icon: IconComp,
@@ -240,7 +236,7 @@ const CandidateProfile = () => {
               <Button
                 bg={WEBSITE_THEME_COLOR}
                 type="submit"
-                loading={isPending}
+                // loading={isPending}
                 borderRadius="full"
                 _hover={{ bg: "#0a5535" }}
               >
@@ -410,7 +406,11 @@ const CandidateProfile = () => {
                           align="center"
                           justify="center"
                         >
-                          <FileText size={16} color="#3b82f6" />
+                          <Image
+                            src={`${imageURL}${doc.documentPath}`}
+
+                          />
+
                         </Flex>
                         <Box>
                           <Text fontWeight="600" fontSize="sm">
@@ -421,19 +421,15 @@ const CandidateProfile = () => {
                           </Text>
                         </Box>
                       </HStack>
-                      {doc.documentLink && (
-                        <Text
-                          as="a"
-                          href={doc.documentLink}
+                      {doc.documentPath && (
+                        <Link
+                          href={`${imageURL}${doc?.documentPath}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          fontSize="xs"
                           color={WEBSITE_THEME_COLOR}
-                          fontWeight="600"
-                          _hover={{ textDecoration: "underline" }}
                         >
                           View
-                        </Text>
+                        </Link>
                       )}
                     </HStack>
                     {doc.notes && (

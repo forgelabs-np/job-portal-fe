@@ -5,6 +5,7 @@ export type FormProviderProps<TFieldValues extends FieldValues> = {
   children: React.ReactNode;
   methods: UseFormReturn<TFieldValues, TestContext>;
   onSubmit: SubmitHandler<TFieldValues>;
+  style?: React.CSSProperties;
 };
 
 export type FormLabelProps = {

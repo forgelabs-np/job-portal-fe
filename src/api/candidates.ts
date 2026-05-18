@@ -38,6 +38,7 @@ export interface CandidateDocument {
   documentType: string;
   documentName: string;
   documentLink: string;
+  documentPath: string
   notes: string;
   uploadedAt: string;
 }
@@ -144,3 +145,50 @@ export const useCreateCandidateMutation = () => {
     },
   });
 };
+
+export interface UploadCandidateDocRequest {
+  candidateId: number;
+  documentType: string;
+  file: File;
+}
+
+const uploadCandidateDoc = ({
+  candidateId,
+  documentType,
+  file,
+}: UploadCandidateDocRequest) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  return httpClient.post(
+    api.AGENCY.CANDIDATES.UPLOAD_DOCUMENT.replace(
+      "{candidateId}",
+      `${candidateId}`,
+    ),
+    formData,
+    {
+      params: { documentType },
+      headers: { "Content-Type": "multipart/form-data" },
+    },
+  );
+};
+
+export const useUploadCandidateDocMutation = () => {
+  return useMutation({
+    mutationFn: (payload: UploadCandidateDocRequest) =>
+      uploadCandidateDoc(payload),
+    onSuccess: (response) => {
+      successNotification(
+        response?.data?.message ?? "Document uploaded successfully",
+      );
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message?: string; error?: string }>;
+      errorNotification(
+        err.response?.data?.message ??
+        err.response?.data?.error ??
+        "Failed to upload document",
+      );
+    },
+  });
+};
+

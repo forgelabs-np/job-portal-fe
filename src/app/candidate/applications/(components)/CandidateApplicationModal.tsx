@@ -117,7 +117,6 @@ const DetailRow = ({
   </Flex>
 );
 
-// ─── Section Card ─────────────────────────────────────────────────────────────
 
 const SectionCard = ({
   title,
@@ -153,7 +152,6 @@ const SectionCard = ({
   </Box>
 );
 
-// ─── Loading Skeleton ─────────────────────────────────────────────────────────
 
 const ModalSkeleton = () => (
   <VStack align="stretch" gap={5} pb={2}>
@@ -176,7 +174,6 @@ const ModalSkeleton = () => (
   </VStack>
 );
 
-// ─── Modal ────────────────────────────────────────────────────────────────────
 
 interface CandidateApplicationModalProps {
   applicationId: number | null;

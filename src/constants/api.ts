@@ -40,6 +40,7 @@ export const api = {
       GET: "/agency/candidates",
       POST: "/agency/candidates",
       GET_BY_ID: "/agency/candidates/{id}",
+      UPLOAD_DOCUMENT: "/agency/candidates/{candidateId}/documents/upload",
     },
     JOBS: {
       APPLY: "/agency/applications",
@@ -52,13 +53,15 @@ export const api = {
   CANDIDATE: {
     DASHBOARD: "/candidate/dashboard",
     PROFILE: "/candidate/profile",
-    UPDATE_PROFILE: "/candidate/profile",
-    JOBS: "/candidate/jobs",
+    CREATE_PROFILE: "/candidate/profile",
+    UPLOAD_DOCUMENT: "/candidate/documents/upload",
+    JOBS: "/public/jobs",
+    APPLY_JOB: "/candidate/jobs/{jobDemandId}/apply",
     APPLICATIONS: {
       GET: "/candidate/applications",
       POST: "/candidate/applications",
-      GET_BY_ID: "/candidate/applications/{id}",
-      WITHDRAW: "/candidate/applications/{id}/withdraw",
+      GET_BY_ID: "/candidate/applications/{applicationId}",
+      WITHDRAW: "/candidate/applications/{applicationId}/withdraw",
     },
   },
 };

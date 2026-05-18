@@ -12,6 +12,7 @@ import { Box, HStack, Image, Stack, Text } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useState } from "react";
 import AddOrEditCandidates, { StatusBadge } from "./AddorEditCandidates";
+import ViewCandidateDetails from "./ViewCandidateDetails";
 
 const CandidatesTable = () => {
   const [payload, setPayload] = useState({
@@ -27,15 +28,24 @@ const CandidatesTable = () => {
   const [id, setId] = useState<number>();
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [viewId, setViewId] = useState<number>();
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+
   // Calculate pagination values from API response
   const pageCount = data?.totalPages ?? 0;
   const totalRecords = data?.totalElements ?? 0;
   const displayCount = data?.content?.length ?? 0;
   const next = payload.page < pageCount;
   const previous = payload.page > 0;
+  
   const handleEdit = useCallback((candidateId: number) => {
     setId(candidateId);
     setModalOpen(true);
+  }, []);
+
+  const handleView = useCallback((candidateId: number) => {
+    setViewId(candidateId);
+    setViewModalOpen(true);
   }, []);
 
   const columns = useMemo<ColumnDef<Candidate>[]>(
@@ -93,6 +103,9 @@ const CandidatesTable = () => {
         header: "Action",
         cell: ({ row }) => (
           <TableActions
+            onView={() => {
+              handleView(row.original.id);
+            }}
             onEdit={() => {
               handleEdit(row.original.id);
             }}
@@ -100,7 +113,7 @@ const CandidatesTable = () => {
         ),
       },
     ],
-    [handleEdit],
+    [handleEdit, handleView],
   );
 
   return (
@@ -140,6 +153,13 @@ const CandidatesTable = () => {
           onClose={() => setModalOpen(false)}
           id={id}
           resetId={setId}
+        />
+
+        <ViewCandidateDetails
+          open={viewModalOpen}
+          onClose={() => setViewModalOpen(false)}
+          id={viewId}
+          resetId={setViewId}
         />
       </Stack>
     </>
