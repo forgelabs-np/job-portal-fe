@@ -4,13 +4,13 @@ import { ROUTES } from "@/constants/routes";
 import { SidebarItemProps } from "@/shared/types";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { useAuthStore } from "@/store";
-import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Accordion, Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import { Users2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BiGlobe } from "react-icons/bi";
 import { BsBagDash, BsHouse } from "react-icons/bs";
-import { FaFileSignature } from "react-icons/fa";
+import { FaFileAlt, FaFileSignature } from "react-icons/fa";
 import {
   MdChevronLeft,
   MdChevronRight,
@@ -19,6 +19,7 @@ import {
   MdPerson,
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
+import { SidebarItem } from "./SidebarItems";
 
 const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.ADMIN_DASHBOARD, icon: <MdDashboard /> },
@@ -35,8 +36,21 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   },
   {
     name: "Applications",
-    href: ROUTES.APPLICATIONS,
+    
     icon: <FaFileSignature />,
+    subItems: [
+      {
+        name: "Agency Application",
+        href: ROUTES.ADMIN_AGENCY_APPLICATIONS,
+        icon: <FaFileAlt />
+,
+      },
+      {
+        name: "Self Application",
+        href: ROUTES.ADMIN_SELF_APPLICATIONS,
+        icon: <FaFileAlt />,
+      },
+    ],
   },
 ];
 
@@ -299,14 +313,25 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
           },
         }}
       >
-        {sidebarItems.map((item) => (
-          <NavItem
-            key={item.name}
-            item={item}
-            collapsed={collapsed}
-            isActive={pathname === item.href}
-          />
-        ))}
+        <Accordion.Root collapsible>
+    {sidebarItems.map((item) =>
+      item.subItems ? (
+        <SidebarItem
+          key={item.name}
+          {...item}
+          collapsed={collapsed}
+          isActive={pathname === item.href}
+        />
+      ) : (
+        <NavItem
+          key={item.name}
+          item={item}
+          collapsed={collapsed}
+          isActive={pathname === item.href}
+        />
+      )
+    )}
+  </Accordion.Root>
       </VStack>
 
       <Box

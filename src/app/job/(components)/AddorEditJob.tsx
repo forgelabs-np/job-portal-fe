@@ -172,6 +172,7 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
         transportationProvided: job?.transportationProvided ?? false,
         medicalInsuranceProvided: job?.medicalInsuranceProvided ?? false,
         airTicketProvided: job?.airTicketProvided ?? false,
+        isPublic: job?.isPublic ?? false,
 
         deadline: job?.deadline
           ? new Date(job.deadline).toISOString().split("T")[0]
@@ -225,6 +226,7 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
         airTicketProvided: data.airTicketProvided,
         airTicketDetails: data.airTicketDetails,
         additionalBenefits: data.additionalBenefits,
+        isPublic: data.isPublic,
         deadline: data.deadline
           ? new Date(data.deadline).toISOString()
           : undefined,
@@ -271,6 +273,9 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
               />{" "}
               <TextFieldInput name="city" label="City" />
               <TextFieldInput name="deadline" label="Deadline" type="date" />
+              <Box>
+                <SwitchFieldInput name="isPublic" label="Post Publicly?" />
+              </Box>
             </SimpleGrid>
             <Box mt={4} display="flex" flexDirection="column" gap={4}>
               <TextFieldInput name="description" label="Description" required />

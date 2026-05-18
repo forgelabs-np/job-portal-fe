@@ -25,6 +25,7 @@ export interface JobType {
   appliedCount: number;
   status: string;
   isOpen: boolean;
+  isPublic: boolean;
   salaryAmount: number;
   salaryCurrency: string;
   salaryPeriod: string;
@@ -116,6 +117,7 @@ export interface CreateJobPayload {
     terminationClause: string;
     additionalBenefits: string;
     deadline: string;
+    isPublic: boolean;
   };
 }
 
@@ -183,6 +185,7 @@ export interface CreateJobFormType {
   additionalBenefits: string;
 
   deadline: string;
+  isPublic: boolean;
 }
 
 const getJobs = (params: JobsParams) => {

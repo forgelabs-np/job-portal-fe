@@ -13,14 +13,19 @@ import {
   Badge,
   Input,
   Image,
+  NativeSelect,
 } from "@chakra-ui/react";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import {
   useGetCandidateProfile,
-
+  useCreateCandidateProfile,
+  useUploadCandidateDocument,
+  CandidateDocumentType,
 } from "@/api/candidate-api";
 import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 import { Button, FormProvider, TextFieldInput } from "@/shared";
+import { SelectFieldInput } from "@/shared/ui/Select";
+import { FileDropzone } from "@/shared/components/form/dropzone";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import {
@@ -31,17 +36,23 @@ import {
   Shield,
   Globe,
   Video,
+  Plus,
 } from "lucide-react";
 import Link from "next/link";
 
 const CandidateProfile = () => {
   const { data: profile, isLoading } = useGetCandidateProfile();
+  const { mutate: updateProfile, isPending: isUpdatingProfile } = useCreateCandidateProfile();
+  const { mutate: uploadDoc, isPending: isUploadingDoc } = useUploadCandidateDocument();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [showDocUpload, setShowDocUpload] = useState(false);
+  const [docType, setDocType] = useState<CandidateDocumentType | "">("");
+  const [docFile, setDocFile] = useState<File | null>(null);
 
   const methods = useForm();
 
-  const imageURL = process.env.NEXT_PUBLIC_API_IMAGE_ENDPOINT
+  const imageURL = process.env.NEXT_PUBLIC_API_IMAGE_ENDPOINT;
 
   useEffect(() => {
     if (profile) {
@@ -82,7 +93,44 @@ const CandidateProfile = () => {
     );
   }
 
-  const onSubmit = () => { }
+  const onSubmit = (data: any) => {
+    updateProfile(
+      {
+        data: {
+          id: profile.id,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          trade: data.trade,
+          dateOfBirth: data.dateOfBirth,
+          maritalStatus: data.maritalStatus,
+          passportNumber: data.passportNumber,
+          passportIssueDate: data.passportIssueDate,
+          passportExpiryDate: data.passportExpiryDate,
+          documentsFolderLink: data.documentsFolderLink,
+          introVideoLink: data.introVideoLink,
+        },
+      },
+      {
+        onSuccess: () => {
+          setIsEditing(false);
+        },
+      }
+    );
+  };
+
+  const handleUploadDoc = () => {
+    if (!docType || !docFile) return;
+    uploadDoc(
+      { documentType: docType as CandidateDocumentType, file: docFile },
+      {
+        onSuccess: () => {
+          setShowDocUpload(false);
+          setDocFile(null);
+          setDocType("");
+        },
+      }
+    );
+  };
 
   const InfoItem = ({
     icon: IconComp,
@@ -99,6 +147,8 @@ const CandidateProfile = () => {
       borderColor="gray.100"
       borderRadius="xl"
       bg="white"
+      transition="all 0.2s"
+      _hover={{ boxShadow: "sm", borderColor: "gray.200" }}
     >
       <HStack gap={3} mb={1}>
         <Flex
@@ -133,16 +183,18 @@ const CandidateProfile = () => {
             PERSONAL INFORMATION & DOCUMENTS
           </Text>
         </VStack>
-        {!isEditing ? (
+        {!isEditing && (
           <Button
             bg={WEBSITE_THEME_COLOR}
             borderRadius="full"
             onClick={() => setIsEditing(true)}
-            _hover={{ bg: "#0a5535" }}
+            _hover={{ bg: "#0a5535", transform: "translateY(-1px)" }}
+            transition="all 0.2s"
+            boxShadow="sm"
           >
             Edit Profile
           </Button>
-        ) : null}
+        )}
       </Flex>
 
       {isEditing ? (
@@ -154,9 +206,10 @@ const CandidateProfile = () => {
             border="1px solid"
             borderColor="gray.100"
             mb={6}
+            boxShadow="sm"
           >
             <Text fontSize="xl" fontWeight="700" mb={6}>
-              Edit Profile
+              Update Profile Details
             </Text>
 
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={5}>
@@ -187,6 +240,17 @@ const CandidateProfile = () => {
                 placeholder="YYYY-MM-DD"
                 borderColor="#e5e7eb"
                 borderRadius="lg"
+                type="date"
+              />
+              <SelectFieldInput
+                name="maritalStatus"
+                label="Marital Status"
+                options={[
+                  { label: "Single", value: "SINGLE" },
+                  { label: "Married", value: "MARRIED" },
+                  { label: "Divorced", value: "DIVORCED" },
+                  { label: "Widowed", value: "WIDOWED" },
+                ]}
               />
               <TextFieldInput
                 name="passportNumber"
@@ -201,6 +265,7 @@ const CandidateProfile = () => {
                 placeholder="YYYY-MM-DD"
                 borderColor="#e5e7eb"
                 borderRadius="lg"
+                type="date"
               />
               <TextFieldInput
                 name="passportExpiryDate"
@@ -208,6 +273,7 @@ const CandidateProfile = () => {
                 placeholder="YYYY-MM-DD"
                 borderColor="#e5e7eb"
                 borderRadius="lg"
+                type="date"
               />
               <TextFieldInput
                 name="documentsFolderLink"
@@ -225,7 +291,7 @@ const CandidateProfile = () => {
               />
             </SimpleGrid>
 
-            <HStack mt={6} gap={3} justify="flex-end">
+            <HStack mt={8} gap={3} justify="flex-end" pt={4} borderTop="1px solid" borderColor="gray.100">
               <Button
                 variant="outline"
                 borderRadius="full"
@@ -236,9 +302,10 @@ const CandidateProfile = () => {
               <Button
                 bg={WEBSITE_THEME_COLOR}
                 type="submit"
-                // loading={isPending}
+                loading={isUpdatingProfile}
                 borderRadius="full"
-                _hover={{ bg: "#0a5535" }}
+                _hover={{ bg: "#0a5535", transform: "translateY(-1px)" }}
+                boxShadow="sm"
               >
                 Save Changes
               </Button>
@@ -255,8 +322,9 @@ const CandidateProfile = () => {
             border="1px solid"
             borderColor="gray.100"
             mb={6}
+            boxShadow="sm"
           >
-            <Flex align="center" gap={5} mb={6}>
+            <Flex align="center" gap={5} mb={8}>
               <Flex
                 w="72px"
                 h="72px"
@@ -265,6 +333,7 @@ const CandidateProfile = () => {
                 align="center"
                 justify="center"
                 flexShrink={0}
+                boxShadow="md"
               >
                 <Text fontSize="2xl" fontWeight="800" color="white">
                   {profile.firstName?.[0]?.toUpperCase()}
@@ -275,18 +344,19 @@ const CandidateProfile = () => {
                 <Text fontSize="2xl" fontWeight="800">
                   {profile.fullName}
                 </Text>
-                <HStack gap={3} mt={1}>
-                  <Badge colorPalette="green" fontSize="xs">
+                <HStack gap={3} mt={2}>
+                  <Badge colorPalette="green" fontSize="xs" px={2} py={0.5} borderRadius="md">
                     {profile.trade || "No Trade Set"}
                   </Badge>
                   <Badge
                     colorPalette={profile.isEnabled ? "green" : "red"}
                     fontSize="xs"
+                    px={2} py={0.5} borderRadius="md"
                   >
                     {profile.isEnabled ? "Active" : "Disabled"}
                   </Badge>
                   {profile.candidateType && (
-                    <Badge colorPalette="blue" fontSize="xs">
+                    <Badge colorPalette="blue" fontSize="xs" px={2} py={0.5} borderRadius="md">
                       {profile.candidateType}
                     </Badge>
                   )}
@@ -357,6 +427,7 @@ const CandidateProfile = () => {
               border="1px solid"
               borderColor="gray.100"
               mb={6}
+              boxShadow="sm"
             >
               <Text fontSize="xl" fontWeight="700" mb={5}>
                 Processing Status
@@ -374,17 +445,81 @@ const CandidateProfile = () => {
           )}
 
           {/* Documents */}
-          {profile.documents && profile.documents.length > 0 && (
-            <Box
-              bg="white"
-              borderRadius="2xl"
-              p={8}
-              border="1px solid"
-              borderColor="gray.100"
-            >
-              <Text fontSize="xl" fontWeight="700" mb={5}>
+          <Box
+            bg="white"
+            borderRadius="2xl"
+            p={8}
+            border="1px solid"
+            borderColor="gray.100"
+            boxShadow="sm"
+          >
+            <Flex justify="space-between" align="center" mb={5}>
+              <Text fontSize="xl" fontWeight="700">
                 Documents
               </Text>
+              <Button
+                variant="outline"
+                size="sm"
+                borderRadius="full"
+                onClick={() => setShowDocUpload(!showDocUpload)}
+                color={WEBSITE_THEME_COLOR}
+                borderColor={WEBSITE_THEME_COLOR}
+                _hover={{ bg: "green.50" }}
+              >
+                {showDocUpload ? "Cancel Upload" : <><Plus size={16} /> Update Document</>}
+              </Button>
+            </Flex>
+
+            {showDocUpload && (
+              <Box p={6} bg="gray.50" borderRadius="xl" border="1px dashed" borderColor="gray.200" mb={6}>
+                <Text fontSize="md" fontWeight="600" mb={4}>
+                  Select the document type to update.
+                </Text>
+                <Grid templateColumns={{ base: "1fr", md: "1fr 2fr" }} gap={6}>
+                  <Box>
+                    <Text fontSize="sm" fontWeight="600" mb={2}>Document Type</Text>
+                    <NativeSelect.Root>
+                      <NativeSelect.Field
+                        value={docType}
+                        onChange={(e) => setDocType(e.target.value as CandidateDocumentType)}
+                        bg="white"
+                        borderRadius="lg"
+                      >
+                        <option value="">Select document type</option>
+                        <option value="PASSPORT">Passport</option>
+                        <option value="PCC">Police Clearance Certificate (PCC)</option>
+                        <option value="CV">Curriculum Vitae (CV)</option>
+                        <option value="SLC">School Leaving Certificate (SLC)</option>
+                      </NativeSelect.Field>
+                      <NativeSelect.Indicator />
+                    </NativeSelect.Root>
+                  </Box>
+                  <Box>
+                    <FileDropzone
+                      value={docFile}
+                      onChange={setDocFile}
+                      label="Upload File"
+                    />
+                  </Box>
+                </Grid>
+                <Flex justify="flex-end" mt={4}>
+                  <Button
+                    bg={WEBSITE_THEME_COLOR}
+                    onClick={handleUploadDoc}
+                    loading={isUploadingDoc}
+                    disabled={!docType || !docFile}
+                    borderRadius="full"
+                    _hover={{ bg: "#0a5535" }}
+                  >
+                    Upload
+                  </Button>
+                </Flex>
+              </Box>
+            )}
+
+            {!profile.documents || profile.documents.length === 0 ? (
+              <Text color="gray.500" fontSize="sm">No documents uploaded yet.</Text>
+            ) : (
               <VStack gap={3} align="stretch">
                 {profile.documents.map((doc) => (
                   <Box
@@ -393,32 +528,41 @@ const CandidateProfile = () => {
                     border="1px solid"
                     borderColor="gray.100"
                     borderRadius="xl"
-                    _hover={{ bg: "gray.50" }}
+                    _hover={{ bg: "gray.50", borderColor: "gray.200" }}
                     transition="all 0.2s"
                   >
                     <HStack justify="space-between">
-                      <HStack gap={3}>
+                      <HStack gap={4}>
                         <Flex
-                          w="36px"
-                          h="36px"
+                          w="40px"
+                          h="40px"
                           borderRadius="lg"
                           bg="blue.50"
                           align="center"
                           justify="center"
+                          overflow="hidden"
+                          border="1px solid"
+                          borderColor="blue.100"
                         >
-                          <Image
-                            src={`${imageURL}${doc.documentPath}`}
-
-                          />
-
+                          {doc.documentPath && doc.documentPath.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                            <Image
+                              src={`${imageURL}${doc.documentPath}`}
+                              alt={doc.documentName}
+                              objectFit="cover"
+                              w="full"
+                              h="full"
+                            />
+                          ) : (
+                            <FileText size={20} color="#2b6cb0" />
+                          )}
                         </Flex>
                         <Box>
-                          <Text fontWeight="600" fontSize="sm">
-                            {doc.documentName}
+                          <Text fontWeight="600" fontSize="sm" color="gray.800">
+                            {doc.documentName || doc.documentType}
                           </Text>
-                          <Text fontSize="xs" color="gray.500">
+                          <Badge colorPalette="blue" fontSize="2xs" mt={1}>
                             {doc.documentType}
-                          </Text>
+                          </Badge>
                         </Box>
                       </HStack>
                       {doc.documentPath && (
@@ -426,22 +570,23 @@ const CandidateProfile = () => {
                           href={`${imageURL}${doc?.documentPath}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          color={WEBSITE_THEME_COLOR}
                         >
-                          View
+                          <Button size="sm" variant="ghost" color={WEBSITE_THEME_COLOR}>
+                            View
+                          </Button>
                         </Link>
                       )}
                     </HStack>
                     {doc.notes && (
-                      <Text fontSize="xs" color="gray.500" mt={2} pl="48px">
-                        {doc.notes}
+                      <Text fontSize="xs" color="gray.500" mt={3} pl="56px">
+                        Note: {doc.notes}
                       </Text>
                     )}
                   </Box>
                 ))}
               </VStack>
-            </Box>
-          )}
+            )}
+          </Box>
         </>
       )}
     </Box>
@@ -464,11 +609,11 @@ const StatusItem = ({
   };
 
   return (
-    <Box p={4} border="1px solid" borderColor="gray.100" borderRadius="xl">
+    <Box p={4} border="1px solid" borderColor="gray.100" borderRadius="xl" bg="gray.50">
       <Text fontSize="xs" color="gray.500" fontWeight="600" mb={2}>
         {label}
       </Text>
-      <Badge colorPalette={getStatusColor(value)} fontSize="xs">
+      <Badge colorPalette={getStatusColor(value)} fontSize="xs" px={2} py={0.5} borderRadius="md">
         {value || "N/A"}
       </Badge>
     </Box>
@@ -476,3 +621,4 @@ const StatusItem = ({
 };
 
 export default CandidateProfile;
+
