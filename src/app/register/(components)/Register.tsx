@@ -42,11 +42,11 @@ interface LoginPageProps {
 }
 
 export const RegisterPage = ({
-  title = "Admin",
+  title = "Agency",
   titleAccent = "Access",
   description = "Manage the global manpower distribution network.",
   emailPlaceholder = "admin@nexuflow.com",
-  userType = "AGENCY",
+  userType,
   onRegister,
   onBackToSelection,
 }: LoginPageProps) => {
@@ -60,7 +60,7 @@ export const RegisterPage = ({
     setOtpEmail(data?.email);
     const payload = {
       ...data,
-      roleEnums: [userType] as ["ADMIN"] | ["AGENCY"],
+      roleEnums: [userType] as ["ADMIN"] | ["AGENCY"] | ["CANDIDATE"],
     };
     mutate(payload, {
       onSuccess: () => {
@@ -150,7 +150,6 @@ export const RegisterPage = ({
             </Button>
           </Flex>
 
-          {/* Footer */}
           <Flex direction="column" align="center" gap={2} mt={6}>
             <Text fontSize="13px" color="#9ca3af">
               Already have an account? {""}
@@ -160,12 +159,16 @@ export const RegisterPage = ({
                 fontWeight="700"
                 cursor="pointer"
                 _hover={{ textDecoration: "underline" }}
-                onClick={() => router.push(ROUTES.LOGIN)}
+                onClick={() =>
+                  router.push(
+                    userType === "CANDIDATE" ? ROUTES.CANDIDATE_LOGIN : ROUTES.LOGIN
+                  )
+                }
               >
                 Login
               </Text>
             </Text>
-            <Text
+            {/* <Text
               fontSize="10px"
               fontWeight="700"
               letterSpacing="0.14em"
@@ -177,7 +180,7 @@ export const RegisterPage = ({
               onClick={onBackToSelection}
             >
               Back to Selection
-            </Text>
+            </Text> */}
           </Flex>
         </Box>
       </Flex>

@@ -8,6 +8,7 @@ import { useAuthStore, useCurrentUserStore } from "@/store";
 import { ROUTES } from "@/constants/routes";
 import { usePathname } from "next/navigation";
 import { AgencyApprovalGuard } from "./agency/(components)/AgencyApprovalGaurd";
+import { CandidateProfileGuard } from "./candidate/(components)/CandidateProfileGuard";
 import { fetchAndStoreCurrentUser } from "@/api/auth";
 
 export default function RootLayoutContent({
@@ -41,6 +42,7 @@ export default function RootLayoutContent({
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/opportunities") ||
     pathname.startsWith("/agency") ||
+    pathname.startsWith("/candidate") ||
     pathname.startsWith("/country-management") ||
     pathname.startsWith("/job") ||
     pathname.startsWith("/applications");
@@ -50,6 +52,7 @@ export default function RootLayoutContent({
     const role = tokenDetails?.roles?.[0];
     if (role === "ADMIN") return ROUTES.ADMIN_DASHBOARD;
     if (role === "AGENCY") return ROUTES.AGENCY_DASHBOARD;
+    if (role === "CANDIDATE") return ROUTES.CANDIDATE_DASHBOARD;
     return ROUTES.ADMIN_DASHBOARD;
   };
 
@@ -69,15 +72,22 @@ export default function RootLayoutContent({
   const { profile } = useCurrentUserStore();
 
   if (isAuthenticated && isDashboardRoute) {
-    const isAgency = TokenService.getTokenDetails()?.roles?.[0] === "AGENCY";
+    const role = TokenService.getTokenDetails()?.roles?.[0];
+    const isAgency = role === "AGENCY";
+    const isCandidate = role === "CANDIDATE";
     const isApproved = profile?.profileApprovalStatus === "APPROVED";
     const profileComplete = profile?.profileComplete;
-    const hideNavigation = isAgency && (!isApproved || !profileComplete);
+
+    const hideNavigation =
+      (isAgency && (!isApproved || !profileComplete)) ||
+      (isCandidate && (!profileComplete || profile?.onboardingStage !== "COMPLETE"));
 
     return (
       <DashboardLayout hideNavigation={hideNavigation}>
         {isAgency ? (
           <AgencyApprovalGuard>{children}</AgencyApprovalGuard>
+        ) : isCandidate ? (
+          <CandidateProfileGuard>{children}</CandidateProfileGuard>
         ) : (
           children
         )}

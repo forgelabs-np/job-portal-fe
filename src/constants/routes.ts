@@ -12,4 +12,10 @@ export const ROUTES = {
   COUNTRY_MANAGEMENT: "/country-management",
   JOBS: "/job",
   APPLICATIONS: "/applications",
+  CANDIDATE_DASHBOARD: "/candidate/dashboard",
+  CANDIDATE_PROFILE: "/candidate/profile",
+  CANDIDATE_APPLICATIONS: "/candidate/applications",
+  CANDIDATE_JOBS: "/candidate/jobs",
+  CANDIDATE_LOGIN: "/login/candidate",
+  CANDIDATE_SIGNUP: "/register/candidate",
 };

@@ -23,4 +23,5 @@ export interface CurrentUser {
   adminProfile: any | null;
   candidateProfile: any | null;
   documents: any[] | null;
+  onboardingStage?: "PROFILE" | "DOCUMENTS" | "COMPLETED" | string;
 }

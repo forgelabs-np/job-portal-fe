@@ -2,6 +2,7 @@ export const api = {
   AUTH: {
     AGENCY_LOGIN: "/auth/agency/login",
     ADMIN_LOGIN: "/auth/admin/login",
+    CANDIDATE_LOGIN: "/auth/candidate/login",
     REGISTER: "/auth/signup",
     VERIFY_REGISTER: "/auth/verify-signup",
     ME: "/auth/me",
@@ -39,6 +40,7 @@ export const api = {
       GET: "/agency/candidates",
       POST: "/agency/candidates",
       GET_BY_ID: "/agency/candidates/{id}",
+      UPLOAD_DOCUMENT: "/agency/candidates/{candidateId}/documents/upload",
     },
     JOBS: {
       APPLY: "/agency/applications",
@@ -46,6 +48,20 @@ export const api = {
       GET_APPLICATIONS: "/agency/applications",
       GET_APPLICATION_BY_ID: "/agency/applications/{id}",
       WITHDRAW: "/agency/applications/{id}/withdraw",
+    },
+  },
+  CANDIDATE: {
+    DASHBOARD: "/candidate/dashboard",
+    PROFILE: "/candidate/profile",
+    CREATE_PROFILE: "/candidate/profile",
+    UPLOAD_DOCUMENT: "/candidate/documents/upload",
+    JOBS: "/public/jobs",
+    APPLY_JOB: "/candidate/jobs/{jobDemandId}/apply",
+    APPLICATIONS: {
+      GET: "/candidate/applications",
+      POST: "/candidate/applications",
+      GET_BY_ID: "/candidate/applications/{applicationId}",
+      WITHDRAW: "/candidate/applications/{applicationId}/withdraw",
     },
   },
 };

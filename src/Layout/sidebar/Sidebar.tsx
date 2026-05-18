@@ -56,6 +56,18 @@ const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Profile", href: ROUTES.AGENCY_PROFILE, icon: <MdPerson /> },
 ];
 
+const CANDIDATE_SIDEBAR_ITEMS: SidebarItemProps[] = [
+  { name: "Dashboard", href: ROUTES.CANDIDATE_DASHBOARD, icon: <MdDashboard /> },
+  {
+    name: "My Applications",
+    href: ROUTES.CANDIDATE_APPLICATIONS,
+    icon: <FaFileSignature size={18} />,
+  },
+  { name: "Jobs", href: ROUTES.CANDIDATE_JOBS, icon: <BsBagDash /> },
+  { name: "Profile", href: ROUTES.CANDIDATE_PROFILE, icon: <MdPerson /> },
+
+];
+
 interface NavItemProps {
   item: SidebarItemProps;
   collapsed: boolean;
@@ -86,16 +98,16 @@ const NavItem = ({ item, collapsed, isActive }: NavItemProps) => {
       css={{
         "&::before": isActive
           ? {
-              content: '""',
-              position: "absolute",
-              left: "-8px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              width: "3px",
-              height: "60%",
-              background: "white",
-              borderRadius: "0 4px 4px 0",
-            }
+            content: '""',
+            position: "absolute",
+            left: "-8px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "3px",
+            height: "60%",
+            background: "white",
+            borderRadius: "0 4px 4px 0",
+          }
           : {},
       }}
     >
@@ -150,7 +162,12 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const { user, logout } = useAuthStore();
   // const [collapsed, setCollapsed] = useState(false);
   const isAdmin = user?.roles?.includes("ADMIN");
-  const sidebarItems = isAdmin ? ADMIN_SIDEBAR_ITEMS : AGENCY_SIDEBAR_ITEMS;
+  const isCandidate = user?.roles?.includes("CANDIDATE");
+  const sidebarItems = isAdmin
+    ? ADMIN_SIDEBAR_ITEMS
+    : isCandidate
+      ? CANDIDATE_SIDEBAR_ITEMS
+      : AGENCY_SIDEBAR_ITEMS;
   const router = useRouter();
   const pathname = usePathname();
 

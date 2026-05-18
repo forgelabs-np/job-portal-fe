@@ -10,10 +10,11 @@ export const FormProvider = <TFieldValues extends FieldValues>({
   children,
   methods,
   onSubmit,
+  style,
 }: FormProviderProps<TFieldValues>) => {
   return (
     <ReactHookFormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+      <form onSubmit={methods.handleSubmit(onSubmit)} style={style}>{children}</form>
     </ReactHookFormProvider>
   );
 };

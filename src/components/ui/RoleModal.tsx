@@ -27,7 +27,7 @@ const AgencyIcon = () => (
   </svg>
 );
 
-const StaffIcon = () => (
+const CandidateIcon = () => (
   <svg
     width="24"
     height="24"
@@ -38,10 +38,8 @@ const StaffIcon = () => (
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-    <circle cx="9" cy="7" r="4" />
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
   </svg>
 );
 
@@ -78,30 +76,8 @@ interface LoginModalProps {
   onClose: () => void;
   title?: string;
   subtitle?: string;
+  mode?: "login" | "register";
 }
-
-const portals: PortalOption[] = [
-  {
-    name: "agency",
-    icon: <AgencyIcon />,
-    title: "Agency Portal",
-    description:
-      "For agency owners and managers overseeing global distribution.",
-    linkLabel: "Enter Console",
-    href: "/agency",
-    accent: "green",
-  },
-  {
-    name: "staff",
-    icon: <StaffIcon />,
-    title: "Staff Portal",
-    description:
-      "For recruiters and submission specialists managing candidates.",
-    linkLabel: "Enter Portal",
-    href: "/staff",
-    accent: "dark",
-  },
-];
 
 const hoverTokens: Record<
   AccentType,
@@ -167,7 +143,13 @@ const defaultTokens: Record<
   },
 };
 
-const PortalCard = ({ portal }: { portal: PortalOption }) => {
+const PortalCard = ({
+  portal,
+  onClose,
+}: {
+  portal: PortalOption;
+  onClose?: () => void;
+}) => {
   const router = useRouter();
 
   const [hovered, setHovered] = useState(false);
@@ -193,13 +175,12 @@ const PortalCard = ({ portal }: { portal: PortalOption }) => {
       onMouseLeave={() => setHovered(false)}
       style={{ transform: hovered ? "translateY(-2px)" : "translateY(0)" }}
       boxShadow={hovered ? "0 8px 28px rgba(0,0,0,0.14)" : "none"}
-      onClick={() =>
-        router.push(
-          generateNextPath(ROUTES.LOGIN, {
-            userType: portal?.name,
-          }),
-        )
-      }
+      onClick={() => {
+        if (portal.href) {
+          router.push(portal.href);
+        }
+        onClose?.();
+      }}
     >
       <Box
         w="52px"
@@ -260,9 +241,40 @@ const PortalCard = ({ portal }: { portal: PortalOption }) => {
 export const RoleModal = ({
   open,
   onClose,
-  title = "Welcome Back",
-  subtitle = "Select your destination portal to continue.",
+  title,
+  subtitle,
+  mode = "login",
 }: LoginModalProps) => {
+  const isRegister = mode === "register";
+
+  const defaultTitle = isRegister ? "Create Account" : "Welcome Back";
+  const defaultSubtitle = isRegister
+    ? "Select your registration portal to continue."
+    : "Select your destination portal to continue.";
+
+  const portals: PortalOption[] = [
+    {
+      name: "agency",
+      icon: <AgencyIcon />,
+      title: "Agency Portal",
+      description:
+        "For agency owners and managers overseeing global distribution.",
+      linkLabel: isRegister ? "Register Agency" : "Enter Console",
+      href: isRegister ? ROUTES.SIGNUP : ROUTES.LOGIN,
+      accent: "green",
+    },
+    {
+      name: "candidate",
+      icon: <CandidateIcon />,
+      title: "Candidate Portal",
+      description:
+        "For job seekers and professionals looking for global opportunities.",
+      linkLabel: isRegister ? "Register Candidate" : "Enter Portal",
+      href: isRegister ? ROUTES.CANDIDATE_SIGNUP : ROUTES.CANDIDATE_LOGIN,
+      accent: "dark",
+    },
+  ];
+
   return (
     <Dialog
       open={open}
@@ -276,11 +288,11 @@ export const RoleModal = ({
             fontWeight="800"
             fontSize="32px"
             color="#0f1f17"
-            letterSpacing="-0.02em"
+            letterSpacing="m-0.02em"
             lineHeight="1.1"
             mb={2}
           >
-            {title}
+            {title ?? defaultTitle}
           </Text>
           <Text
             fontSize="11px"
@@ -289,13 +301,13 @@ export const RoleModal = ({
             textTransform="uppercase"
             color="#9ca3af"
           >
-            {subtitle}
+            {subtitle ?? defaultSubtitle}
           </Text>
         </Box>
 
         <Grid templateColumns="1fr 1fr" gap={4}>
           {portals.map((portal) => (
-            <PortalCard key={portal.title} portal={portal} />
+            <PortalCard key={portal.title} portal={portal} onClose={onClose} />
           ))}
         </Grid>
       </Box>

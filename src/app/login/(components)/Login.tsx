@@ -54,10 +54,14 @@ export const LoginPage = ({
   const resolveRedirectPath = () => {
     const tokenDetails = TokenService.getTokenDetails();
     const role =
-      tokenDetails?.roles?.[0] ?? (userType === "admin" ? "ADMIN" : "AGENCY");
+      tokenDetails?.roles?.[0] ?? (userType === "admin" ? "ADMIN" : userType === "candidate" ? "CANDIDATE" : "AGENCY");
 
     if (role === "ADMIN") {
       return ROUTES.ADMIN_DASHBOARD;
+    }
+
+    if (role === "CANDIDATE") {
+      return ROUTES.CANDIDATE_DASHBOARD;
     }
 
     return ROUTES.AGENCY_DASHBOARD;
@@ -153,14 +157,23 @@ export const LoginPage = ({
           {/* Footer */}
           <Flex direction="column" align="center" gap={2} mt={6}>
             <Text fontSize="13px" color="#9ca3af">
-              New administrator?{" "}
+              {userType === "candidate"
+                ? "New candidate?"
+
+                : "New agency?"}{" "}
               <Text
                 as="span"
                 color={WEBSITE_THEME_COLOR}
                 fontWeight="700"
                 cursor="pointer"
                 _hover={{ textDecoration: "underline" }}
-                onClick={() => router.push(ROUTES.SIGNUP)}
+                onClick={() =>
+                  router.push(
+                    userType === "candidate"
+                      ? ROUTES.CANDIDATE_SIGNUP
+                      : ROUTES.SIGNUP
+                  )
+                }
               >
                 Register
               </Text>

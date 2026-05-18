@@ -1,7 +1,9 @@
-import { EditIcon, EyeCloseIcon, EyeOpenIcon } from "@/assets/svg";
+import { EditIcon, EyeCloseIcon, EyeIcon, EyeOpenIcon } from "@/assets/svg";
 import { TableActionsProps } from "@/shared/datatable";
 import { Flex, IconButton } from "@chakra-ui/react";
 import { Tooltip } from "../tooltip";
+import { DeleteIcon, EyeOff } from "lucide-react";
+import { RxEyeOpen } from "react-icons/rx";
 
 export const TableActions = ({
   onView,
@@ -9,7 +11,7 @@ export const TableActions = ({
   onDelete,
 }: TableActionsProps) => {
   return (
-    <Flex alignItems="center" gap="3">
+    <Flex alignItems="center" gap="3" >
       {!!onView && (
         <Tooltip content="View">
           <IconButton
@@ -19,8 +21,10 @@ export const TableActions = ({
             height="6"
             minWidth="6"
             onClick={onView}
+            color={"black"}
+
           >
-            <EyeOpenIcon />
+            <RxEyeOpen />
           </IconButton>
         </Tooltip>
       )}
@@ -34,7 +38,7 @@ export const TableActions = ({
               backgroundColor: "transparent",
             }}
             height="6"
-            minWidth="6"
+            minWidth="8"
             color={"black"}
           >
             <EditIcon onClick={onEdit} />
@@ -52,8 +56,9 @@ export const TableActions = ({
             }}
             height="6"
             minWidth="6"
+
           >
-            {/* <DeleteIcon onClick={onDelete} /> */}
+            <DeleteIcon onClick={onDelete} />
           </IconButton>
         </Tooltip>
       )}
