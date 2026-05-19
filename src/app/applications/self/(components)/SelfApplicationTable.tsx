@@ -3,6 +3,7 @@
 import {
   ApplicationType,
   useGetApplicationQuery,
+  useGetSelfApplicationQuery,
 } from "@/api/admin-applcations";
 import { useGetJobs } from "@/api/job";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
@@ -19,12 +20,12 @@ import { EditApplicationModal } from "../../(components)/EditApplicationModal";
 const SelfApplicationTable = () => {
   const [jobDemandId, setJobDemandId] = useState("");
   const [status, setStatus] = useState("");
-  const [selected, setSelected] = useState<ApplicationType | null>(null);
+  const [selectedViewId, setSelectedViewId] = useState<number | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
 
   const { data: jobs } = useGetJobs({ size: 1000 });
 
-  const { data, isLoading } = useGetApplicationQuery({
+  const { data, isLoading } = useGetSelfApplicationQuery({
     ...(jobDemandId && { jobDemandId: Number(jobDemandId) }),
     ...(status && { status }),
     pageable: {
@@ -40,7 +41,7 @@ const SelfApplicationTable = () => {
         header: "S.N.",
         cell: ({ row }) => row.index + 1,
       },
-      {   
+      {
         accessorKey: "jobTitle",
         header: "Job Title",
         cell: ({ row }) => (
@@ -55,15 +56,16 @@ const SelfApplicationTable = () => {
         ),
       },
       {
-        accessorKey: "jobCountry",
+        accessorKey: "country",
         header: "Country",
         cell: ({ row }) => (
+          console.log("row", row.original),
           <Box>
             <Text fontSize="sm" color="gray.700">
-              {row.original.jobCountry}
+              {row.original.country}
             </Text>
             <Text fontSize="xs" color="gray.400">
-              {row.original.jobCity}
+              {row.original.city}
             </Text>
           </Box>
         ),
@@ -120,7 +122,7 @@ const SelfApplicationTable = () => {
               bg="transparent"
               transition="all 0.15s"
               _hover={{ bg: WEBSITE_THEME_COLOR, color: "white" }}
-              onClick={() => setSelected(row.original)}
+              onClick={() => setSelectedViewId(row.original.id)}
             >
               View
             </Box>
@@ -197,13 +199,15 @@ const SelfApplicationTable = () => {
       </Stack>
 
       <ApplicationModal
-        application={selected}
-        open={!!selected}
-        onClose={() => setSelected(null)}
+        applicationId={selectedViewId}
+        type="self"
+        open={!!selectedViewId}
+        onClose={() => setSelectedViewId(null)}
       />
 
       <EditApplicationModal
         applicationId={editId}
+        type="self"
         open={!!editId}
         onClose={() => setEditId(null)}
       />

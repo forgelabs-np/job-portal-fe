@@ -122,6 +122,7 @@ const AgencyApplicationList = () => {
           columns={columns}
           data={data ?? []}
           isLoading={isLoading}
+
         />
       </Stack>
 

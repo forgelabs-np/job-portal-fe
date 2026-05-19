@@ -146,6 +146,16 @@ export interface CandidateDashboardResponse {
 
 // ─── Candidate Application Types ───────────────────────────────────────
 
+export interface CandidateApplicationDocument {
+  id: number;
+  documentType: string;
+  documentName: string;
+  documentPath?: string;
+  status: string;
+  rejectionReason: string | null;
+  uploadedAt: string;
+}
+
 export interface CandidateApplicationType {
   id: number;
   jobDemandId: number;
@@ -160,6 +170,7 @@ export interface CandidateApplicationType {
   reviewedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  documents?: CandidateApplicationDocument[];
 }
 
 export interface PaginatedCandidateApplicationResponse {

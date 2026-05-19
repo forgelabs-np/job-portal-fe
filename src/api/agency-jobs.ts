@@ -241,6 +241,23 @@ export const useGetJobsById = (id: number) => {
   });
 };
 
+export interface AgencyApplicationDocument {
+  id: number;
+  documentType: string;
+  documentName: string;
+  documentPath?: string;
+  status: string;
+  rejectionReason: string | null;
+  uploadedAt: string;
+}
+
+export interface AgencyApplicationCandidateStatuses {
+  pccStatus?: string;
+  slcStatus?: string;
+  workPermitStatus?: string;
+  visaStatus?: string;
+}
+
 export interface AgencyApplicationType {
   id: number;
   jobDemandId: number;
@@ -258,6 +275,8 @@ export interface AgencyApplicationType {
   reviewedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  documents?: AgencyApplicationDocument[];
+  candidateStatuses?: AgencyApplicationCandidateStatuses;
 }
 
 export interface PaginatedAgencyApplicationResponse {
