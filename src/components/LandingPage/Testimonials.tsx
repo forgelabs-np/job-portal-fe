@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Box, Flex, Text, Container } from "@chakra-ui/react";
+import { Box, Flex, Text, Container, Image } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
+import { TestimonialImage } from "@/assets/images/landing";
 
 const testimonials = [
   {
@@ -14,7 +15,7 @@ const testimonials = [
     name: "Ahmed Al-Farouq",
     role: "Recruitment Lead at Horizon Construction Workforce Ltd.",
     company: "Horizon Workforce",
-    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=360&fit=crop&crop=face",
+    imageUrl: TestimonialImage,
   },
   {
     id: 2,
@@ -23,7 +24,7 @@ const testimonials = [
     name: "Fatima Al-Rashid",
     role: "HR Manager at Gulf Tech Solutions",
     company: "Gulf Tech",
-    imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=360&fit=crop&crop=face",
+    imageUrl: TestimonialImage,
   },
   {
     id: 3,
@@ -32,7 +33,7 @@ const testimonials = [
     name: "Raj Patel",
     role: "Operations Director at Malaysian Hospitality Group",
     company: "MHG Hotels",
-    imageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=360&fit=crop&crop=face",
+    imageUrl: TestimonialImage,
   },
 ];
 
@@ -90,8 +91,8 @@ export function TestimonialsSection() {
               style={{ flexShrink: 0 }}
             >
               <Box
-                w={{ base: "220px", md: "280px" }}
-                h={{ base: "260px", md: "340px" }}
+                w={{ base: "220px", md: "360px" }}
+                h={{ base: "260px", md: "420px" }}
                 borderRadius={radii.xl}
                 overflow="hidden"
                 bg={colors.bgWarm}
@@ -99,9 +100,9 @@ export function TestimonialsSection() {
                 borderColor={colors.bgWarm}
                 mx="auto"
               >
-                <Box
+                <Image
                   as="img"
-                  src={current.imageUrl}
+                  src={current.imageUrl.src}
                   alt={current.name}
                   w="full"
                   h="full"

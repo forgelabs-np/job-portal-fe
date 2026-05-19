@@ -4,6 +4,7 @@ import { Box, Flex, Text, Button, Input, Textarea, Container } from "@chakra-ui/
 import { motion } from "framer-motion";
 import { CheckCircle, MessageSquare, Phone, Mail } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
+import { EnvelopeIcon, PhoneIcon, WhatsAppIcon } from "@/assets/svg/landing";
 
 const MotionBox = motion(Box);
 
@@ -27,9 +28,9 @@ const steps = [
 ];
 
 const contactMethods = [
-  { icon: MessageSquare, label: "Whatsapp us", value: "+977-9851194513" },
-  { icon: Phone, label: "Call us", value: "+977-9851194513" },
-  { icon: Mail, label: "Mail us", value: "info@interpidhr.com" },
+  { icon: WhatsAppIcon, label: "Whatsapp us", value: "+977-9851194513" },
+  { icon: PhoneIcon, label: "Call us", value: "+977-9851194513" },
+  { icon: EnvelopeIcon, label: "Mail us", value: "info@interpidhr.com" },
 ];
 
 export function ProcessSection() {
@@ -40,18 +41,17 @@ export function ProcessSection() {
       bg={colors.bgSection}
       py={{ base: 16, md: 24 }}
     >
-      <Container maxW="1280px">
+      <Container maxW="1300px">
         {/* Badge */}
         <Flex justify="center" mb={6}>
           <Flex display="inline-flex" align="center" bg={colors.gold} px={4} py={1.5} borderRadius={radii.full}>
-            <Text fontSize="2xs" fontWeight="800" color="white" fontFamily={fonts.body} letterSpacing="widest" textTransform="uppercase">
+            <Text fontSize="2xs" fontWeight="800" color="white"  letterSpacing="widest" textTransform="uppercase">
               Start Journey
             </Text>
           </Flex>
         </Flex>
 
         <Text
-          fontFamily={fonts.heading}
           fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
           fontWeight="800"
           color={colors.text}
@@ -64,7 +64,6 @@ export function ProcessSection() {
         <Text
           fontSize="sm"
           color={colors.textMuted}
-          fontFamily={fonts.body}
           lineHeight={1.7}
           textAlign="center"
           maxW="520px"
@@ -83,18 +82,16 @@ export function ProcessSection() {
           {/* Left — how to go abroad steps */}
           <MotionBox
             flex={1}
-            bg={colors.white}
-            borderRadius={radii.xl}
+            // borderRadius={radii.xl}
             p={8}
-            border="1px solid"
-            borderColor={colors.border}
+            // border="1px solid"
+            // borderColor={colors.border}
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <Text
-              fontFamily={fonts.heading}
               fontWeight="700"
               fontSize="xl"
               color={colors.text}
@@ -102,7 +99,7 @@ export function ProcessSection() {
             >
               How to Go Abroad for Work
             </Text>
-            <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body} mb={8}>
+            <Text fontSize="xs" color={colors.textMuted}  mb={8}>
               Follow 3 easy steps and start your dream job safely
             </Text>
 
@@ -118,7 +115,7 @@ export function ProcessSection() {
               border="1px solid"
               borderColor={colors.border}
             >
-              <Text fontSize="2xs" fontWeight="600" color={colors.textMuted} fontFamily={fonts.body}>
+              <Text fontSize="2xs" fontWeight="600" color={colors.textMuted}>
                 you are here
               </Text>
             </Flex>
@@ -143,7 +140,6 @@ export function ProcessSection() {
                         fontSize="xs"
                         fontWeight="800"
                         color={step.active ? "white" : colors.textMuted}
-                        fontFamily={fonts.body}
                       >
                         {step.number}
                       </Text>
@@ -156,7 +152,6 @@ export function ProcessSection() {
                   {/* Content */}
                   <Box pb={i < steps.length - 1 ? 6 : 0}>
                     <Text
-                      fontFamily={fonts.heading}
                       fontWeight="700"
                       fontSize="md"
                       color={colors.text}
@@ -164,7 +159,7 @@ export function ProcessSection() {
                     >
                       {step.title}
                     </Text>
-                    <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body} lineHeight={1.6}>
+                    <Text fontSize="xs" color={colors.textMuted}  lineHeight={1.6}>
                       {step.description}
                     </Text>
                   </Box>
@@ -186,10 +181,10 @@ export function ProcessSection() {
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Text fontFamily={fonts.heading} fontWeight="700" fontSize="xl" color={colors.text} mb={2}>
+            <Text  fontWeight="700" fontSize="xl" color={colors.text} mb={2}>
               Apply Now – Start Your Job Journey
             </Text>
-            <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body} mb={8}>
+            <Text fontSize="xs" color={colors.textMuted}  mb={8}>
               Fill the form and our team will guide you step by step.
             </Text>
 
@@ -198,7 +193,6 @@ export function ProcessSection() {
                 <Input
                   placeholder="Full Name"
                   fontSize="sm"
-                  fontFamily={fonts.body}
                   borderColor={colors.border}
                   borderRadius="md"
                   h="44px"
@@ -208,7 +202,6 @@ export function ProcessSection() {
                 <Input
                   placeholder="Phone Number"
                   fontSize="sm"
-                  fontFamily={fonts.body}
                   borderColor={colors.border}
                   borderRadius="md"
                   h="44px"
@@ -227,7 +220,6 @@ export function ProcessSection() {
                     border="1px solid"
                     borderColor={colors.border}
                     fontSize="sm"
-                    fontFamily={fonts.body}
                     color={colors.textMuted}
                     bg={colors.white}
                     cursor="pointer"
@@ -252,7 +244,6 @@ export function ProcessSection() {
                     border="1px solid"
                     borderColor={colors.border}
                     fontSize="sm"
-                    fontFamily={fonts.body}
                     color={colors.textMuted}
                     bg={colors.white}
                     cursor="pointer"
@@ -271,7 +262,6 @@ export function ProcessSection() {
               <Textarea
                 placeholder="Your Message"
                 fontSize="sm"
-                fontFamily={fonts.body}
                 borderColor={colors.border}
                 borderRadius="md"
                 rows={4}
@@ -280,10 +270,8 @@ export function ProcessSection() {
                 resize="none"
               />
               <Button
-                bg={colors.gold}
-                color="white"
-                fontFamily={fonts.body}
-                fontWeight="700"
+                bg={colors.goldLight}
+                color={"black"}
                 fontSize="sm"
                 h="44px"
                 borderRadius="md"
@@ -297,7 +285,7 @@ export function ProcessSection() {
 
             {/* Alternative contact */}
             <Box mt={6} pt={6} borderTop="1px solid" borderColor={colors.border}>
-              <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body} mb={4}>
+              <Text fontSize="xs" color={colors.textMuted} mb={4}>
                 Think filling out forms takes too long?
               </Text>
               <Flex gap={3} flexWrap="wrap">
@@ -320,10 +308,10 @@ export function ProcessSection() {
                   >
                     <method.icon size={15} color={colors.crimson} />
                     <Box>
-                      <Text fontSize="2xs" color={colors.textMuted} fontFamily={fonts.body}>
+                      <Text fontSize="2xs" color={colors.textMuted}>
                         {method.label}
                       </Text>
-                      <Text fontSize="xs" fontWeight="700" color={colors.text} fontFamily={fonts.body}>
+                      <Text fontSize="xs" fontWeight="700" color={colors.text}>
                         {method.value}
                       </Text>
                     </Box>

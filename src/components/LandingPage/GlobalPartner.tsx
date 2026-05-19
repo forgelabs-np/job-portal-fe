@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Flex, Text, Button, Container } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Container, Image } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Briefcase } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
@@ -75,15 +75,14 @@ function PartnerCard({ partner }: { partner: GlobalPartner }) {
   return (
     <Box
       position="relative"
-      borderRadius={radii.lg}
+      borderRadius={radii.md}
       overflow="hidden"
-      h={{ base: "200px", md: "240px" }}
+      h={{ base: "200px", md: "440px" }}
       flexShrink={0}
       cursor="pointer"
       role="group"
     >
-      <Box
-        as="img"
+      <Image
         src={partner.imageUrl}
         alt={partner.country}
         w="full"
@@ -142,21 +141,20 @@ export function GlobalPartnersSection({ partners = defaultPartners, isLoading = 
     <Box
       as="section"
       id="companies"
-      bg={colors.bg}
+      // bg={colors.bg}
       py={{ base: 16, md: 24 }}
     >
-      <Container maxW="1280px">
+      <Container maxW="1300px">
         {/* Header */}
         <Flex justify="space-between" align="flex-start" mb={4} gap={4} flexWrap="wrap">
           <Box>
             <Flex display="inline-flex" align="center" bg={colors.gold} px={3} py={1} borderRadius={radii.sm} mb={4}>
-              <Text fontSize="2xs" fontWeight="800" color="white" fontFamily={fonts.body} letterSpacing="widest" textTransform="uppercase">
+              <Text fontSize="xs" fontWeight="800" color="white"  letterSpacing="widest" textTransform="uppercase">
                 International Reach
               </Text>
             </Flex>
             <Text
-              fontFamily={fonts.heading}
-              fontSize={{ base: "2xl", md: "3xl" }}
+              fontSize={{ base: "2xl", md: "4xl" }}
               fontWeight="800"
               color={colors.text}
               lineHeight={1.2}
@@ -209,7 +207,7 @@ export function GlobalPartnersSection({ partners = defaultPartners, isLoading = 
         </Flex>
 
         {/* Subtext */}
-        <Text fontSize="sm" color={colors.textMuted} fontFamily={fonts.body} lineHeight={1.7} mb={8} maxW="600px">
+        <Text fontSize="sm" color={colors.textMuted}  lineHeight={1.7} mb={8} maxW="600px">
           Interpid sends workers to many popular destinations around the world. From Gulf to Europe
           and Asia, we give you more choices and better chances for jobs.
         </Text>
@@ -253,7 +251,7 @@ export function GlobalPartnersSection({ partners = defaultPartners, isLoading = 
         <Flex justify="space-between" align="center" flexWrap="wrap" gap={4}>
           <Text fontSize="sm" color={colors.textMuted} fontFamily={fonts.body}>
             We have many more jobs in other countries.{" "}
-            <Box as="a" href="#" color={colors.crimson} fontWeight="600" textDecoration="underline">
+            <Box as="a"  color={colors.crimson} fontWeight="600" textDecoration="underline">
               view the lists of all countries →
             </Box>
           </Text>

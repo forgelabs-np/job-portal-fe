@@ -3,6 +3,9 @@
 import { Box, Flex, Text, Input, Button, Container, SimpleGrid } from "@chakra-ui/react";
 import { Phone, PhoneCall, Mail, MapPin } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
+import { CeImage, IecImage, InterpidLogo, Iso1Image, IsoImage } from "@/assets/images/landing";
+import { LogoIcon } from "@/assets/svg/landing";
+import Image from "next/image";
 
 const quickLinks = ["Home", "Job listing", "Hiring companies", "Our specialization", "Recruitment process", "Contact us"];
 const countries = ["Saudi Arabia", "UAE (Dubai)", "Kuwait", "Oman", "Qatar", "Romania", "Malaysia"];
@@ -15,14 +18,14 @@ const services = [
   "Recruiting Aviation staffs",
 ];
 
-const certifications = ["ISO", "ESG", "CE", "ISO 9001"];
+const certifications = [IsoImage, IecImage, CeImage, Iso1Image];
 
 export function Footer() {
   return (
     <Box as="footer" bg={colors.white} borderTop="1px solid" borderColor={colors.border}>
       {/* Newsletter bar */}
       <Box borderBottom="1px solid" borderColor={colors.border} py={10}>
-        <Container maxW="1280px">
+        <Container maxW="1300px">
           <Flex
             direction={{ base: "column", md: "row" }}
             align={{ base: "flex-start", md: "center" }}
@@ -31,7 +34,6 @@ export function Footer() {
           >
             <Box>
               <Text
-                fontFamily={fonts.heading}
                 fontWeight="700"
                 fontSize="xl"
                 color={colors.text}
@@ -39,7 +41,7 @@ export function Footer() {
               >
                 Join our Newsletter
               </Text>
-              <Text fontSize="sm" color={colors.textMuted} fontFamily={fonts.body}>
+              <Text fontSize="sm" color={colors.textMuted}>
                 We will send you updates about new job opportunities abroad directly to your email.
               </Text>
             </Box>
@@ -48,7 +50,6 @@ export function Footer() {
                 fontSize="2xs"
                 fontWeight="700"
                 color={colors.textMuted}
-                fontFamily={fonts.body}
                 letterSpacing="widest"
                 textTransform="uppercase"
                 mb={2}
@@ -59,7 +60,6 @@ export function Footer() {
                 <Input
                   placeholder="Your Email Address"
                   fontSize="sm"
-                  fontFamily={fonts.body}
                   borderColor={colors.border}
                   borderRadius="md"
                   h="40px"
@@ -70,7 +70,6 @@ export function Footer() {
                 <Button
                   bg={colors.gold}
                   color="white"
-                  fontFamily={fonts.body}
                   fontWeight="700"
                   fontSize="sm"
                   h="40px"
@@ -97,24 +96,11 @@ export function Footer() {
           {/* Brand */}
           <Box>
             <Flex align="center" gap={2} mb={3}>
-              <Box
-                w="36px"
-                h="36px"
-                borderRadius="md"
-                bg={colors.crimson}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Text fontSize="xs" fontWeight="900" color="white" fontFamily={fonts.heading}>
-                  IP
-                </Text>
-              </Box>
-              <Text fontFamily={fonts.heading} fontWeight="700" fontSize="lg" color={colors.text}>
-                INTERPID
-              </Text>
-            </Flex>
-            <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body} lineHeight={1.7} mb={4}>
+              
+                
+              <LogoIcon/>
+              </Flex>
+            <Text fontSize="xs" color={colors.textMuted}  lineHeight={1.7} mb={4}>
               © 2016–2025, Interpid Recruitment Services.
             </Text>
             {/* Cert badges */}
@@ -122,19 +108,15 @@ export function Footer() {
               {certifications.map((cert) => (
                 <Box
                   key={cert}
-                  w="40px"
-                  h="40px"
+                  w="60px"
+                  h="60px"
                   borderRadius="full"
-                  border="1.5px solid"
-                  borderColor={colors.border}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
                   bg={colors.bgWarm}
                 >
-                  <Text fontSize="2xs" fontWeight="700" color={colors.textMuted} textAlign="center">
-                    {cert}
-                  </Text>
+                 <Image src={cert} alt="Certification" />
                 </Box>
               ))}
             </Flex>
@@ -142,7 +124,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <Box>
-            <Text fontSize="2xs" fontWeight="800" fontFamily={fonts.body} color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
+            <Text fontSize="2xs" fontWeight="800" color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
               Quick Link
             </Text>
             <Flex direction="column" gap={2}>
@@ -153,7 +135,6 @@ export function Footer() {
                   href="#"
                   fontSize="sm"
                   color={colors.textMuted}
-                  fontFamily={fonts.body}
                   _hover={{ color: colors.crimson }}
                   transition="color 0.2s"
                   textDecoration="none"
@@ -166,7 +147,7 @@ export function Footer() {
 
           {/* Countries */}
           <Box>
-            <Text fontSize="2xs" fontWeight="800" fontFamily={fonts.body} color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
+            <Text fontSize="2xs" fontWeight="800"  color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
               Countries
             </Text>
             <Flex direction="column" gap={2}>
@@ -190,7 +171,7 @@ export function Footer() {
 
           {/* Services */}
           <Box>
-            <Text fontSize="2xs" fontWeight="800" fontFamily={fonts.body} color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
+            <Text fontSize="2xs" fontWeight="800"  color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
               Services
             </Text>
             <Flex direction="column" gap={2}>
@@ -214,7 +195,7 @@ export function Footer() {
 
           {/* Contact */}
           <Box>
-            <Text fontSize="2xs" fontWeight="800" fontFamily={fonts.body} color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
+            <Text fontSize="2xs" fontWeight="800"  color={colors.textMuted} letterSpacing="widest" textTransform="uppercase" mb={4}>
               Contact
             </Text>
             <Flex direction="column" gap={3}>
@@ -250,7 +231,6 @@ export function Footer() {
                   href="#"
                   fontSize="xs"
                   color={colors.textMuted}
-                  fontFamily={fonts.body}
                   _hover={{ color: colors.crimson }}
                   textDecoration="none"
                 >
@@ -258,7 +238,7 @@ export function Footer() {
                 </Box>
               ))}
             </Flex>
-            <Text fontSize="xs" color={colors.textLight} fontFamily={fonts.body}>
+            <Text fontSize="xs" color={colors.textLight} >
               Designed & Developed by Makura Creatives
             </Text>
           </Flex>

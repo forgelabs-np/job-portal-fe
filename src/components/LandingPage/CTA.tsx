@@ -51,13 +51,14 @@ export function CTASection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <Text
-            fontFamily={fonts.heading}
             fontSize={{ base: "2xl", md: "4xl", lg: "5xl" }}
             fontWeight="900"
             color="white"
             textAlign="center"
             lineHeight={1.15}
             mb={4}
+            maxW={"1000px"}
+            mx={"auto"}
           >
             Connecting Talent and Opportunity{" "}
             <Text as="span" display={{ base: "block", md: "inline" }}>
@@ -65,16 +66,15 @@ export function CTASection() {
             </Text>
           </Text>
           <Text
-            fontSize="sm"
+            fontSize="md"
             color="whiteAlpha.800"
-            fontFamily={fonts.body}
             textAlign="center"
-            maxW="520px"
+            maxW="620px"
             mx="auto"
             lineHeight={1.75}
             mb={10}
           >
-            Whether you're seeking skilled professionals or your next global career,
+            Whether you&apos;re seeking skilled professionals or your next global career,
             we help employers and job seekers connect with confidence and ease.
           </Text>
 
@@ -87,7 +87,6 @@ export function CTASection() {
               borderColor="white"
               bg="transparent"
               color="white"
-              fontFamily={fonts.body}
               fontWeight="700"
               fontSize="sm"
               _hover={{ bg: "white", color: colors.crimson }}
@@ -101,12 +100,10 @@ export function CTASection() {
               h="48px"
               px={7}
               borderRadius="md"
-              bg={colors.gold}
-              color="white"
-              fontFamily={fonts.body}
-              fontWeight="700"
+              bg={colors.goldLight}
+              color="black"
               fontSize="sm"
-              _hover={{ bg: colors.goldLight }}
+              _hover={{ bg: colors.goldLight,color:"white" }}
               transition="all 0.25s"
               gap={2}
             >
