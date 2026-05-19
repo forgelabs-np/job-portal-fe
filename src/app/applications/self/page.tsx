@@ -1,12 +1,8 @@
 import React from "react";
+import SelfApplicationTable from "./(components)/SelfApplicationTable";
 
 const SelfApplicationsPage = () => {
-  return (
-    <div>
-      <h1>Self Applications</h1>
-      <p>This page will display self applications.</p>
-    </div>
-  );
+  return <SelfApplicationTable />;
 };
 
 export default SelfApplicationsPage;
