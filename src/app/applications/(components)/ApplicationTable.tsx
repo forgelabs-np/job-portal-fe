@@ -32,7 +32,7 @@ const ApplicationsTable = () => {
     },
   });
 
-  const [selected, setSelected] = useState<ApplicationType | null>(null);
+  const [selectedViewId, setSelectedViewId] = useState<number | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
 
   const columns = useMemo<ColumnDef<ApplicationType>[]>(
@@ -122,7 +122,7 @@ const ApplicationsTable = () => {
               bg="transparent"
               transition="all 0.15s"
               _hover={{ bg: WEBSITE_THEME_COLOR, color: "white" }}
-              onClick={() => setSelected(row.original)}
+              onClick={() => setSelectedViewId(row.original.id)}
             >
               View
             </Box>
@@ -215,13 +215,15 @@ const ApplicationsTable = () => {
       </Stack>
 
       <ApplicationModal
-        application={selected}
-        open={!!selected}
-        onClose={() => setSelected(null)}
+        applicationId={selectedViewId}
+        type="agency"
+        open={!!selectedViewId}
+        onClose={() => setSelectedViewId(null)}
       />
 
       <EditApplicationModal
         applicationId={editId}
+        type="agency"
         open={!!editId}
         onClose={() => setEditId(null)}
       />
