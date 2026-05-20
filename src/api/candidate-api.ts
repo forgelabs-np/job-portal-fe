@@ -11,10 +11,12 @@ export type MaritalStatus = "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED";
 
 export interface CandidateDocument {
   id: number;
+  status:string
   documentType: string;
   documentName: string;
   documentLink: string;
-  documentPath: string
+  documentPath: string;
+  rejectionReason: string 
   notes: string;
   uploadedAt: string;
 }
@@ -160,8 +162,8 @@ export interface CandidateApplicationType {
   id: number;
   jobDemandId: number;
   jobTitle: string;
-  jobCountry: string;
-  jobCity: string;
+  country: string;
+  city: string;
   notes: string;
   status: "PENDING" | "APPROVED" | "REJECTED" | "SHORTLISTED" | "WITHDRAWN";
   appliedAt: string;

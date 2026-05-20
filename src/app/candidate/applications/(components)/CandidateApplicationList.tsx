@@ -63,11 +63,28 @@ const CandidateApplicationList = () => {
             <Text fontSize="sm" fontWeight="600" color="gray.800">
               {row.original.jobTitle}
             </Text>
+           
+          </Box>
+        ),
+      },
+       {
+        accessorKey: "country",
+        header: "Job Country",
+        cell: ({ row }) => (
+          <Box>
+            <Text fontSize="sm" fontWeight="600" color="gray.800">
+              {row.original.country}
+            </Text>
             <Text fontSize="xs" color="gray.400">
-              {row.original.jobCity}, {row.original.jobCountry}
+              {row.original.city}
             </Text>
           </Box>
         ),
+      },
+       {
+        accessorKey: "salaryAmount",
+        header: "Salary Amount",
+       
       },
       {
         accessorKey: "appliedAt",

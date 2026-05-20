@@ -33,8 +33,8 @@ import { WEBSITE_THEME_COLOR } from "@/constants/color";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const STATUS_OPTIONS: UpdateApplicationStatusPayload["status"][] = [
-  "PENDING",
-  "APPROVED",
+  // "PENDING",
+  // "APPROVED",
   "SHORTLISTED",
   "REJECTED",
 ];
@@ -42,8 +42,8 @@ const STATUS_OPTIONS: UpdateApplicationStatusPayload["status"][] = [
 const statusLabel: Record<UpdateApplicationStatusPayload["status"], string> = {
   PENDING: "Pending",
   APPROVED: "Approved",
-  SHORTLISTED: "Shortlisted",
-  REJECTED: "Rejected",
+  SHORTLISTED: "Shortlist",
+  REJECTED: "Reject",
 };
 
 const getDocumentUrl = (doc: ApplicationDocument) =>
@@ -673,6 +673,10 @@ export const EditApplicationModal = ({
   open,
   onClose,
 }: EditApplicationModalProps) => {
+  const { data: agencyApplication } = useGetApplicationByIdQuery(applicationId);
+  const { data: selfApplication } = useGetSelfApplicationByIdQuery(applicationId);
+  const application = type === "agency" ? agencyApplication : selfApplication;
+
   const { mutate: processDocument, isPending: isProcessingDocument } =
     useProcessApplicationDocumentMutation();
 
@@ -691,9 +695,10 @@ export const EditApplicationModal = ({
   };
 
   const handleDocumentConfirm = (rejectionReason?: string) => {
-    if (!pendingDocAction) return;
+    if (!pendingDocAction || !application) return;
     const payload: ProcessApplicationDocumentPayload = {
       documentId: pendingDocAction.documentId,
+      candidateId: application.candidateId,
       status: pendingDocAction.action === "Approve" ? "APPROVED" : "REJECTED",
       ...(pendingDocAction.action === "Reject" ? { rejectionReason } : {}),
     };

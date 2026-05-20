@@ -560,9 +560,25 @@ const CandidateProfile = () => {
                           <Text fontWeight="600" fontSize="sm" color="gray.800">
                             {doc.documentName || doc.documentType}
                           </Text>
-                          <Badge colorPalette="blue" fontSize="2xs" mt={1}>
-                            {doc.documentType}
-                          </Badge>
+                          <HStack gap={2} mt={1}>
+                            <Badge colorPalette="blue" fontSize="2xs">
+                              {doc.documentType}
+                            </Badge>
+                            <Badge
+                              colorPalette={
+                                doc.status === "PENDING"
+                                  ? "orange"
+                                  : doc.status === "APPROVED"
+                                  ? "green"
+                                  : doc.status === "REJECTED"
+                                  ? "red"
+                                  : "gray"
+                              }
+                              fontSize="2xs"
+                            >
+                              {doc.status}
+                            </Badge>
+                          </HStack>
                         </Box>
                       </HStack>
                       {doc.documentPath && (
@@ -580,6 +596,11 @@ const CandidateProfile = () => {
                     {doc.notes && (
                       <Text fontSize="xs" color="gray.500" mt={3} pl="56px">
                         Note: {doc.notes}
+                      </Text>
+                    )}
+                    {doc.status === "REJECTED" && doc.rejectionReason && (
+                      <Text fontSize="xs" color="red.600" mt={2} pl="56px" fontWeight="500">
+                        Rejection Reason: {doc.rejectionReason}
                       </Text>
                     )}
                   </Box>
