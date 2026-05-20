@@ -54,7 +54,7 @@ export const InterviewCandidatesTable = ({ jobDemandId }: InterviewCandidatesTab
         header: "Agency",
         cell: ({ row }) => (
           <Text fontSize="sm" color="gray.700">
-            {row.original.agencyName}
+            {row.original.agencyName ??"SELF"}
           </Text>
         ),
       },

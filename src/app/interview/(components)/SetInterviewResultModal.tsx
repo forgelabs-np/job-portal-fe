@@ -26,6 +26,7 @@ import {
 } from "react-hook-form";
 
 import { SelectFieldInput } from "@/shared/ui/Select";
+import { MdOutlineEdit } from "react-icons/md";
 
 import {
   errorNotification,
@@ -111,7 +112,10 @@ export const SetInterviewResultModal: React.FC<
         size="sm"
         onClick={() => setOpen(true)}
       >
-        Set Result
+        <HStack gap={1} align="center">
+          <MdOutlineEdit size={16} />
+          <Text>Set Result</Text>
+        </HStack>
       </Button>
 
       <Dialog

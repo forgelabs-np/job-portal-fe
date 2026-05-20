@@ -24,9 +24,11 @@ import { SetInterviewResultModal } from "./SetInterviewResultModal";
 import { Datatable } from "@/shared/ui/datatable";
 import { Pagination } from "@/shared/components/pagination/Pagination";
 import { ColumnDef } from "@tanstack/react-table";
+import { MdCancel, MdDelete } from "react-icons/md";
 import { Button } from "@/shared";
 import { SelectFieldInput } from "@/shared/ui/Select";
 import { useForm, FormProvider } from "react-hook-form";
+import { ConfirmationDialog } from "@/components/ui/confirmationDialog";
 
 interface AdminInterviewListProps {
   jobDemandId?: number;
@@ -41,7 +43,7 @@ const statusColorScheme: Record<string, string> = {
 };
 
 const resultColorScheme: Record<string, string> = {
-  PENDING: "gray",
+  PENDING: "yellow",
   PASS: "green",
   FAIL: "red",
   RE_INTERVIEW: "orange",
@@ -54,6 +56,8 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
   const [size, setSize] = useState(10);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [resultFilter, setResultFilter] = useState<string>("");
+  const [cancelInterviewId, setCancelInterviewId] = useState<number | null>(null);
+  const [deleteInterviewId, setDeleteInterviewId] = useState<number | null>(null);
 
   const params: InterviewFilterParams = {
     pageable: {
@@ -172,7 +176,7 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
         header: "Type",
         cell: ({ row }) => (
           <Badge
-            colorScheme={row.original.interviewType === "ONLINE" ? "blue" : "purple"}
+            colorPalette={row.original.interviewType === "ONLINE" ? "blue" : "purple"}
             fontSize="xs"
           >
             {row.original.interviewType}
@@ -184,7 +188,7 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
         header: "Status",
         cell: ({ row }) => (
           <Badge
-            colorScheme={statusColorScheme[row.original.status] || "gray"}
+            colorPalette={statusColorScheme[row.original.status] || "gray"}
             fontSize="xs"
           >
             {row.original.status}
@@ -196,7 +200,7 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
         header: "Result",
         cell: ({ row }) => (
           <Badge
-            colorScheme={resultColorScheme[row.original.result] || "gray"}
+            colorPalette={resultColorScheme[row.original.result] || "gray"}
             fontSize="xs"
           >
             {row.original.result}
@@ -209,8 +213,9 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
         cell: ({ row }) => {
           const interview = row.original;
           return (
-            <HStack gap={1} >
-              {interview.status === "SCHEDULED" && (
+            <HStack gap={2} >
+              
+              {(interview.status === "COMPLETED" || interview.status === "NO_SHOW") && (
                 <SetInterviewResultModal
                   interviewId={interview.id}
                   candidateName={interview.candidateName}
@@ -219,104 +224,40 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
                 />
               )}
 
-            {
-    interview.status !== "CANCELLED" && (
-        <Dialog.Root>
-        <Dialog.Trigger asChild>
-            <Button size="sm" variant="outline" colorScheme="orange">
-            Cancel
-            </Button>
-        </Dialog.Trigger>
-
-        <Portal>
-            <Dialog.Backdrop />
-            <Dialog.Positioner>
-            <Dialog.Content>
-                <Dialog.Header>
-                <Dialog.Title>Cancel Interview</Dialog.Title>
-                </Dialog.Header>
-
-                <Dialog.Body>
-                Are you sure you want to cancel this interview?
-                </Dialog.Body>
-
-                <Dialog.Footer>
-                <HStack>
-                    <Dialog.ActionTrigger asChild>
-                    <Button variant="outline">No</Button>
-                    </Dialog.ActionTrigger>
-
-                    <Button
-                    bg="orange.500"
-                    color="white"
-                    onClick={() => handleCancelInterview(interview.id)}
-                    >
-                    Yes, Cancel
-                    </Button>
+            {interview.status !== "CANCELLED" && (
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="orange"
+                onClick={() => setCancelInterviewId(interview.id)}
+              >
+                <HStack gap={1} align="center">
+                  <MdCancel size={16} />
+                  <Text>Cancel</Text>
                 </HStack>
-                </Dialog.Footer>
-
-                <Dialog.CloseTrigger asChild>
-                <CloseButton size="sm" />
-                </Dialog.CloseTrigger>
-            </Dialog.Content>
-            </Dialog.Positioner>
-        </Portal>
-        </Dialog.Root>
-  )
-}
-
-<Dialog.Root>
-  <Dialog.Trigger asChild>
-    <Button size="sm" variant="outline" colorScheme="red">
-      Delete
-    </Button>
-  </Dialog.Trigger>
-
-  <Portal>
-    <Dialog.Backdrop />
-    <Dialog.Positioner>
-      <Dialog.Content>
-        <Dialog.Header>
-          <Dialog.Title>Delete Interview</Dialog.Title>
-        </Dialog.Header>
-
-        <Dialog.Body>
-          This action cannot be undone.
-        </Dialog.Body>
-
-        <Dialog.Footer>
-          <HStack>
-            <Dialog.ActionTrigger asChild>
-              <Button variant="outline">Cancel</Button>
-            </Dialog.ActionTrigger>
+              </Button>
+            )}
 
             <Button
-              bg="red.500"
-              color="white"
-              onClick={() => handleDeleteInterview(interview.id)}
+              size="sm"
+              variant="outline"
+              colorScheme="red"
+              onClick={() => setDeleteInterviewId(interview.id)}
             >
-              Delete
+              <HStack gap={1} align="center">
+                <MdDelete size={16} />
+                <Text>Delete</Text>
+              </HStack>
             </Button>
-          </HStack>
-        </Dialog.Footer>
-
-        <Dialog.CloseTrigger asChild>
-          <CloseButton size="sm" />
-        </Dialog.CloseTrigger>
-      </Dialog.Content>
-    </Dialog.Positioner>
-  </Portal>
-</Dialog.Root>
             </HStack>
           );
         },
       },
     ],
-    [refetch,handleCancelInterview, handleDeleteInterview]
+    [refetch]
   );
 
-  const totalPages = data?.totalPages || 0;
+  // const totalPages = data?.totalPages || 0;
 
   return (
     <VStack  align="stretch" gap={4}>
@@ -363,19 +304,7 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
             )}
           </HStack>
 
-          <HStack>
-            <Text fontSize="sm" color="gray.500">Show</Text>
-            <SelectFieldInput
-              name="pageSize"
-              label="Show"
-              options={[
-                { label: "5", value: 5 },
-                { label: "10", value: 10 },
-                { label: "20", value: 20 },
-                { label: "50", value: 50 },
-              ]}
-            />
-          </HStack>
+        
         </FormProvider>
       </HStack>
 
@@ -397,6 +326,28 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
           onPageChange={(p) => setPage(p)}
         />
       )} */}
+      {/* Confirmation Dialogs */}
+      <ConfirmationDialog
+        open={cancelInterviewId !== null}
+        onClose={() => setCancelInterviewId(null)}
+        title="Cancel Interview"
+        action="cancel this interview"
+        handleSubmit={() => {
+          if (cancelInterviewId) handleCancelInterview(cancelInterviewId);
+          setCancelInterviewId(null);
+        }}
+      />
+
+      <ConfirmationDialog
+        open={deleteInterviewId !== null}
+        onClose={() => setDeleteInterviewId(null)}
+        title="Delete Interview"
+        action="delete this interview"
+        handleSubmit={() => {
+          if (deleteInterviewId) handleDeleteInterview(deleteInterviewId);
+          setDeleteInterviewId(null);
+        }}
+      />
     </VStack>
   );
 };

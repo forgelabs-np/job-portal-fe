@@ -80,43 +80,36 @@ export function ScheduleInterviewModal({
   };
 
   const onSubmit = async (data: ScheduleInterviewFormValues) => {
-    try {
-      const scheduledAt = `${data.date}T${data.time}:00`;
+  try {
+    const scheduledAt = `${data.date}T${data.time}:00`;
 
-      // Depending on future API updates, this could just pass candidateIds as an array.
-      // For now, if the API expects single jobApplicationId, we Promise.all it.
-      // (The user noted: "if there is array of candidate id in future use it else use single id")
-      
-      const payloadBase = {
-        scheduledAt,
-        timezone: data.timezone,
-        interviewType: data.mode,
-        interviewLink: data.mode === "ONLINE" ? data.locationOrUrl : "",
-        venue: data.mode === "IN_PERSON" ? data.locationOrUrl : "",
-        adminNotes: data.notes,
-      };
+    const payloadBase = {
+      scheduledAt,
+      timezone: data.timezone,
+      interviewType: data.mode,
+      interviewLink: data.mode === "ONLINE" ? data.locationOrUrl : "",
+      venue: data.mode === "IN_PERSON" ? data.locationOrUrl : "",
+      adminNotes: data.notes,
+    };
 
-      const promises = data.candidateIds.map(id => 
-        scheduleInterview({
-          ...payloadBase,
-          jobApplicationId: id,
-          // candidateIds: data.candidateIds // future-proofing for bulk array support
-        })
-      );
-      
-      await Promise.all(promises);
-      
-      // toast.success(
-      //   isBulk
-      //     ? `Interview scheduled for ${data.candidateIds.length} candidates successfully.`
-      //     : `Interview scheduled for ${candidate?.name} successfully.`
-      // );
-      
-      handleClose();
-    } catch (err: unknown) {
-      // toast.error(err.response?.data?.message || "Failed to schedule interview");
-    }
-  };
+    const ids = isBulk
+      ? data.candidateIds
+      : candidate
+      ? [candidate.id]
+      : [];
+
+    if (ids.length === 0) return;
+
+    const promises = ids.map(id =>
+      scheduleInterview({ ...payloadBase, jobApplicationId: id })
+    );
+
+    await Promise.all(promises);
+    handleClose();
+  } catch (err) {
+    // handle error
+  }
+};
 
   return (
     <DialogRoot open={open} onOpenChange={handleClose} size="md">

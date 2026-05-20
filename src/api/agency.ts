@@ -4,6 +4,7 @@ import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { InterviewFilterParams, PaginatedInterviewResponse, InterviewResponse } from "./admin-interview";
 
 export interface AgencyProfile {
   id: number;
@@ -157,5 +158,35 @@ export const useUpdateAgencyProfile = () => {
     }) => {
       errorNotification(error?.response?.data?.message);
     },
+  });
+};
+
+const getAgencyInterviews = (params: InterviewFilterParams) => {
+  return httpClient.get<ApiResponse<PaginatedInterviewResponse>>(
+    api.AGENCY.INTERVIEWS.GET,
+    { params }
+  );
+};
+
+export const useGetAgencyInterviewsQuery = (params: InterviewFilterParams) => {
+  return useQuery({
+    queryKey: [api.AGENCY.INTERVIEWS.GET, params],
+    queryFn: () => getAgencyInterviews(params),
+    select: (resp) => resp.data.data,
+  });
+};
+
+const getAgencyInterviewById = (interviewId: number) => {
+  return httpClient.get<ApiResponse<InterviewResponse>>(
+    api.AGENCY.INTERVIEWS.GET_BY_ID.replace("{interviewId}", String(interviewId))
+  );
+};
+
+export const useGetAgencyInterviewByIdQuery = (interviewId: number | null) => {
+  return useQuery({
+    queryKey: [api.AGENCY.INTERVIEWS.GET_BY_ID, interviewId],
+    queryFn: () => getAgencyInterviewById(interviewId!),
+    enabled: interviewId !== null,
+    select: (resp) => resp.data.data,
   });
 };

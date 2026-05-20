@@ -9,6 +9,7 @@ export const ROUTES = {
   AGENCY_NETWORK: "/agency",
   AGENCY_APPLICATIONS: "/agency/applications",
   AGENCY_PROFILE: "/agency/profile",
+  AGENCY_INTERVIEWS: "/agency/interviews",
   COUNTRY_MANAGEMENT: "/country-management",
   JOBS: "/job",
   INTERVIEW: "/interview",
@@ -19,6 +20,7 @@ export const ROUTES = {
   CANDIDATE_PROFILE: "/candidate/profile",
   CANDIDATE_APPLICATIONS: "/candidate/applications",
   CANDIDATE_JOBS: "/candidate/jobs",
+  CANDIDATE_INTERVIEWS: "/candidate/interviews",
   CANDIDATE_LOGIN: "/login/candidate",
   CANDIDATE_SIGNUP: "/register/candidate",
 };

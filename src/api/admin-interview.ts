@@ -168,6 +168,9 @@ export const useCreateOrUpdateInterviewMutation = () => {
       queryClient.invalidateQueries({
         queryKey: [api.ADMIN.INTERVIEWS.GET_BY_APPLICATION_ID],
       });
+      queryClient.invalidateQueries({
+        queryKey: [api.ADMIN.INTERVIEWS.SHORTLISTED],
+      });
     },
   });
 };

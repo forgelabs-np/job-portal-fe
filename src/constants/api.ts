@@ -65,6 +65,10 @@ export const api = {
       GET_APPLICATION_BY_ID: "/agency/applications/{id}",
       WITHDRAW: "/agency/applications/{id}/withdraw",
     },
+    INTERVIEWS: {
+      GET: "/agency/interviews",
+      GET_BY_ID: "/agency/interviews/{interviewId}",
+    },
   },
   CANDIDATE: {
     DASHBOARD: "/candidate/dashboard",
@@ -78,6 +82,10 @@ export const api = {
       POST: "/candidate/applications",
       GET_BY_ID: "/candidate/applications/{applicationId}",
       WITHDRAW: "/candidate/applications/{applicationId}/withdraw",
+    },
+    INTERVIEWS: {
+      GET: "/candidate/interviews",
+      GET_BY_ID: "/candidate/interviews/{interviewId}",
     },
   },
 };
