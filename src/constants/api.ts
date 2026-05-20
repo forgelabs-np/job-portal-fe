@@ -33,6 +33,17 @@ export const api = {
       GET_SELF_APPLICATION_BY_ID: "/admin/self-applications/{applicationId}",
       PROCESS_SELF_DOCUMENT: "/admin/self-applications/documents/process",
     },
+    INTERVIEWS: {
+      GET: "/admin/interviews",
+      GET_BY_ID: "/admin/interviews/{interviewId}",
+      GET_BY_APPLICATION_ID: "/admin/interviews/application/{jobApplicationId}",
+      CREATE_OR_UPDATE: "/admin/interviews",
+      SET_RESULT: "/admin/interviews/{interviewId}/result",
+      CANCEL: "/admin/interviews/{interviewId}/cancel",
+      DELETE: "/admin/interviews/{interviewId}",
+      SHORTLISTED: "/admin/shortlisted",
+      SHORTLISTED_BY_ID: "/admin/shortlisted/{applicationId}",
+    }
   },
   AGENCY: {
     DASHBOARD: "/agency/dashboard",
@@ -54,6 +65,10 @@ export const api = {
       GET_APPLICATION_BY_ID: "/agency/applications/{id}",
       WITHDRAW: "/agency/applications/{id}/withdraw",
     },
+    INTERVIEWS: {
+      GET: "/agency/interviews",
+      GET_BY_ID: "/agency/interviews/{interviewId}",
+    },
   },
   CANDIDATE: {
     DASHBOARD: "/candidate/dashboard",
@@ -67,6 +82,10 @@ export const api = {
       POST: "/candidate/applications",
       GET_BY_ID: "/candidate/applications/{applicationId}",
       WITHDRAW: "/candidate/applications/{applicationId}/withdraw",
+    },
+    INTERVIEWS: {
+      GET: "/candidate/interviews",
+      GET_BY_ID: "/candidate/interviews/{interviewId}",
     },
   },
 };

@@ -10,7 +10,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BiGlobe } from "react-icons/bi";
 import { BsBagDash, BsHouse } from "react-icons/bs";
-import { FaFileAlt, FaFileSignature } from "react-icons/fa";
+import { FaFileAlt, FaFileSignature, FaRegFileVideo } from "react-icons/fa";
 import {
   MdChevronLeft,
   MdChevronRight,
@@ -20,6 +20,8 @@ import {
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
 import { SidebarItem } from "./SidebarItems";
+
+import { MdVideoCall } from "react-icons/md";
 
 const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.ADMIN_DASHBOARD, icon: <MdDashboard /> },
@@ -33,6 +35,23 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
     name: "Jobs",
     href: ROUTES.JOBS,
     icon: <BsBagDash />,
+  },
+  {
+    name: "Interview",
+    icon: <FaRegFileVideo />,
+    subItems: [
+      {
+        name: "Assign Interview",
+        href: ROUTES.INTERVIEW,
+        icon: <FaRegFileVideo />
+      },
+      {
+        name: "Scheduled Interviews",
+        href: ROUTES.INTERVIEW_SCHEDULED,
+        icon: <FaRegFileVideo />
+
+      },
+    ],
   },
   {
     name: "Applications",
@@ -67,6 +86,7 @@ const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
     icon: <FaFileSignature size={18} />,
   },
   { name: "Jobs", href: ROUTES.AGENCY_JOBS, icon: <BsBagDash /> },
+  { name: "Interviews", href: ROUTES.AGENCY_INTERVIEWS, icon: <MdVideoCall size={20} /> },
   { name: "Profile", href: ROUTES.AGENCY_PROFILE, icon: <MdPerson /> },
 ];
 
@@ -78,6 +98,7 @@ const CANDIDATE_SIDEBAR_ITEMS: SidebarItemProps[] = [
     icon: <FaFileSignature size={18} />,
   },
   { name: "Jobs", href: ROUTES.CANDIDATE_JOBS, icon: <BsBagDash /> },
+  { name: "Interviews", href: ROUTES.CANDIDATE_INTERVIEWS, icon: <MdVideoCall size={20} /> },
   { name: "Profile", href: ROUTES.CANDIDATE_PROFILE, icon: <MdPerson /> },
 
 ];

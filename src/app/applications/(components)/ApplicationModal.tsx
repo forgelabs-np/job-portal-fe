@@ -6,6 +6,7 @@ import {
   useGetApplicationByIdQuery,
   useGetSelfApplicationByIdQuery,
 } from "@/api/admin-applcations";
+import { useShortlistedApplicationByIdQuery } from "@/api/interview";
 import { Dialog } from "@/shared";
 import {
   Badge,
@@ -538,7 +539,10 @@ const ModalContent = ({
 
 // ─── Agency inner wrapper ─────────────────────────────────────────────────────
 const AgencyApplicationModalInner = ({ id }: { id: number }) => {
-  const { data, isLoading } = useGetApplicationByIdQuery(id);
+  // const { data, isLoading } = useGetApplicationByIdQuery(id);
+    const { data, isLoading } = useShortlistedApplicationByIdQuery(id);
+
+
   return <ModalContent application={data} isLoading={isLoading} />;
 };
 

@@ -5,7 +5,7 @@ import { httpClient } from "@/utils/axios";
 import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-
+import { InterviewFilterParams, PaginatedInterviewResponse, InterviewResponse } from "./admin-interview";
 
 export type MaritalStatus = "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED";
 
@@ -522,5 +522,35 @@ export const useWithdrawCandidateApplicationMutation = () => {
         "Failed to withdraw application",
       );
     },
+  });
+};
+
+const getCandidateInterviews = (params: InterviewFilterParams) => {
+  return httpClient.get<ApiResponse<PaginatedInterviewResponse>>(
+    api.CANDIDATE.INTERVIEWS.GET,
+    { params }
+  );
+};
+
+export const useGetCandidateInterviewsQuery = (params: InterviewFilterParams) => {
+  return useQuery({
+    queryKey: [api.CANDIDATE.INTERVIEWS.GET, params],
+    queryFn: () => getCandidateInterviews(params),
+    select: (resp) => resp.data.data,
+  });
+};
+
+const getCandidateInterviewById = (interviewId: number) => {
+  return httpClient.get<ApiResponse<InterviewResponse>>(
+    api.CANDIDATE.INTERVIEWS.GET_BY_ID.replace("{interviewId}", String(interviewId))
+  );
+};
+
+export const useGetCandidateInterviewByIdQuery = (interviewId: number | null) => {
+  return useQuery({
+    queryKey: [api.CANDIDATE.INTERVIEWS.GET_BY_ID, interviewId],
+    queryFn: () => getCandidateInterviewById(interviewId!),
+    enabled: interviewId !== null,
+    select: (resp) => resp.data.data,
   });
 };

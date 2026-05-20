@@ -23,10 +23,10 @@ const LinkItemContent = ({
       gap={6}
       px={collapsed ? "0" : "5"}
       py="2.5"
-      mx="2"
+      mx="1"
       borderRadius="10px"
       cursor="pointer"
-      justify={collapsed ? "center" : "flex-start"}
+      justify={collapsed ? "center" : "space-between"}
       transition="all 0.2s ease"
       position="relative"
       bg={isActive ? "#b6e5d2" : "transparent"}
@@ -53,7 +53,7 @@ const LinkItemContent = ({
           : {},
       }}
   >
-    <Flex align="center" gap={1} minW={0}>
+    <Flex align="center" gap={3} minW={0}>
       {/* Child line indicator */}
       {isChild && (
         <Box
