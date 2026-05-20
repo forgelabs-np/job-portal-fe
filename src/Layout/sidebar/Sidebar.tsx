@@ -21,6 +21,8 @@ import {
 import { GlobeIcon } from "../Footer";
 import { SidebarItem } from "./SidebarItems";
 
+import { MdVideoCall } from "react-icons/md";
+
 const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.ADMIN_DASHBOARD, icon: <MdDashboard /> },
   { name: "Agency Network", href: ROUTES.AGENCY_NETWORK, icon: <BsHouse /> },
@@ -33,6 +35,22 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
     name: "Jobs",
     href: ROUTES.JOBS,
     icon: <BsBagDash />,
+  },
+  {
+    name: "Interview",
+    icon: <MdVideoCall />,
+    subItems: [
+      {
+        name: "Select Job",
+        href: ROUTES.INTERVIEW,
+        icon: <BsBagDash />,
+      },
+      {
+        name: "Scheduled Interviews",
+        href: ROUTES.INTERVIEW_SCHEDULED,
+        icon: <MdVideoCall />,
+      },
+    ],
   },
   {
     name: "Applications",

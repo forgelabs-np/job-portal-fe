@@ -11,6 +11,8 @@ export const ROUTES = {
   AGENCY_PROFILE: "/agency/profile",
   COUNTRY_MANAGEMENT: "/country-management",
   JOBS: "/job",
+  INTERVIEW: "/interview",
+  INTERVIEW_SCHEDULED: "/interview/scheduled",
   ADMIN_AGENCY_APPLICATIONS: "/applications/agency",
   ADMIN_SELF_APPLICATIONS: "/applications/self",
   CANDIDATE_DASHBOARD: "/candidate/dashboard",

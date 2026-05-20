@@ -45,7 +45,8 @@ export default function RootLayoutContent({
     pathname.startsWith("/candidate") ||
     pathname.startsWith("/country-management") ||
     pathname.startsWith("/job") ||
-    pathname.startsWith("/applications");
+    pathname.startsWith("/applications")||
+      pathname.startsWith("/interview");
 
   const resolveRedirectPath = () => {
     const tokenDetails = TokenService.getTokenDetails();
