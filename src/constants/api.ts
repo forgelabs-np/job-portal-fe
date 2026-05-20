@@ -31,7 +31,7 @@ export const api = {
       SELF_APPLICATIONS: "/admin/self-applications",
       UPDATE_SELF_APPLICATION: "/admin/self-applications/{applicationId}/status",
       GET_SELF_APPLICATION_BY_ID: "/admin/self-applications/{applicationId}",
-      PROCESS_SELF_DOCUMENT: "/admin/candidate-documents/process",
+      PROCESS_SELF_DOCUMENT: "/admin/self-applications/documents/process",
     },
   },
   AGENCY: {

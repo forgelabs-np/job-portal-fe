@@ -197,13 +197,14 @@ export const useUpdateSelfApplicationStatusMutation = () => {
 
 export interface ProcessApplicationDocumentPayload {
   documentId: number;
+  candidateId: number;
   status: "APPROVED" | "REJECTED";
   rejectionReason?: string;
 }
 
 const processApplicationDocument = (payload: ProcessApplicationDocumentPayload) => {
   return httpClient.post<ApiResponse<null>>(
-    api.ADMIN.APPLICATIONS.PROCESS_AGENCY_DOCUMENT,
+    api.ADMIN.APPLICATIONS.PROCESS_SELF_DOCUMENT,
     { data: payload },
   );
 };
