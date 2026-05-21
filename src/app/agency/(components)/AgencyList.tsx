@@ -102,6 +102,7 @@ const AgencyTable = ({ status }: { status: Status }) => {
         documentId: selectedAction.id,
         status: statusValue,
         rejectionReason: rejectedReason,
+        agencyId: selectedProfile?.id as number,
       },
       {
         onSuccess: () => {

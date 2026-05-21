@@ -71,6 +71,7 @@ interface StatusSectionProps {
   rejectionReason: string;
   setRejectionReason: (r: string) => void;
   isPending: boolean;
+  canShortlist: boolean;
   onClose: () => void;
   onSubmit: () => void;
 }
@@ -82,135 +83,151 @@ const StatusSection = ({
   rejectionReason,
   setRejectionReason,
   isPending,
+  canShortlist,
   onClose,
   onSubmit,
-}: StatusSectionProps) => (
-  <VStack align="stretch" gap={4}>
-    {/* Current status */}
-    {application && (
-      <HStack gap={2}>
-        <Text fontSize="sm" color="gray.500">
-          Current:
-        </Text>
-        <StatusBadge
-          status={
-            application.status as UpdateApplicationStatusPayload["status"]
-          }
-        />
-      </HStack>
-    )}
+}: StatusSectionProps) => {
+  const isShortlistDisabled = status === "SHORTLISTED" && !canShortlist;
 
-    {/* Status selector */}
-    <Box>
-      <Text
-        fontSize="xs"
-        fontWeight="600"
-        color="gray.600"
-        mb={2}
-        textTransform="uppercase"
-        letterSpacing="0.06em"
-      >
-        New Status
-      </Text>
-      <Flex gap={2} flexWrap="wrap">
-        {STATUS_OPTIONS.map((opt) => (
-          <Box
-            key={opt}
-            as="button"
-            px={3}
-            py={1.5}
-            fontSize="sm"
-            fontWeight="600"
-            borderRadius="8px"
-            border="2px solid"
-            cursor="pointer"
-            transition="all 0.15s"
-            onClick={() => setStatus(opt)}
-            borderColor={status === opt ? "blue.500" : "gray.200"}
-            bg={status === opt ? "blue.50" : "white"}
-            color={status === opt ? "blue.600" : "gray.500"}
-            _hover={{ borderColor: "blue.400", color: "blue.500" }}
-          >
-            {statusLabel[opt]}
-          </Box>
-        ))}
-      </Flex>
-    </Box>
+  return (
+    <VStack align="stretch" gap={4}>
+      {/* Current status */}
+      {application && (
+        <HStack gap={2}>
+          <Text fontSize="sm" color="gray.500">
+            Current:
+          </Text>
+          <StatusBadge
+            status={
+              application.status as UpdateApplicationStatusPayload["status"]
+            }
+          />
+        </HStack>
+      )}
 
-    {/* Rejection reason — only when REJECTED */}
-    {status === "REJECTED" && (
+      {/* Status selector */}
       <Box>
         <Text
           fontSize="xs"
           fontWeight="600"
-          color="red.500"
+          color="gray.600"
           mb={2}
           textTransform="uppercase"
           letterSpacing="0.06em"
         >
-          Rejection Reason <span style={{ color: "red" }}>*</span>
+          New Status
         </Text>
-        <Textarea
-          value={rejectionReason}
-          onChange={(e) => setRejectionReason(e.target.value)}
-          placeholder="Enter the reason for rejection…"
-          rows={3}
-          fontSize="sm"
-          borderColor="red.200"
-          _focus={{ borderColor: "red.400", boxShadow: "none" }}
-          resize="vertical"
-        />
+        <Flex gap={2} flexWrap="wrap">
+          {STATUS_OPTIONS.map((opt) => {
+            const isOptionDisabled = opt === "SHORTLISTED" && !canShortlist;
+            return (
+              <Box
+                key={opt}
+                as="button"
+                px={3}
+                py={1.5}
+                fontSize="sm"
+                fontWeight="600"
+                borderRadius="8px"
+                border="2px solid"
+                cursor={isOptionDisabled ? "not-allowed" : "pointer"}
+                transition="all 0.15s"
+                onClick={() => {
+                  if (!isOptionDisabled) setStatus(opt);
+                }}
+                borderColor={status === opt ? "blue.500" : "gray.200"}
+                bg={status === opt ? "blue.50" : "white"}
+                color={status === opt ? "blue.600" : isOptionDisabled ? "gray.300" : "gray.500"}
+                opacity={isOptionDisabled ? 0.45 : 1}
+                _hover={!isOptionDisabled ? { borderColor: "blue.400", color: "blue.500" } : undefined}
+              >
+                {statusLabel[opt]}
+              </Box>
+            );
+          })}
+        </Flex>
+        {!canShortlist && (
+          <Text fontSize="xs" color="orange.600" mt={2}>
+            All documents must be approved before this application can be shortlisted.
+          </Text>
+        )}
       </Box>
-    )}
 
-    {/* Footer */}
-    <Flex justify="flex-end" gap={3} pt={2}>
-      <Box
-        as="button"
-        px={4}
-        py={2}
-        fontSize="sm"
-        fontWeight="600"
-        borderRadius="8px"
-        border="1px solid"
-        borderColor="gray.200"
-        color="gray.600"
-        cursor="pointer"
-        bg="white"
-        _hover={{ bg: "gray.50" }}
-        onClick={onClose}
-      >
-        Cancel
-      </Box>
-      <Box
-        as="button"
-        px={4}
-        py={2}
-        fontSize="sm"
-        fontWeight="600"
-        borderRadius="8px"
-        cursor="pointer"
-        bg="blue.500"
-        color="white"
-        opacity={
-          isPending || (status === "REJECTED" && !rejectionReason.trim())
-            ? 0.6
-            : 1
-        }
-        pointerEvents={
-          isPending || (status === "REJECTED" && !rejectionReason.trim())
-            ? "none"
-            : "auto"
-        }
-        _hover={{ bg: "blue.600" }}
-        onClick={onSubmit}
-        transition="all 0.15s"
-      >
-        {isPending ? "Saving…" : "Save Changes"}
-      </Box>
-    </Flex>
-  </VStack>
-);
+      {/* Rejection reason — only when REJECTED */}
+      {status === "REJECTED" && (
+        <Box>
+          <Text
+            fontSize="xs"
+            fontWeight="600"
+            color="red.500"
+            mb={2}
+            textTransform="uppercase"
+            letterSpacing="0.06em"
+          >
+            Rejection Reason <span style={{ color: "red" }}>*</span>
+          </Text>
+          <Textarea
+            value={rejectionReason}
+            onChange={(e) => setRejectionReason(e.target.value)}
+            placeholder="Enter the reason for rejection…"
+            rows={3}
+            fontSize="sm"
+            borderColor="red.200"
+            _focus={{ borderColor: "red.400", boxShadow: "none" }}
+            resize="vertical"
+          />
+        </Box>
+      )}
+
+      {/* Footer */}
+      <Flex justify="flex-end" gap={3} pt={2}>
+        <Box
+          as="button"
+          px={4}
+          py={2}
+          fontSize="sm"
+          fontWeight="600"
+          borderRadius="8px"
+          border="1px solid"
+          borderColor="gray.200"
+          color="gray.600"
+          cursor="pointer"
+          bg="white"
+          _hover={{ bg: "gray.50" }}
+          onClick={onClose}
+        >
+          Cancel
+        </Box>
+        <Box
+          as="button"
+          px={4}
+          py={2}
+          fontSize="sm"
+          fontWeight="600"
+          borderRadius="8px"
+          cursor="pointer"
+          bg="blue.500"
+          color="white"
+          opacity={
+            isPending || (status === "REJECTED" && !rejectionReason.trim()) || isShortlistDisabled
+              ? 0.6
+              : 1
+          }
+          pointerEvents={
+            isPending || (status === "REJECTED" && !rejectionReason.trim()) || isShortlistDisabled
+              ? "none"
+              : "auto"
+          }
+          _hover={{ bg: "blue.600" }}
+          onClick={onSubmit}
+          transition="all 0.15s"
+        >
+          {isPending ? "Saving…" : "Save Changes"}
+        </Box>
+      </Flex>
+    </VStack>
+  );
+};
 
 // ─── Documents Tab ────────────────────────────────────────────────────────────
 interface DocumentsTabProps {
@@ -430,6 +447,7 @@ const EditModalContent = ({
   setRejectionReason,
 }: EditModalContentProps) => {
   const documents = application?.documents ?? [];
+  const canShortlist = documents.length === 0 || documents.every((doc) => doc.status === "APPROVED");
 
   return (
     <Flex direction="column" h="75vh" maxH="75vh" gap={4}>
@@ -504,6 +522,7 @@ const EditModalContent = ({
                     rejectionReason={rejectionReason}
                     setRejectionReason={setRejectionReason}
                     isPending={isPending}
+                    canShortlist={canShortlist}
                     onClose={onClose}
                     onSubmit={onSubmit}
                   />
