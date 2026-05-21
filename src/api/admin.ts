@@ -39,6 +39,7 @@ export interface AgencyProfileDetails extends AgencyListType {
   status?: string;
   rejectionReason?: string | null;
   documents?: AgencyDocument[];
+  id?: number;
 }
 
 interface ProcessAgencyProfilePayload {
@@ -51,6 +52,7 @@ interface ProcessAgencyDocumentPayload {
   documentId: number;
   status: ApprovalStatus;
   rejectionReason?: string;
+  agencyId: number;
 }
 
 const getAgencies = (params: { status: string }) => {
