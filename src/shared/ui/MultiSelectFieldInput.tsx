@@ -101,7 +101,7 @@ export function MultiSelectFieldInput({
           ) : (
             <Flex flex={1} flexWrap="wrap" gap={1.5} align="center">
               {options
-                .filter((o) => selected.includes(o.value))
+                .filter((o) => selected.includes(o.value) && o.value !== "select_all")
                 .map((o) => (
                   <Flex
                     key={o.value}

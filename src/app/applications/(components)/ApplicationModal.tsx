@@ -539,14 +539,13 @@ const ModalContent = ({
 
 // ─── Agency inner wrapper ─────────────────────────────────────────────────────
 const AgencyApplicationModalInner = ({ id }: { id: number }) => {
-  // const { data, isLoading } = useGetApplicationByIdQuery(id);
-    const { data, isLoading } = useShortlistedApplicationByIdQuery(id);
+  const { data, isLoading } = useGetApplicationByIdQuery(id);
+    // const { data, isLoading } = useShortlistedApplicationByIdQuery(id);
 
 
   return <ModalContent application={data} isLoading={isLoading} />;
 };
 
-// ─── Self inner wrapper ───────────────────────────────────────────────────────
 const SelfApplicationModalInner = ({ id }: { id: number }) => {
   const { data, isLoading } = useGetSelfApplicationByIdQuery(id);
   return <ModalContent application={data} isLoading={isLoading} />;
