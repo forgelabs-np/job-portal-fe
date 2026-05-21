@@ -7,6 +7,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+export type InterviewStatus = "SCHEDULED" | "RESCHEDULED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+
 export interface InterviewRequest {
   id?: number;
   jobApplicationId: number;
@@ -33,7 +35,7 @@ export interface InterviewResponse {
   interviewType: "ONLINE" | "IN_PERSON";
   venue?: string;
   adminNotes?: string;
-  status: "SCHEDULED" | "RESCHEDULED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+  status: InterviewStatus;
   result: "PENDING" | "PASS" | "FAIL" | "RE_INTERVIEW";
   resultNotes?: string;
   resultUpdatedBy?: number;
@@ -113,6 +115,17 @@ const setInterviewResult = (
 const cancelInterview = (interviewId: number) => {
   return httpClient.patch<ApiResponse<InterviewResponse>>(
     api.ADMIN.INTERVIEWS.CANCEL.replace("{interviewId}", String(interviewId))
+  );
+};
+
+const updateInterviewStatus = (
+  interviewId: number,
+  status: InterviewStatus
+) => {
+  return httpClient.patch<ApiResponse<InterviewResponse>>(
+    api.ADMIN.INTERVIEWS.UPDATE_STATUS.replace("{interviewId}", String(interviewId)),
+    null,
+    { params: { status } }
   );
 };
 
@@ -203,6 +216,30 @@ export const useCancelInterviewMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: cancelInterview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [api.ADMIN.INTERVIEWS.GET],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [api.ADMIN.INTERVIEWS.GET_BY_ID],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [api.ADMIN.INTERVIEWS.GET_BY_APPLICATION_ID],
+      });
+    },
+  });
+};
+
+export const useUpdateInterviewStatusMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      interviewId,
+      status,
+    }: {
+      interviewId: number;
+      status: InterviewStatus;
+    }) => updateInterviewStatus(interviewId, status),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [api.ADMIN.INTERVIEWS.GET],

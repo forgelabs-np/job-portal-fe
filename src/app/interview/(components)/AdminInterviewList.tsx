@@ -1,34 +1,34 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
 import {
-  Box,
-  HStack,
-  VStack,
-  Text,
-  Badge,
-  Button as ChakraButton,
-  Dialog,
-  Portal,
-  CloseButton,
-} from "@chakra-ui/react";
-import {
-  useGetAllInterviewsQuery,
-  useCancelInterviewMutation,
-  useDeleteInterviewMutation,
   InterviewFilterParams,
   InterviewResponse,
+  useCancelInterviewMutation,
+  useDeleteInterviewMutation,
+  useGetAllInterviewsQuery,
 } from "@/api/admin-interview";
+import {
+  Badge,
+  Box,
+  Button as ChakraButton,
+  HStack,
+  Text,
+  VStack
+} from "@chakra-ui/react";
+import React, { useEffect, useMemo, useState } from "react";
 import { SetInterviewResultModal } from "./SetInterviewResultModal";
+import { SetInterviewStatusModal } from "./SetInterviewStatusModal";
 
-import { Datatable } from "@/shared/ui/datatable";
-import { Pagination } from "@/shared/components/pagination/Pagination";
-import { ColumnDef } from "@tanstack/react-table";
-import { MdCancel, MdDelete } from "react-icons/md";
-import { Button } from "@/shared";
-import { SelectFieldInput } from "@/shared/ui/Select";
-import { useForm, FormProvider } from "react-hook-form";
 import { ConfirmationDialog } from "@/components/ui/confirmationDialog";
+import { Datatable } from "@/shared/ui/datatable";
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "@/shared/ui/menu";
+import { SelectFieldInput } from "@/shared/ui/Select";
+import { IconButton } from "@chakra-ui/react";
+import { ColumnDef } from "@tanstack/react-table";
+import { FormProvider, useForm } from "react-hook-form";
+import { MdAutorenew, MdCancel, MdDelete, MdEventAvailable, MdOutlineEdit, MdSettings } from "react-icons/md";
+import { ScheduleInterviewModal } from "../[jobId]/(components)/ScheduleInterviewModal";
+import ViewInterviewModal from "./ViewInterviewModal";
 
 interface AdminInterviewListProps {
   jobDemandId?: number;
@@ -56,8 +56,11 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
   const [size, setSize] = useState(10);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [resultFilter, setResultFilter] = useState<string>("");
+  const [rescheduleInterviewId, setRescheduleInterviewId] = useState<number | null>(null);
   const [cancelInterviewId, setCancelInterviewId] = useState<number | null>(null);
   const [deleteInterviewId, setDeleteInterviewId] = useState<number | null>(null);
+  const [statusInterview, setStatusInterview] = useState<InterviewResponse | null>(null);
+  const [resultInterview, setResultInterview] = useState<InterviewResponse | null>(null);
 
   const params: InterviewFilterParams = {
     pageable: {
@@ -87,16 +90,14 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
       setStatusFilter(watchedStatus);
       setPage(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchedStatus]);
+  }, [watchedStatus,statusFilter]);
 
   useEffect(() => {
     if (watchedResult !== undefined && watchedResult !== resultFilter) {
       setResultFilter(watchedResult);
       setPage(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchedResult]);
+  }, [watchedResult,resultFilter]);
 
   useEffect(() => {
     if (watchedPageSize && Number(watchedPageSize) !== size) {
@@ -213,51 +214,65 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
         cell: ({ row }) => {
           const interview = row.original;
           return (
-            <HStack gap={2} >
-              
-              {(interview.status === "COMPLETED" || interview.status === "NO_SHOW") && (
-                <SetInterviewResultModal
-                  interviewId={interview.id}
-                  candidateName={interview.candidateName}
-                  currentResult={interview.result}
-                  onSuccess={() => refetch()}
-                />
-              )}
+            <HStack gap={2}>
+              <ViewInterviewModal interviewId={interview.id} />
 
-            {interview.status !== "CANCELLED" && (
-              <Button
-                size="sm"
-                variant="outline"
-                colorScheme="orange"
-                onClick={() => setCancelInterviewId(interview.id)}
-              >
-                <HStack gap={1} align="center">
-                  <MdCancel size={16} />
-                  <Text>Cancel</Text>
-                </HStack>
-              </Button>
-            )}
+              <MenuRoot>
+                <MenuTrigger asChild>
+                  <IconButton size="sm" variant="ghost" colorScheme="gray">
+                    <MdSettings size={18} />
+                  </IconButton>
+                </MenuTrigger>
+                <MenuContent>
+                  {(interview.status === "COMPLETED" || interview.status === "NO_SHOW") && (
+                    <MenuItem value="set-result" onClick={() => setResultInterview(interview)}>
+                      <HStack gap={2}>
+                        <MdOutlineEdit size={16} />
+                        <Text>Set Result</Text>
+                      </HStack>
+                    </MenuItem>
+                  )}
 
-            <Button
-              size="sm"
-              variant="outline"
-              colorScheme="red"
-              onClick={() => setDeleteInterviewId(interview.id)}
-            >
-              <HStack gap={1} align="center">
-                <MdDelete size={16} />
-                <Text>Delete</Text>
-              </HStack>
-            </Button>
+                  {interview.status !== "CANCELLED" && interview.status !== "COMPLETED" && interview.status !== "NO_SHOW" && (
+                    <MenuItem value="reschedule" onClick={() => setRescheduleInterviewId(interview.id)}>
+                      <HStack gap={2} >
+                        <MdEventAvailable size={16} />
+                        <Text>Reschedule</Text>
+                      </HStack>
+                    </MenuItem>
+                  )}
+
+                  <MenuItem value="update-status" onClick={() => setStatusInterview(interview)}>
+                    <HStack gap={2} >
+                      <MdAutorenew size={16} />
+                      <Text>Update Status</Text>
+                    </HStack>
+                  </MenuItem>
+
+                  {interview.status !== "CANCELLED" && (
+                    <MenuItem value="cancel" onClick={() => setCancelInterviewId(interview.id)}>
+                      <HStack gap={2}>
+                        <MdCancel size={16} />
+                        <Text>Cancel</Text>
+                      </HStack>
+                    </MenuItem>
+                  )}
+
+                  <MenuItem value="delete" onClick={() => setDeleteInterviewId(interview.id)}>
+                    <HStack gap={2}>
+                      <MdDelete size={16} color="red.500" />
+                      <Text>Delete</Text>
+                    </HStack>
+                  </MenuItem>
+                </MenuContent>
+              </MenuRoot>
             </HStack>
           );
         },
       },
     ],
-    [refetch]
+    []
   );
-
-  // const totalPages = data?.totalPages || 0;
 
   return (
     <VStack  align="stretch" gap={4}>
@@ -317,15 +332,6 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
         />
       </Box>
 
-      {/* Pagination
-      {!isLoading && data && totalPages > 1 && (
-        <Pagination
-          totalPages={totalPages}
-          currentPage={page}
-          pageSize={size}
-          onPageChange={(p) => setPage(p)}
-        />
-      )} */}
       {/* Confirmation Dialogs */}
       <ConfirmationDialog
         open={cancelInterviewId !== null}
@@ -347,6 +353,33 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
           if (deleteInterviewId) handleDeleteInterview(deleteInterviewId);
           setDeleteInterviewId(null);
         }}
+      />
+
+      <ScheduleInterviewModal
+        open={rescheduleInterviewId !== null}
+        onClose={() => {
+          setRescheduleInterviewId(null);
+          refetch();
+        }}
+        existingInterviewId={rescheduleInterviewId || undefined}
+      />
+
+      <SetInterviewStatusModal
+        interviewId={statusInterview?.id || 0}
+        candidateName={statusInterview?.candidateName || ""}
+        currentStatus={statusInterview?.status || "SCHEDULED"}
+        open={!!statusInterview}
+        onClose={() => setStatusInterview(null)}
+        onSuccess={() => { setStatusInterview(null); refetch(); }}
+      />
+
+      <SetInterviewResultModal
+        interviewId={resultInterview?.id || 0}
+        candidateName={resultInterview?.candidateName || ""}
+        currentResult={resultInterview?.result || "PENDING"}
+        open={!!resultInterview}
+        onClose={() => setResultInterview(null)}
+        onSuccess={() => { setResultInterview(null); refetch(); }}
       />
     </VStack>
   );

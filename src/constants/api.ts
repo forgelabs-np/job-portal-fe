@@ -39,6 +39,7 @@ export const api = {
       GET_BY_APPLICATION_ID: "/admin/interviews/application/{jobApplicationId}",
       CREATE_OR_UPDATE: "/admin/interviews",
       SET_RESULT: "/admin/interviews/{interviewId}/result",
+      UPDATE_STATUS: "/admin/interviews/{interviewId}/status",
       CANCEL: "/admin/interviews/{interviewId}/cancel",
       DELETE: "/admin/interviews/{interviewId}",
       SHORTLISTED: "/admin/shortlisted",

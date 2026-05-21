@@ -38,6 +38,9 @@ interface SetInterviewResultModalProps {
   candidateName: string;
   currentResult?: string;
   onSuccess?: () => void;
+  trigger?: React.ReactNode;
+  open?: boolean;
+  onClose?: () => void;
 }
 
 const resultColors: Record<string, string> = {
@@ -54,8 +57,18 @@ export const SetInterviewResultModal: React.FC<
   candidateName,
   currentResult = "PENDING",
   onSuccess,
+  trigger,
+  open: controlledOpen,
+  onClose: controlledOnClose,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+
+  const handleClose = () => {
+    if (isControlled && controlledOnClose) controlledOnClose();
+    else setInternalOpen(false);
+  };
 
   const methods =
     useForm<InterviewResultRequest>({
@@ -88,9 +101,7 @@ export const SetInterviewResultModal: React.FC<
           );
 
           reset();
-
-          setOpen(false);
-
+          handleClose();
           onSuccess?.();
         },
 
@@ -107,20 +118,22 @@ export const SetInterviewResultModal: React.FC<
 
   return (
     <>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setOpen(true)}
-      >
-        <HStack gap={1} align="center">
-          <MdOutlineEdit size={16} />
-          <Text>Set Result</Text>
-        </HStack>
-      </Button>
+      {!isControlled && trigger ? (
+        <div onClick={() => setInternalOpen(true)} style={{ width: '100%' }}>
+          {trigger}
+        </div>
+      ) : !isControlled ? (
+        <Button variant="outline" size="sm" onClick={() => setInternalOpen(true)}>
+          <HStack gap={1} align="center">
+            <MdOutlineEdit size={16} />
+            <Text>Set Result</Text>
+          </HStack>
+        </Button>
+      ) : null}
 
       <Dialog
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         title="Set Interview Result"
         hasCloseTrigger
         size="lg"
@@ -219,9 +232,7 @@ export const SetInterviewResultModal: React.FC<
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() =>
-                    setOpen(false)
-                  }
+                  onClick={handleClose}
                 >
                   Cancel
                 </Button>
