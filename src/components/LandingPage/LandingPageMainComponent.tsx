@@ -6,6 +6,7 @@ import { Footer } from "./Footer"
 import { GlobalPartnersSection } from "./GlobalPartner"
 import { HeroSection } from "./HeroSection"
 import { JobsSection } from "./JobSection"
+import LocationGlobe from "./LocationGlobe"
 import { Navbar } from "./Navbar"
 import { ProcessSection } from "./Process"
 import { StatsSection } from "./StatsSecttion"
@@ -21,7 +22,8 @@ const LandingPageMainComponent = () => {
     <AboutSection/>
     <StatsSection/>
     <JobsSection/>
-    <GlobalPartnersSection/>
+    {/* <GlobalPartnersSection/> */}
+    <LocationGlobe/>
     <ProcessSection/>
     <TestimonialsSection/>
     <CTASection/>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Text, Button, Container, Badge } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Container, Badge, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -12,83 +12,120 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
+import { useGetCandidateJobs } from "@/api/candidate-api";
+import Link from "next/link";
 
 const MotionBox = motion(Box);
 
-// ─── Types — replace with your API response shape ───────────────────────────
-export interface JobListing {
+// ─── Types based on API response ───────────────────────────
+export interface Country {
   id: number;
-  company: string;
-  companyLogo?: string;
-  title: string;
-  location: string;
-  country: string;
-  maleCount?: number;
-  femaleCount?: number;
-  hoursPerDay: number;
-  daysPerWeek: number;
-  deadline: string;
-  daysLeft: number;
-  salaryNPR: number;
-  category: string;
+  name: string;
+  code: string;
+  currencyCode: string | null;
+  currencySymbol: string | null;
+  isEnabled: boolean | null;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
-// Default placeholder data — swap with API call
-const defaultJobs: JobListing[] = [
-  {
-    id: 1,
-    company: "EcoPure Technical Services",
-    title: "Frontend Developer",
-    location: "Ajman",
-    country: "UAE",
-    maleCount: 1,
-    femaleCount: 30,
-    hoursPerDay: 8,
-    daysPerWeek: 6,
-    deadline: "23/07/2026",
-    daysLeft: 65,
-    salaryNPR: 75732,
-    category: "Healthcare",
-  },
-  {
-    id: 2,
-    company: "Gulf Manpower Solutions",
-    title: "Caregiver – Elderly",
-    location: "Doha",
-    country: "Qatar",
-    femaleCount: 15,
-    hoursPerDay: 8,
-    daysPerWeek: 5,
-    deadline: "15/08/2026",
-    daysLeft: 88,
-    salaryNPR: 62000,
-    category: "Caregiving",
-  },
-  {
-    id: 3,
-    company: "Horizon Construction",
-    title: "Civil Construction Worker",
-    location: "Riyadh",
-    country: "Saudi Arabia",
-    maleCount: 20,
-    hoursPerDay: 10,
-    daysPerWeek: 6,
-    deadline: "30/06/2026",
-    daysLeft: 42,
-    salaryNPR: 55000,
-    category: "Construction",
-  },
-];
+export interface JobListing {
+  id: number;
+  title: string;
+  country: Country;
+  city: string;
+  description: string;
+  requirements: string;
+  totalSlots: number;
+  filledSlots: number | null;
+  remainingSlots: number;
+  appliedCount: number | null;
+  status: "OPEN" | "CLOSED" | string;
+  isOpen: boolean | null;
+  salaryAmount: number;
+  salaryCurrency: string;
+  salaryPeriod: string;
+  genderPreference: "MALE" | "FEMALE" | "ANY" | string;
+  preferredNationalities: string[];
+  minExperienceYears: number;
+  maxExperienceYears: number;
+  requiredSkills: string;
+  educationLevel: string;
+  workingHoursPerWeek: number;
+  contractDurationYears: number;
+  overtimePolicy: string;
+  accommodationProvided: boolean;
+  accommodationDetails: string | null;
+  foodProvided: boolean;
+  foodDetails: string | null;
+  transportationProvided: boolean;
+  transportationDetails: string | null;
+  medicalInsuranceProvided: boolean;
+  medicalInsuranceDetails: string | null;
+  airTicketProvided: boolean;
+  airTicketDetails: string | null;
+  leavePolicy: string;
+  probationPeriodMonths: number;
+  terminationClause: string;
+  additionalBenefits: string;
+  deadline: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+  createdBy: string | null;
+  isPublic: boolean;
+}
 
-const categories = [
-  "All Categories",
-  "Healthcare",
-  "Caregiving",
-  "Construction",
-  "Security",
-  "Hospitality",
-  "Manufacturing & Factory",
-];
+// Helper function to calculate days left from deadline
+const getDaysLeft = (deadline: string): number => {
+  const deadlineDate = new Date(deadline);
+  const today = new Date();
+  const diffTime = deadlineDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays > 0 ? diffDays : 0;
+};
+
+// Helper function to format deadline date
+const formatDeadline = (deadline: string): string => {
+  const date = new Date(deadline);
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+};
+
+// Helper to get category from title/description/skills
+const getCategoryFromJob = (job: JobListing): string => {
+  const searchText = `${job.title} ${job.description} ${job.requiredSkills}`.toLowerCase();
+  
+  if (searchText.includes('healthcare') || searchText.includes('nurse') || searchText.includes('medical')) 
+    return 'Healthcare';
+  if (searchText.includes('caregiver') || searchText.includes('elderly') || searchText.includes('care giving')) 
+    return 'Caregiving';
+  if (searchText.includes('construct') || searchText.includes('welder') || searchText.includes('builder')) 
+    return 'Construction';
+  if (searchText.includes('security') || searchText.includes('guard')) 
+    return 'Security';
+  if (searchText.includes('hospitality') || searchText.includes('hotel') || searchText.includes('restaurant')) 
+    return 'Hospitality';
+  if (searchText.includes('manufactur') || searchText.includes('factory') || searchText.includes('production')) 
+    return 'Manufacturing & Factory';
+  
+  return 'General';
+};
+
+// Helper to get company name (extract from description or use default)
+const getCompanyName = (job: JobListing): string => {
+  // If there's no explicit company field, derive from job title or description
+  const words = job.description.split(' ');
+  for (let i = 0; i < Math.min(words.length, 15); i++) {
+    if (words[i].includes('Corp') || words[i].includes('Ltd') || 
+        words[i].includes('Company') || words[i].includes('Inc')) {
+      return words[i];
+    }
+  }
+  return `${job.country.name} Recruitment`;
+};
 
 interface Props {
   jobs?: JobListing[];
@@ -96,7 +133,22 @@ interface Props {
 }
 
 function JobCard({ job, index }: { job: JobListing; index: number }) {
-  const urgent = job.daysLeft <= 45;
+  const daysLeft = getDaysLeft(job.deadline);
+  const urgent = daysLeft <= 45;
+  const category = getCategoryFromJob(job);
+  const companyName = getCompanyName(job);
+  
+  // Calculate daily working hours from weekly hours
+  const hoursPerDay = Math.round(job.workingHoursPerWeek / 6);
+  const daysPerWeek = job.workingHoursPerWeek > 40 ? 6 : 5;
+
+  // Calculate monthly salary in NPR (assuming conversion rate, adjust as needed)
+  const salaryNPR = job.salaryCurrency === 'EUR' 
+    ? Math.round(job.salaryAmount * 145) // Approximate EUR to NPR
+    : job.salaryCurrency === 'USD'
+    ? Math.round(job.salaryAmount * 130) // Approximate USD to NPR
+    : Math.round(job.salaryAmount);
+
   return (
     <MotionBox
       initial={{ opacity: 0, y: 24 }}
@@ -134,36 +186,20 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
             flexShrink={0}
             overflow="hidden"
           >
-            {job.companyLogo ? (
-              <Box as="img" src={job.companyLogo} alt={job.company} w="full" h="full" objectFit="cover" />
-            ) : (
-              <Text fontSize="lg" fontFamily={fonts.heading} fontWeight="800" color={colors.crimson}>
-                {job.company.charAt(0)}
-              </Text>
-            )}
+            <Text fontSize="lg" fontWeight="800" color={colors.crimson}>
+              {companyName.charAt(0)}
+            </Text>
           </Box>
           <Box flex={1} minW={0}>
-            <Text
-              fontSize="xs"
-              color={colors.textMuted}
-              fontFamily={fonts.body}
-              noOfLines={1}
-            >
-              {job.company}
+            <Text fontSize="xs" color={colors.textMuted}>
+              {companyName}
             </Text>
-            <Text
-              fontSize="md"
-              fontWeight="700"
-              color={colors.text}
-              fontFamily={fonts.heading}
-              noOfLines={1}
-            >
+            <Text fontSize="md" fontWeight="700" color={colors.text} >
               {job.title}
             </Text>
           </Box>
           <Badge
             fontSize="2xs"
-            fontFamily={fonts.body}
             fontWeight="700"
             bg={colors.bgWarm}
             color={colors.textMuted}
@@ -171,89 +207,105 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
             px={2}
             py={0.5}
           >
-            {job.category}
+            {category}
           </Badge>
         </Flex>
 
         {/* Location */}
         <Flex align="center" gap={1.5}>
           <MapPin size={13} color={colors.textLight} />
-          <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body}>
-            {job.country} ({job.location})
+          <Text fontSize="xs" color={colors.textMuted}>
+            {job.country.name} ({job.city})
           </Text>
         </Flex>
 
-        {/* Gender count */}
+        {/* Gender count / Preference */}
         <Flex gap={3}>
-          {job.maleCount !== undefined && (
-            <Box
-              bg={colors.bgWarm}
-              borderRadius={radii.sm}
-              px={3}
-              py={1.5}
-              flex={1}
-            >
-              <Flex align="center" gap={2}>
-                <Users size={13} color={colors.textMuted} />
-                <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body}>
-                  Male
-                </Text>
-                <Text fontSize="xs" fontWeight="700" color={colors.text} fontFamily={fonts.body} ml="auto">
-                  {job.maleCount}
-                </Text>
-              </Flex>
-            </Box>
-          )}
-          {job.femaleCount !== undefined && (
-            <Box
-              bg={colors.bgWarm}
-              borderRadius={radii.sm}
-              px={3}
-              py={1.5}
-              flex={1}
-            >
-              <Flex align="center" gap={2}>
-                <Users size={13} color={colors.textMuted} />
-                <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body}>
-                  Female
-                </Text>
-                <Text fontSize="xs" fontWeight="700" color={colors.text} fontFamily={fonts.body} ml="auto">
-                  {job.femaleCount}
-                </Text>
-              </Flex>
-            </Box>
-          )}
+          <Box
+            bg={colors.bgWarm}
+            borderRadius={radii.sm}
+            px={3}
+            py={1.5}
+            flex={1}
+          >
+            <Flex align="center" gap={2}>
+              <Users size={13} color={colors.textMuted} />
+              <Text fontSize="xs" color={colors.textMuted}>
+                Gender
+              </Text>
+              <Text fontSize="xs" fontWeight="700" color={colors.text} ml="auto">
+                {job.genderPreference === 'MALE' ? 'Male Only' : 
+                 job.genderPreference === 'FEMALE' ? 'Female Only' : 
+                 'Any Gender'}
+              </Text>
+            </Flex>
+          </Box>
+          <Box
+            bg={colors.bgWarm}
+            borderRadius={radii.sm}
+            px={3}
+            py={1.5}
+            flex={1}
+          >
+            <Flex align="center" gap={2}>
+              <Users size={13} color={colors.textMuted} />
+              <Text fontSize="xs" color={colors.textMuted}>
+                Slots Left
+              </Text>
+              <Text fontSize="xs" fontWeight="700" color={colors.text} ml="auto">
+                {job.remainingSlots}/{job.totalSlots}
+              </Text>
+            </Flex>
+          </Box>
         </Flex>
 
         {/* Meta info */}
-        <Flex direction="column" gap={1.5}>
+        <Flex direction="column" gap={3}>
           <Flex align="center" gap={2}>
             <Clock size={13} color={colors.textLight} />
-            <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body}>
-              {job.hoursPerDay} hrs | {job.daysPerWeek} days
+            <Text fontSize="xs" color={colors.textMuted}>
+              {hoursPerDay} hrs/day | {daysPerWeek} days/week
             </Text>
           </Flex>
           <Flex align="center" gap={2}>
             <Calendar size={13} color={colors.textLight} />
-            <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body}>
-              {job.deadline}
+            <Text fontSize="xs" color={colors.textMuted}>
+              Deadline: {formatDeadline(job.deadline)}
             </Text>
             <Text
               fontSize="2xs"
               fontWeight="700"
               color={urgent ? colors.crimson : colors.gold}
-              fontFamily={fonts.body}
               ml={1}
             >
-              • {job.daysLeft} days left
+              • {daysLeft} days left
             </Text>
           </Flex>
           <Flex align="center" gap={2}>
             <Banknote size={13} color={colors.textLight} />
-            <Text fontSize="xs" color={colors.textMuted} fontFamily={fonts.body}>
-              {job.salaryNPR.toLocaleString()} NRs/month
+            <Text fontSize="xs" color={colors.textMuted}>
+              {job.salaryAmount.toLocaleString()} {job.salaryCurrency}/{job.salaryPeriod.toLowerCase()}
+            </Text>
+            <Text fontSize="2xs" color={colors.textMuted}>
+              (~{salaryNPR.toLocaleString()} NRs)
             </Text>
           </Flex>
+        </Flex>
+
+        {/* Benefits summary */}
+        <Flex gap={2} flexWrap="wrap">
+          {job.accommodationProvided && (
+            <Badge fontSize="2xs" bg="green.50" color="green.700">🏠 Accommodation</Badge>
+          )}
+          {job.foodProvided && (
+            <Badge fontSize="2xs" bg="orange.50" color="orange.700">🍽️ Food</Badge>
+          )}
+          {job.transportationProvided && (
+            <Badge fontSize="2xs" bg="blue.50" color="blue.700">🚌 Transport</Badge>
+          )}
+          {job.medicalInsuranceProvided && (
+            <Badge fontSize="2xs" bg="red.50" color="red.700">🏥 Insurance</Badge>
+          )}
         </Flex>
 
         {/* CTA */}
@@ -261,14 +313,14 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
           mt="auto"
           bg={colors.crimson}
           color="white"
-          fontFamily={fonts.body}
           fontWeight="700"
           fontSize="xs"
           borderRadius="md"
-          h="38px"
           _hover={{ bg: colors.crimsonDark }}
           transition="all 0.2s"
           gap={2}
+          py={6}
+          w={"fit-content"}
         >
           View more detail
           <ArrowRight size={14} />
@@ -286,9 +338,9 @@ function SkeletonCard() {
       borderColor={colors.border}
       borderRadius={radii.lg}
       p={5}
-      h="320px"
+      h="400px"
     >
-      {[80, 120, 60, 60, 40].map((w, i) => (
+      {[80, 120, 60, 60, 40, 30].map((w, i) => (
         <Box
           key={i}
           h="14px"
@@ -303,7 +355,15 @@ function SkeletonCard() {
   );
 }
 
-export function JobsSection({ jobs = defaultJobs, isLoading = false }: Props) {
+export function JobsSection({ jobs: propJobs, isLoading = false }: Props) {
+  const { data: apiData, isLoading: apiLoading } = useGetCandidateJobs();
+  
+  // Use API data if available, otherwise use prop jobs
+  const jobs = apiData || propJobs || [];
+  const loading = isLoading || apiLoading;
+
+  console.log(jobs, "landing page jobs");
+
   return (
     <Box
       as="section"
@@ -315,12 +375,11 @@ export function JobsSection({ jobs = defaultJobs, isLoading = false }: Props) {
         {/* Heading */}
         <Box mb={10}>
           <Flex display="inline-flex" align="center" bg={colors.crimson} px={3} py={1} borderRadius={radii.sm} mb={4}>
-            <Text fontSize="2xs" fontWeight="800" color="white" fontFamily={fonts.body} letterSpacing="widest" textTransform="uppercase">
+            <Text fontSize="2xs" fontWeight="800" color="white" letterSpacing="widest" textTransform="uppercase">
               Current Hiring
             </Text>
           </Flex>
           <Text
-            fontFamily={fonts.heading}
             fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
             fontWeight="800"
             color={colors.text}
@@ -329,37 +388,11 @@ export function JobsSection({ jobs = defaultJobs, isLoading = false }: Props) {
           >
             Find latest jobs open for Nepali workers
           </Text>
-          <Text fontSize="sm" color={colors.textMuted} fontFamily={fonts.body} lineHeight={1.7} maxW="640px">
+          <Text fontSize="sm" color={colors.textMuted} lineHeight={1.7} maxW="640px">
             Interpid brings you the newest job openings in Nepal and abroad. Choose from many
             trusted companies and apply easily with our simple process.
           </Text>
         </Box>
-
-        {/* Category tabs */}
-        <Flex gap={2} mb={8} flexWrap="wrap">
-          {categories.map((cat, i) => (
-            <Box
-              key={cat}
-              as="button"
-              px={4}
-              py={2}
-              borderRadius="md"
-              fontSize="sm"
-              fontFamily={fonts.body}
-              fontWeight="600"
-              cursor="pointer"
-              transition="all 0.2s"
-              bg={i === 0 ? colors.gold : colors.white}
-              color={i === 0 ? colors.white : colors.textMuted}
-              border="1px solid"
-              borderColor={i === 0 ? colors.gold : colors.border}
-              _hover={i !== 0 ? { borderColor: colors.crimson, color: colors.crimson } : {}}
-            >
-              {cat}
-              {i !== 0 && <Text as="span" ml={1} fontSize="xs">↗</Text>}
-            </Box>
-          ))}
-        </Flex>
 
         {/* Job grid */}
         <Box
@@ -372,30 +405,31 @@ export function JobsSection({ jobs = defaultJobs, isLoading = false }: Props) {
           gap={6}
           mb={8}
         >
-          {isLoading
+          {loading
             ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
-            : jobs.map((job, i) => <JobCard key={job.id} job={job} index={i} />)}
+            : jobs.map((job: JobListing, i: number) => <JobCard key={job.id} job={job} index={i} />)}
         </Box>
 
         {/* View all */}
-        <Flex justify="flex-end">
-          <Button
-            bg={colors.gold}
-            color="white"
-            fontFamily={fonts.body}
-            fontWeight="700"
-            fontSize="sm"
-            px={6}
-            h="44px"
-            borderRadius="md"
-            _hover={{ bg: colors.goldLight }}
-            transition="all 0.2s"
-            gap={2}
-          >
-            View All Jobs Listings
-            <ArrowRight size={16} />
-          </Button>
-        </Flex>
+<Flex justify="flex-end">
+  <Link href="/public/jobs">
+    <Button
+      bg={colors.gold}
+      color="white"
+      fontWeight="700"
+      fontSize="sm"
+      px={6}
+      h="44px"
+      borderRadius="md"
+      _hover={{ bg: colors.goldLight }}
+      transition="all 0.2s"
+      gap={2}
+    >
+      View All Jobs Listings
+      <ArrowRight size={16} />
+    </Button>
+  </Link>
+</Flex>
       </Container>
     </Box>
   );

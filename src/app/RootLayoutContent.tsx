@@ -36,7 +36,9 @@ export default function RootLayoutContent({
   const isPublicRoute =
     pathname === "/" ||
     pathname.startsWith("/login") ||
-    pathname.startsWith("/register");
+    pathname.startsWith("/register")||
+        pathname.startsWith("/public")
+
 
   const isDashboardRoute =
     pathname.startsWith("/dashboard") ||
