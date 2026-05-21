@@ -122,7 +122,6 @@ export interface CandidateRecentJob {
   country: string;
   totalSlots: number;
   remainingSlots: number;
-  status: string;
 }
 
 export interface CandidateStatusDistribution {
@@ -143,6 +142,86 @@ export interface CandidateDashboardResponse {
   recentApplications: CandidateRecentApplication[];
   recentJobs: CandidateRecentJob[];
   statusDistribution: CandidateStatusDistribution;
+  weeklyActivity: CandidateWeeklyActivity;
+}
+
+
+
+
+export interface CandidateRecentApplication {
+  id: number;
+  jobTitle: string;
+  country: string;
+  city: string;
+  salaryAmount: number;
+  salaryCurrency: string;
+  status: string;
+  appliedAt: string;
+}
+
+export interface CandidateRecentJob {
+  id: number;
+  title: string;
+  country: string;
+  status?: string;
+  remainingSlots: number;
+  totalSlots: number;
+}
+
+export interface CandidateDocumentSummary {
+  documentType: string;
+  documentName: string;
+  status: string;
+  uploadedAt: string;
+}
+
+export interface CandidateDashboardStats {
+  isProfileComplete: boolean;
+  onboardingStage: string;
+
+  documentsUploaded: number;
+  documentsApproved: number;
+  documentsPending: number;
+  documentsRejected: number;
+
+  allDocumentsApproved: boolean;
+
+  totalApplications: number;
+  pendingApplications: number;
+  reviewedApplications: number;
+  shortlistedApplications: number;
+  rejectedApplications: number;
+  withdrawnApplications: number;
+
+  totalPublicJobs: number;
+  appliedJobsCount: number;
+  availableJobsCount: number;
+}
+
+export interface CandidateStatusDistribution {
+  pending: number;
+  reviewed: number;
+  shortlisted: number;
+  rejected: number;
+  withdrawn: number;
+}
+
+export interface CandidateWeeklyActivity {
+  days: string[];
+  applicationsSubmitted: number[];
+}
+
+export interface CandidateDashboardResponse {
+  stats: CandidateDashboardStats;
+
+  recentApplications: CandidateRecentApplication[];
+
+  recommendedJobs: CandidateRecentJob[];
+
+  documentSummary: CandidateDocumentSummary[];
+
+  statusDistribution: CandidateStatusDistribution;
+
   weeklyActivity: CandidateWeeklyActivity;
 }
 
@@ -207,96 +286,7 @@ interface CandidateJobsResponse {
 // ─── API Functions & Hooks ─────────────────────────────────────────────
 
 // Mock Dashboard Data for development since API is not ready yet
-export const MOCK_DASHBOARD_DATA: CandidateDashboardResponse = {
-  stats: {
-    totalApplications: 12,
-    pendingApplications: 5,
-    shortlistedApplications: 3,
-    rejectedApplications: 2,
-    approvedApplications: 2,
-    withdrawnApplications: 0,
-    availableJobs: 48,
-  },
-  recentApplications: [
-    {
-      id: 1,
-      jobTitle: "Senior Frontend Engineer",
-      jobCountry: "Germany",
-      jobCity: "Berlin",
-      status: "SHORTLISTED",
-      appliedAt: "2026-05-15T08:30:00Z",
-    },
-    {
-      id: 2,
-      jobTitle: "React Developer",
-      jobCountry: "Canada",
-      jobCity: "Toronto",
-      status: "PENDING",
-      appliedAt: "2026-05-14T11:15:00Z",
-    },
-    {
-      id: 3,
-      jobTitle: "Full Stack Developer (Next.js)",
-      jobCountry: "United Kingdom",
-      jobCity: "London",
-      status: "REJECTED",
-      appliedAt: "2026-05-10T14:45:00Z",
-    },
-    {
-      id: 4,
-      jobTitle: "UI/UX Developer",
-      jobCountry: "United States",
-      jobCity: "New York",
-      status: "APPROVED",
-      appliedAt: "2026-05-08T09:00:00Z",
-    },
-  ],
-  recentJobs: [
-    {
-      id: 101,
-      title: "Staff Software Engineer (Frontend)",
-      country: "Switzerland",
-      totalSlots: 5,
-      remainingSlots: 2,
-      status: "OPEN",
-    },
-    {
-      id: 102,
-      title: "Junior Frontend Engineer",
-      country: "Japan",
-      totalSlots: 10,
-      remainingSlots: 7,
-      status: "OPEN",
-    },
-    {
-      id: 103,
-      title: "Lead React Architect",
-      country: "Singapore",
-      totalSlots: 3,
-      remainingSlots: 1,
-      status: "OPEN",
-    },
-    {
-      id: 104,
-      title: "Mobile App Developer (React Native)",
-      country: "Australia",
-      totalSlots: 4,
-      remainingSlots: 3,
-      status: "OPEN",
-    },
-  ],
-  statusDistribution: {
-    pending: 5,
-    shortlisted: 3,
-    approved: 2,
-    rejected: 2,
-    withdrawn: 0,
-  },
-  weeklyActivity: {
-    days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    applicationsSubmitted: [2, 4, 1, 3, 0, 2, 0],
-  },
-};
+
 
 const getCandidateDashboard = () => {
   return httpClient.get<ApiResponse<CandidateDashboardResponse>>(
@@ -307,18 +297,19 @@ const getCandidateDashboard = () => {
 export const useGetCandidateDashboardQuery = () => {
   return useQuery({
     queryKey: [api.CANDIDATE.DASHBOARD],
-    queryFn: async () => {
-      // Simulate loading state (800ms delay) for premium user feel
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      return {
-        data: {
-          success: true,
-          message: "Fetched mock candidate dashboard successfully",
-          responseCode: 200,
-          data: MOCK_DASHBOARD_DATA,
-        },
-      } as any;
-    },
+    queryFn: getCandidateDashboard,
+    // queryFn: async () => {
+    //   // Simulate loading state (800ms delay) for premium user feel
+    //   await new Promise((resolve) => setTimeout(resolve, 800));
+    //   return {
+    //     data: {
+    //       success: true,
+    //       message: "Fetched mock candidate dashboard successfully",
+    //       responseCode: 200,
+    //       data: MOCK_DASHBOARD_DATA,
+    //     },
+    //   } as any;
+    // },
     select: (resp) => resp?.data?.data,
   });
 };

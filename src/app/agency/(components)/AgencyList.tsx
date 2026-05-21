@@ -18,9 +18,9 @@ import { Row } from "@tanstack/react-table";
 
 const TAB_STATUSES = ["PENDING", "APPROVED", "REJECTED"] as const;
 type Status = (typeof TAB_STATUSES)[number];
-type ModalMode = "view" | "edit";
-type ConfirmAction = "Approve" | "Reject";
-type ActionScope = "PROFILE" | "DOCUMENT";
+export type ModalMode = "view" | "edit";
+export type ConfirmAction = "Approve" | "Reject";
+export type ActionScope = "PROFILE" | "DOCUMENT";
 
 const AgencyTable = ({ status }: { status: Status }) => {
   const { data, isLoading } = useGetAgenciesQuery({ status });
@@ -91,6 +91,8 @@ const AgencyTable = ({ status }: { status: Status }) => {
             onCloseConfirm();
             setSelectedAction(null);
             refetch();
+             onCloseProfileModal();
+            setSelectedUserId(null);
           },
         },
       );

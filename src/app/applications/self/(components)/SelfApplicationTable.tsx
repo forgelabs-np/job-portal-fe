@@ -49,9 +49,7 @@ const SelfApplicationTable = () => {
             <Text fontSize="sm" fontWeight="600" color="gray.800">
               {row.original.jobTitle}
             </Text>
-            <Text fontSize="xs" color="gray.400">
-              ID #{row.original.jobDemandId}
-            </Text>
+           
           </Box>
         ),
       },
@@ -95,6 +93,20 @@ const SelfApplicationTable = () => {
             letterSpacing="0.04em"
           >
             {row.original.candidatePassportNumber}
+          </Text>
+        ),
+      },
+       {
+        accessorKey: "createdAt",
+        header: "Applied At",
+        cell: ({ row }) => (
+          <Text
+            fontSize="sm"
+            color="gray.600"
+            fontFamily="mono"
+            letterSpacing="0.04em"
+          >
+            {row.original.createdAt}
           </Text>
         ),
       },
