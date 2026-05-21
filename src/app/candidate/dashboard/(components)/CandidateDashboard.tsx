@@ -40,12 +40,20 @@ import {
 import {
   CandidateRecentApplication,
   CandidateRecentJob,
+  CandidateDocumentSummary,
   useGetCandidateDashboardQuery,
 } from "@/api/candidate-api";
+
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 
-const COLORS = [WEBSITE_THEME_COLOR, "#26a8c9", "#f59e0b", "#ef4444", "#8b5cf6"];
+const COLORS = [
+  WEBSITE_THEME_COLOR,
+  "#26a8c9",
+  "#f59e0b",
+  "#ef4444",
+  "#8b5cf6",
+];
 
 const CandidateDashboard = () => {
   const { data: dashboard, isLoading } = useGetCandidateDashboardQuery();
@@ -54,12 +62,18 @@ const CandidateDashboard = () => {
     return (
       <Box p={6}>
         <Skeleton height="40px" width="300px" mb={6} />
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} gap={5} mb={6}>
-          {[1, 2, 3, 4].map((i) => (
+
+        <SimpleGrid columns={{ base: 1, md: 2, xl: 6 }} gap={5} mb={6}>
+          {[1, 2, 3, 4, 5, 6].map((i) => (
             <Skeleton key={i} height="100px" borderRadius="2xl" />
           ))}
         </SimpleGrid>
-        <Grid templateColumns={{ base: "1fr", xl: "350px 1fr" }} gap={6} mb={6}>
+
+        <Grid
+          templateColumns={{ base: "1fr", xl: "350px 1fr" }}
+          gap={6}
+          mb={6}
+        >
           <Skeleton height="350px" borderRadius="2xl" />
           <Skeleton height="350px" borderRadius="2xl" />
         </Grid>
@@ -79,15 +93,16 @@ const CandidateDashboard = () => {
   const {
     stats,
     recentApplications,
-    recentJobs,
+    recommendedJobs,
+    documentSummary,
     statusDistribution,
     weeklyActivity,
   } = dashboard;
 
   const pieData = [
     { name: "Pending", value: statusDistribution?.pending || 0 },
+    { name: "Reviewed", value: statusDistribution?.reviewed || 0 },
     { name: "Shortlisted", value: statusDistribution?.shortlisted || 0 },
-    { name: "Approved", value: statusDistribution?.approved || 0 },
     { name: "Rejected", value: statusDistribution?.rejected || 0 },
     { name: "Withdrawn", value: statusDistribution?.withdrawn || 0 },
   ].filter((d) => d.value > 0);
@@ -102,41 +117,83 @@ const CandidateDashboard = () => {
   return (
     <Box p={6} bg="#f7f8fa" minH="100vh">
       {/* Header */}
-      <VStack align="start" mb={6} gap={0}>
+      <VStack align="start" mb={3} gap={0}>
         <Text fontSize="3xl" fontWeight="700">
           My Dashboard
         </Text>
+
         <Text fontSize="sm" color="gray.500" fontWeight="600">
           YOUR JOB APPLICATION OVERVIEW
         </Text>
       </VStack>
 
-      {/* Stats Grid */}
+      <HStack mb={6} gap={4} flexWrap="wrap">
+        <Badge
+          colorPalette={stats?.isProfileComplete ? "green" : "orange"}
+          px={3}
+          py={1}
+          borderRadius="full"
+        >
+          Profile: {stats?.isProfileComplete ? "Complete" : "Incomplete"}
+        </Badge>
+
+        <Badge colorPalette="blue" px={3} py={1} borderRadius="full">
+          Onboarding: {stats?.onboardingStage}
+        </Badge>
+
+        {stats?.allDocumentsApproved && (
+          <Badge colorPalette="green" px={3} py={1} borderRadius="full">
+            All Documents: Approved
+          </Badge>
+        )}
+      </HStack>
+
+      {/* Stats */}
       <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} gap={5} mb={6}>
         <StatCard
           label="TOTAL APPLICATIONS"
           value={stats?.totalApplications ?? 0}
           icon={FileText}
         />
+
         <StatCard
           label="PENDING"
           value={stats?.pendingApplications ?? 0}
           icon={Clock}
         />
+
         <StatCard
           label="SHORTLISTED"
           value={stats?.shortlistedApplications ?? 0}
           icon={CheckCircle2}
         />
+
         <StatCard
           label="AVAILABLE JOBS"
-          value={stats?.availableJobs ?? 0}
+          value={stats?.availableJobsCount ?? 0}
           icon={Briefcase}
+        />
+
+        <StatCard
+          label="DOCUMENTS APPROVED"
+          value={stats?.documentsApproved ?? 0}
+          icon={CheckCircle2}
+        />
+
+        <StatCard
+          label="PROFILE STATUS"
+          value={stats?.isProfileComplete ? "Complete" : "Incomplete"}
+          icon={TrendingUp}
         />
       </SimpleGrid>
 
-      {/* Charts Section */}
-      <Grid templateColumns={{ base: "1fr", xl: "350px 1fr" }} gap={6} mb={6}>
+      {/* Charts */}
+      <Grid
+        templateColumns={{ base: "1fr", xl: "350px 1fr" }}
+        gap={6}
+        mb={6}
+      >
+        {/* Pie Chart */}
         <GridItem>
           <Box
             bg="white"
@@ -150,6 +207,7 @@ const CandidateDashboard = () => {
               <Text fontSize="2xl" fontWeight="700">
                 Application Status
               </Text>
+
               <Text color="gray.500" fontSize="sm">
                 Distribution of your applications
               </Text>
@@ -179,6 +237,7 @@ const CandidateDashboard = () => {
                         />
                       ))}
                     </Pie>
+
                     <Tooltip />
                     <Legend />
                   </PieChart>
@@ -188,6 +247,7 @@ const CandidateDashboard = () => {
           </Box>
         </GridItem>
 
+        {/* Weekly Activity */}
         <GridItem>
           <Box
             bg="white"
@@ -200,6 +260,7 @@ const CandidateDashboard = () => {
               <Text fontSize="2xl" fontWeight="700">
                 Weekly Activity
               </Text>
+
               <Text color="gray.500" fontSize="sm">
                 Your application submissions this week
               </Text>
@@ -216,10 +277,15 @@ const CandidateDashboard = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={weeklyChartData}>
                     <CartesianGrid strokeDasharray="3 3" />
+
                     <XAxis dataKey="day" />
-                    <YAxis />
+
+                    <YAxis allowDecimals={false} />
+
                     <Tooltip />
+
                     <Legend />
+
                     <Bar
                       dataKey="applied"
                       name="Applications"
@@ -234,7 +300,7 @@ const CandidateDashboard = () => {
         </GridItem>
       </Grid>
 
-      {/* Recent Lists */}
+      {/* Applications & Jobs */}
       <Grid templateColumns={{ base: "1fr", xl: "1fr 1fr" }} gap={6}>
         {/* Recent Applications */}
         <Box
@@ -248,6 +314,7 @@ const CandidateDashboard = () => {
             <Text fontSize="xl" fontWeight="700">
               Recent Applications
             </Text>
+
             <Badge colorScheme="green">
               {recentApplications?.length ?? 0} Recent
             </Badge>
@@ -270,11 +337,12 @@ const CandidateDashboard = () => {
                   _hover={{ bg: "gray.50" }}
                   transition="all 0.2s"
                 >
-                  <HStack justify="space-between" mb={1}>
+                  <HStack justify="space-between" mb={2}>
                     <Text fontWeight="700">{app.jobTitle}</Text>
+
                     <Badge
                       colorPalette={
-                        app.status === "SHORTLISTED" || app.status === "APPROVED"
+                        app.status === "SHORTLISTED"
                           ? "green"
                           : app.status === "REJECTED"
                             ? "red"
@@ -286,19 +354,31 @@ const CandidateDashboard = () => {
                       {app.status}
                     </Badge>
                   </HStack>
-                  <HStack justify="space-between">
+
+                  <HStack justify="space-between" mb={2}>
                     <HStack color="gray.500" fontSize="sm">
                       <MapPin size={14} />
+
                       <Text>
-                        {app.jobCity}, {app.jobCountry}
+                        {app.city}, {app.country}
                       </Text>
                     </HStack>
-                    <HStack color="gray.500" fontSize="xs">
-                      <Clock size={12} />
-                      <Text>
-                        {new Date(app.appliedAt).toLocaleDateString()}
-                      </Text>
-                    </HStack>
+
+                    <Text
+                      fontSize="xs"
+                      color="gray.500"
+                      fontWeight="600"
+                    >
+                      {app.salaryCurrency} {app.salaryAmount}
+                    </Text>
+                  </HStack>
+
+                  <HStack color="gray.500" fontSize="xs">
+                    <Clock size={12} />
+
+                    <Text>
+                      {new Date(app.appliedAt).toLocaleDateString()}
+                    </Text>
                   </HStack>
                 </Box>
               ))
@@ -306,7 +386,7 @@ const CandidateDashboard = () => {
           </VStack>
         </Box>
 
-        {/* Available Jobs */}
+        {/* Recommended Jobs */}
         <Box
           bg="white"
           borderRadius="2xl"
@@ -316,21 +396,22 @@ const CandidateDashboard = () => {
         >
           <HStack justify="space-between" mb={5}>
             <Text fontSize="xl" fontWeight="700">
-              Latest Jobs
+              Recommended Jobs
             </Text>
+
             <Badge colorScheme="purple">
-              {recentJobs?.length ?? 0} Jobs
+              {recommendedJobs?.length ?? 0} Jobs
             </Badge>
           </HStack>
 
           <VStack gap={4} align="stretch">
-            {!recentJobs || recentJobs.length === 0 ? (
+            {!recommendedJobs || recommendedJobs.length === 0 ? (
               <PageNoData
                 title="No Jobs Available"
-                description="There are no recent job postings to display."
+                description="There are no recommended jobs to display."
               />
             ) : (
-              recentJobs.map((job: CandidateRecentJob) => (
+              recommendedJobs.map((job: CandidateRecentJob) => (
                 <Box
                   key={job.id}
                   p={4}
@@ -340,16 +421,26 @@ const CandidateDashboard = () => {
                   _hover={{ bg: "gray.50" }}
                   transition="all 0.2s"
                 >
-                  <HStack justify="space-between" mb={1}>
+                  <HStack justify="space-between" mb={2}>
                     <Text fontWeight="700">{job.title}</Text>
-                    <Badge colorPalette="green">{job.status}</Badge>
+
+                    <Badge colorPalette="green">
+                      {job.status ?? "OPEN"}
+                    </Badge>
                   </HStack>
+
                   <HStack justify="space-between">
                     <HStack color="gray.500" fontSize="sm">
                       <MapPin size={14} />
+
                       <Text>{job.country}</Text>
                     </HStack>
-                    <Text fontSize="xs" color="gray.500" fontWeight="600">
+
+                    <Text
+                      fontSize="xs"
+                      color="gray.500"
+                      fontWeight="600"
+                    >
                       {job.remainingSlots}/{job.totalSlots} Slots Left
                     </Text>
                   </HStack>
@@ -359,6 +450,69 @@ const CandidateDashboard = () => {
           </VStack>
         </Box>
       </Grid>
+
+      {/* Document Summary */}
+      <Box
+        bg="white"
+        borderRadius="2xl"
+        p={6}
+        border="1px solid"
+        borderColor="gray.100"
+        mt={6}
+      >
+        <HStack justify="space-between" mb={5}>
+          <Text fontSize="xl" fontWeight="700">
+            Document Summary
+          </Text>
+
+          <Badge colorScheme="green">
+            {stats?.documentsApproved ?? 0} Approved
+          </Badge>
+        </HStack>
+
+        <VStack gap={4} align="stretch">
+          {!documentSummary || documentSummary.length === 0 ? (
+            <PageNoData
+              title="No Documents"
+              description="No uploaded documents found."
+            />
+          ) : (
+            documentSummary.map(
+              (doc: CandidateDocumentSummary, index: number) => (
+                <Box
+                  key={index}
+                  p={4}
+                  border="1px solid"
+                  borderColor="gray.100"
+                  borderRadius="xl"
+                >
+                  <HStack justify="space-between">
+                    <VStack align="start" gap={0}>
+                      <Text fontWeight="700">{doc.documentType}</Text>
+
+                      <Text fontSize="sm" color="gray.500">
+                        {doc.documentName}
+                      </Text>
+                    </VStack>
+
+                    <Badge
+                      colorPalette={
+                        doc.status === "APPROVED"
+                          ? "green"
+                          : doc.status === "PENDING"
+                            ? "orange"
+                            : "red"
+                      }
+                    >
+                      {doc.status}
+                    </Badge>
+                  </HStack>
+                </Box>
+              ),
+            )
+          )}
+        </VStack>
+      </Box>
     </Box>
   );
 };
@@ -387,7 +541,6 @@ const StatCard = ({ label, value, icon }: StatCardProps) => {
           bg="green.50"
           align="center"
           justify="center"
-          _dark={{ bg: "green.900/20" }}
         >
           <Icon as={icon} boxSize={6} color="green.600" />
         </Flex>
@@ -396,6 +549,7 @@ const StatCard = ({ label, value, icon }: StatCardProps) => {
           <Stat.Label color="gray.500" fontSize="xs" fontWeight="700">
             {label}
           </Stat.Label>
+
           <Stat.ValueText fontSize="3xl" fontWeight="800">
             {value}
           </Stat.ValueText>

@@ -11,7 +11,6 @@ import {
   HStack,
   Image,
   Input,
-  Link,
   SimpleGrid,
   Tabs,
   Text,
@@ -20,11 +19,7 @@ import {
 import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-
-type ModalMode = "view" | "edit";
-type ConfirmAction = "Approve" | "Reject";
-type ActionScope = "PROFILE" | "DOCUMENT";
-
+import { ActionScope, ConfirmAction, ModalMode } from "./AgencyList";
 interface AgencyProfileReviewDialogProps {
   open: boolean;
   onClose: () => void;
