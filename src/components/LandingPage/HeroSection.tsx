@@ -1,13 +1,20 @@
 "use client";
 
-import { Box, Flex, Text, Button, Input, Container, Badge, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  Input,
+  Container,
+  Image,
+} from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { Search, Star, Users, Globe } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
 import { BannerImage } from "@/assets/images/landing";
 
 const MotionBox = motion(Box);
-const MotionFlex = motion(Flex);
 
 const stagger = {
   hidden: {},
@@ -16,59 +23,80 @@ const stagger = {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
 };
 
 export function HeroSection() {
   return (
     <Box
       bg={colors.bg}
-      pt={{ base: 12, md: 16 }}
-      pb={{ base: 0, md: 0 }}
-      overflow="hidden"
       position="relative"
+      overflow="hidden"
+      // pt={{ base: 10, sm: 12, md: 16 }}
+      // pb={{ base: 10, md: 0 }}
     >
       {/* Background decoration */}
       <Box
         position="absolute"
-        top="0"
-        right="0"
-        w={{ base: "300px", md: "600px" }}
-        h={{ base: "300px", md: "600px" }}
+        top="-120px"
+        right="-120px"
+        w={{ base: "260px", sm: "340px", md: "600px" }}
+        h={{ base: "260px", sm: "340px", md: "600px" }}
         borderRadius="full"
         bg={colors.bgWarm}
-        style={{ transform: "translate(30%, -30%)" }}
         zIndex={0}
+        opacity={0.9}
       />
 
-      <Container maxW="1400px" position="relative" zIndex={1}>
+      <Container
+        maxW="1400px"
+        position="relative"
+        zIndex={1}
+        px={{ base: 4, sm: 6, lg: 8 }}
+      >
         <Flex
-          align={{ base: "center", md: "flex-end" }}
-          direction={{ base: "column", md: "row" }}
-          gap={{ base: 8, md: 4 }}
-          minH={{ base: "auto", md: "560px" }}
+          direction={{ base: "column", md: "column", lg: "row" }}
+          align="center"
+          justify="space-between"
+          gap={{ base: 10, md: 12, lg: 8 }}
+          minH={{ lg: "720px" }}
         >
-          {/* Left content */}
+          {/* LEFT CONTENT */}
           <MotionBox
-            flex={1}
-            pb={{ base: 8, md: 16 }}
+            flex="1"
+            w="full"
+            maxW={{ base: "100%", lg: "620px" }}
             variants={stagger}
             initial="hidden"
             animate="visible"
+            textAlign={{ base: "center", lg: "left" }}
+            pt={{ base: 2, md: 4 }}
           >
-            {/* Rating badge */}
-            <MotionBox variants={fadeUp} mb={5}>
+            {/* Rating Badge */}
+            <MotionBox
+              variants={fadeUp}
+              mb={{ base: 5, md: 6 }}
+              display="flex"
+              justifyContent={{ base: "center", lg: "flex-start" }}
+            >
               <Flex
                 align="center"
                 gap={2}
-                display="inline-flex"
                 bg={colors.white}
-                px={3}
-                py={1.5}
+                px={{ base: 3, md: 4 }}
+                py={2}
                 borderRadius={radii.full}
                 border="1px solid"
                 borderColor={colors.border}
-                boxShadow="0 2px 8px rgba(0,0,0,0.06)"
+                boxShadow="0 4px 14px rgba(0,0,0,0.06)"
+                flexWrap="wrap"
               >
                 <Flex gap={0.5}>
                   {[1, 2, 3, 4, 5].map((i) => (
@@ -80,16 +108,21 @@ export function HeroSection() {
                     />
                   ))}
                 </Flex>
-                <Text fontSize="xs" fontWeight="600" color={colors.text} fontFamily={fonts.body}>
+
+                <Text
+                  fontSize={{ base: "xs", md: "sm" }}
+                  fontWeight="600"
+                  color={colors.text}
+                >
                   (4.9/5) Trusted by 10,000+ workers
                 </Text>
               </Flex>
             </MotionBox>
 
-            {/* Heading */}
-            <MotionBox variants={fadeUp} mb={5}>
+            {/* HEADING */}
+            <MotionBox variants={fadeUp} mb={{ base: 5, md: 3 }}>
               <Text
-                fontSize={{ base: "3xl", sm: "4xl", md: "5xl", lg: "6xl" }}
+                fontSize={{ base: "3xl", sm: "4xl", md: "5xl", lg: "5xl" }}
                 fontWeight="900"
                 color={colors.text}
                 lineHeight={1.1}
@@ -99,6 +132,7 @@ export function HeroSection() {
                 <Text as="span" display="block">
                   Job Consultancy to
                 </Text>
+
                 <Text
                   as="span"
                   display="block"
@@ -110,8 +144,8 @@ export function HeroSection() {
               </Text>
             </MotionBox>
 
-            {/* Subtext */}
-            <MotionBox variants={fadeUp} mb={8}>
+            {/* SUBTEXT */}
+            <MotionBox variants={fadeUp} mb={{ base: 7, md: 8 }}>
               <Text
                 fontSize={{ base: "sm", md: "md" }}
                 color={colors.textMuted}
@@ -119,187 +153,160 @@ export function HeroSection() {
                 lineHeight={1.7}
                 maxW="480px"
               >
-                We help Nepali people find safe and good jobs in Nepal and abroad.
-                Fast process, trusted service, and full support for workers.
+                We help Nepali people find safe and trusted jobs in Nepal
+                and abroad with fast processing, transparent recruitment,
+                and complete worker support.
               </Text>
             </MotionBox>
 
-            {/* Search bar */}
-            <MotionBox variants={fadeUp} w={"xl"}>
+            {/* SEARCH BAR */}
+            <MotionBox
+              variants={fadeUp}
+              w="full"
+              maxW={{ base: "100%", lg: "620px" }}
+            >
               <Flex
+                direction={{ base: "column", md: "row" }}
                 bg={colors.white}
                 border="1px solid"
                 borderColor={colors.border}
-                borderRadius={radii.md}
+                borderRadius={{ base: "2xl", md: radii.sm }}
                 overflow="hidden"
-                boxShadow="0 4px 24px rgba(0,0,0,0.08)"
-                direction={{ base: "column", sm: "row" }}
-                pt={2}
+                boxShadow="0 10px 30px rgba(0,0,0,0.08)"
+                p={{ base: 3, md: 2 }}
+                gap={{ base: 3, md: 0 }}
               >
-                <Box flex={1} position="relative" >
+                {/* Search Input */}
+                <Box flex={1}>
                   <Input
                     placeholder="Enter job titles"
                     border="none"
-                    outline="none"
-                    // h="52px"
-                    pl={4}
-                    fontSize="sm"
+                    bg="transparent"
+                    h={{ base: "52px", md: "58px" }}
+                    fontSize={{ base: "sm", md: "md" }}
                     fontFamily={fonts.body}
                     color={colors.text}
-                    bg="transparent"
-                    _placeholder={{ color: colors.textLight }}
-                    _focus={{ boxShadow: "none", outline: "none" }}
+                    px={4}
+                    _placeholder={{
+                      color: colors.textLight,
+                    }}
+                    _focus={{
+                      boxShadow: "none",
+                    }}
                   />
                 </Box>
+
+                {/* Divider */}
                 <Box
                   w="1px"
                   bg={colors.border}
-                  display={{ base: "none", sm: "block" }}
-                  my={4}
+                  my={3}
+                  display={{ base: "none", md: "block" }}
                 />
+
+                {/* Country Selector */}
                 <Flex
                   align="center"
-                  px={3}
-                  gap={1}
+                  justify={{ base: "space-between", md: "center" }}
+                  px={{ base: 4, md: 5 }}
+                  minW={{ md: "180px" }}
+                  h={{ base: "52px", md: "58px" }}
+                  borderRadius={{ base: "xl", md: "0" }}
+                  bg={{ base: colors.bgWarm, md: "transparent" }}
                   cursor="pointer"
-                  h={{ base: "auto", sm: "52px" }}
-                  py={{ base: 2, sm: 0 }}
-                  borderTop={{ base: "1px solid", sm: "none" }}
-                  borderColor={colors.border}
-                  _hover={{ bg: colors.bgWarm }}
-                  transition="background 0.2s"
+                  _hover={{
+                    bg: colors.bgWarm,
+                  }}
+                  transition="0.2s ease"
                 >
-                  <Text fontSize="sm" fontFamily={fonts.body} color={colors.textMuted} fontWeight="500">
+                  <Text
+                    fontSize={{ base: "sm", md: "md" }}
+                    fontWeight="500"
+                    color={colors.textMuted}
+                  >
                     All Countries
                   </Text>
-                  <Text color={colors.textLight} fontSize="xs">▾</Text>
-                </Flex>
-                <Box px={2} py={2} display="flex" alignItems="center">
-                  <Button
-                    bg={colors.gold}
-                    color={colors.white}
-                    fontFamily={fonts.body}
-                    fontWeight="700"
-                    fontSize="sm"
-                    px={2}
-                    h="36px"
-                    borderRadius="8px"
-                    _hover={{ bg: colors.goldLight }}
-                    transition="all 0.2s"
-                    gap={2}
-                    w={{ base: "full", sm: "auto" }}
+
+                  <Text
+                    color={colors.textLight}
+                    fontSize="xs"
                   >
-                    <Search size={15} />
-                    Search Job
-                  </Button>
-                </Box>
+                    ▾
+                  </Text>
+                </Flex>
+
+                {/* Search Button */}
+                <Button
+                  bg={colors.gold}
+                  color={colors.white}
+                  fontWeight="700"
+                  fontSize={{ base: "sm", md: "md" }}
+                  h={{ base: "52px", md: "58px" }}
+                  px={{ base: 6, md: 8 }}
+                  borderRadius={{ base: "xl", md: "14px" }}
+                  _hover={{
+                    bg: colors.goldLight,
+                    transform: "translateY(-1px)",
+                  }}
+                  transition="all 0.2s ease"
+                  gap={2}
+                  w={{ base: "full", md: "auto" }}
+                  flexShrink={0}
+                >
+                  <Search size={18} />
+                  Search Job
+                </Button>
               </Flex>
             </MotionBox>
           </MotionBox>
 
-          {/* Right — hero image area */}
+          {/* RIGHT IMAGE */}
           <MotionBox
-            flex={{ base: "none", md: "0 0 580px" }}
-            w={{ base: "full", md: "580px" }}
+            w="full"
+            maxW={{
+              base: "100%",
+              sm: "500px",
+              md: "620px",
+              lg: "580px",
+              xl: "640px",
+            }}
+            flexShrink={0}
             position="relative"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.8,
+              delay: 0.3,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            mt={{ base: 2, md: 0 }}
           >
-            {/* Hero image placeholder */}
             <Box
               position="relative"
-              h={{ base: "360px", md: "480px" }}
-              borderTopRadius={{ base: "2xl", md: "3xl" }}
               overflow="hidden"
+              borderTopRadius={{
+                base: "2xl",
+                md: "3xl",
+              }}
+              borderBottomRadius={{
+                base: "2xl",
+                md: "0",
+              }}
             >
-              {/* Circular bg behind figure */}
-              {/* <Box
-                position="absolute"
-                bottom="0"
-                left="50%"
-                style={{ transform: "translateX(-50%)" }}
-                w="380px"
-                h="380px"
-                borderRadius="full"
-                bg={colors.bgWarm}
-                zIndex={0}
-              /> */}
-             <Image src={BannerImage.src} alt="Banner Image"/>
-
-              {/* Floating card — 10k+ satisfied */}
-              {/* <MotionBox
-                position="absolute"
-                top="20px"
-                right="0"
-                bg={colors.white}
-                borderRadius={radii.lg}
-                p={3}
-                boxShadow="0 8px 32px rgba(0,0,0,0.12)"
-                zIndex={10}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-              >
-                <Flex align="center" gap={2}>
-                  <Box
-                    w="36px"
-                    h="36px"
-                    borderRadius="md"
-                    bg={colors.bgWarm}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Users size={18} color={colors.crimson} />
-                  </Box>
-                  <Box>
-                    <Text fontWeight="800" fontSize="sm" color={colors.text} fontFamily={fonts.heading}>
-                      10,000+
-                    </Text>
-                    <Text fontSize="2xs" color={colors.textMuted} fontFamily={fonts.body}>
-                      Satisfied Employee
-                    </Text>
-                  </Box>
-                </Flex>
-              </MotionBox> */}
-
-              {/* Floating card — 200+ global partners */}
-              {/* <MotionBox
-                position="absolute"
-                bottom="40px"
-                left="0"
-                bg={colors.white}
-                borderRadius={radii.lg}
-                p={3}
-                boxShadow="0 8px 32px rgba(0,0,0,0.12)"
-                zIndex={10}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-              >
-                <Flex align="center" gap={2}>
-                  <Box
-                    w="36px"
-                    h="36px"
-                    borderRadius="md"
-                    bg="rgba(212,160,23,0.1)"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Globe size={18} color={colors.gold} />
-                  </Box>
-                  <Box>
-                    <Text fontWeight="800" fontSize="sm" color={colors.text} fontFamily={fonts.heading}>
-                      200+ Global Partners
-                    </Text>
-                    <Text fontSize="2xs" color={colors.textMuted} fontFamily={fonts.body}>
-                      Companies hiring from Nepal
-                    </Text>
-                  </Box>
-                </Flex>
-              </MotionBox> */}
+              <Image
+                src={BannerImage.src}
+                alt="Banner Image"
+                w="full"
+                h={{
+                  base: "320px",
+                  sm: "420px",
+                  md: "520px",
+                  lg: "640px",
+                }}
+                objectFit="contain"
+                objectPosition="bottom"
+                draggable={false}
+              />
             </Box>
           </MotionBox>
         </Flex>

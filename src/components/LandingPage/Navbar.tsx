@@ -1,16 +1,17 @@
 "use client";
 
+import { EnvelopeWhiteIcon, FacebookWhiteIcon, InstagramWhiteIcon, LocationMarkerIcon, LogoIcon, PhoneWhiteIcon, TwitterWhiteIcon } from "@/assets/svg/landing";
+import { ROUTES } from "@/constants/routes";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, Search, X } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search } from "lucide-react";
 import { colors, fonts } from "./theme";
-import { InterpidLogo } from "@/assets/images/landing";
-import { EnvelopeWhiteIcon, FacebookWhiteIcon, InstagramWhiteIcon, LocationMarkerIcon, LogoIcon, PhoneIcon, PhoneWhiteIcon, TwitterWhiteIcon } from "@/assets/svg/landing";
 
 const navLinks = [
   { label: "About", href: "#about" },
-  { label: "Job Listing", href: "#jobs" },
+  { label: "Job Listing", href: "/public/jobs" },
   { label: "Hiring Companies", href: "#companies" },
   { label: "Our Specialization", href: "#specialization" },
   { label: "Recruitment Process", href: "#process" },
@@ -121,11 +122,11 @@ export function Navbar() {
               p={0}
             >
               {navLinks.map((link) => (
-                <Box as="li" key={link.label} listStyleType="none">
-                  <Box
-                    as="a"
-                    href={link.href}
-                    px={3.5}
+                <Link key={link.label} href={link.href}>
+                  <Box as="li" listStyleType="none">
+                    <Box
+                      as="a"
+                      px={3.5}
                     py={2}
                     borderRadius="md"
                     fontSize="sm"
@@ -141,6 +142,7 @@ export function Navbar() {
                     {link.label}
                   </Box>
                 </Box>
+              </Link>
               ))}
             </Flex>
 
@@ -175,9 +177,9 @@ export function Navbar() {
               />
 
               {/* Log In */}
+              <Link href={ROUTES.LOGIN}>
               <Button
                 as="a"
-                href="#login"
                 size="sm"
                 variant="outline"
                 borderColor={colors.crimson}
@@ -194,17 +196,18 @@ export function Navbar() {
                 _hover={{ bg: colors.crimson, color: "white" }}
                 transition="all 0.2s"
                 textDecoration="none"
-              >
+                >
                 Log In
               </Button>
+                </Link>
 
               {/* Sign Up */}
-              <Button
-                as="a"
-                href="#signup"
-                size="sm"
-                bg={colors.crimson}
-                color="white"
+              <Link href={ROUTES.SIGNUP}>
+                <Button
+                  as="a"
+                  size="sm"
+                  bg={colors.crimson}
+                  color="white"
                 fontFamily={fonts.body}
                 fontWeight="600"
                 fontSize="sm"
@@ -219,6 +222,7 @@ export function Navbar() {
               >
                 Sign Up
               </Button>
+              </Link>
 
               {/* Mobile hamburger */}
               <Box
@@ -258,10 +262,10 @@ export function Navbar() {
                   py={4}
                 >
                   {navLinks.map((link) => (
+                    <Link key={link.label} href={link.href}>
                     <Box
                       key={link.label}
                       as="a"
-                      href={link.href}
                       display="block"
                       py={2.5}
                       px={3}
@@ -277,6 +281,7 @@ export function Navbar() {
                     >
                       {link.label}
                     </Box>
+                    </Link>
                   ))}
 
                   <Flex

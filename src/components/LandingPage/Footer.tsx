@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Text, Input, Button, Container, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, Text, Input, Button, Container, SimpleGrid, Link } from "@chakra-ui/react";
 import { Phone, PhoneCall, Mail, MapPin } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
 import { CeImage, IecImage, InterpidLogo, Iso1Image, IsoImage } from "@/assets/images/landing";
@@ -129,7 +129,7 @@ export function Footer() {
             </Text>
             <Flex direction="column" gap={2}>
               {quickLinks.map((link) => (
-                <Box
+                <Link
                   key={link}
                   as="a"
                   href="#"
@@ -140,7 +140,7 @@ export function Footer() {
                   textDecoration="none"
                 >
                   {link}
-                </Box>
+                </Link>
               ))}
             </Flex>
           </Box>
@@ -152,7 +152,7 @@ export function Footer() {
             </Text>
             <Flex direction="column" gap={2}>
               {countries.map((c) => (
-                <Box
+                <Link
                   key={c}
                   as="a"
                   href="#"
@@ -164,7 +164,7 @@ export function Footer() {
                   textDecoration="none"
                 >
                   {c}
-                </Box>
+                </Link>
               ))}
             </Flex>
           </Box>
@@ -176,7 +176,7 @@ export function Footer() {
             </Text>
             <Flex direction="column" gap={2}>
               {services.map((s) => (
-                <Box
+                <Link
                   key={s}
                   as="a"
                   href="#"
@@ -188,7 +188,7 @@ export function Footer() {
                   textDecoration="none"
                 >
                   {s}
-                </Box>
+                </Link>
               ))}
             </Flex>
           </Box>
@@ -225,22 +225,19 @@ export function Footer() {
           <Flex justify="space-between" align="center" flexWrap="wrap" gap={2}>
             <Flex gap={4}>
               {["Privacy policy", "Terms & Conditions"].map((item) => (
-                <Box
-                  key={item}
-                  as="a"
-                  href="#"
-                  fontSize="xs"
-                  color={colors.textMuted}
-                  _hover={{ color: colors.crimson }}
-                  textDecoration="none"
-                >
-                  {item}
-                </Box>
+               <Link
+  key={item}
+  href="#"
+  fontSize="xs"
+  color={colors.textMuted}
+  _hover={{ color: colors.crimson }}
+  textDecoration="none"
+>
+  {item}
+</Link>
               ))}
             </Flex>
-            <Text fontSize="xs" color={colors.textLight} >
-              Designed & Developed by Makura Creatives
-            </Text>
+          
           </Flex>
         </Container>
       </Box>
