@@ -267,6 +267,7 @@ export function JobCard({
               fontWeight="600"
               bg={WEBSITE_THEME_COLOR}
               color="white"
+              disabled={job.filledSlots >= job.totalSlots || !job.isOpen}
               onClick={() => onApply(job)}
               _hover={{ bg: "green.700" }}
             >

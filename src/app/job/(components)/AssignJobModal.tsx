@@ -46,7 +46,7 @@ const AssignJobModal = ({
   });
 
   const realAgencyOptions =
-    agencies?.map((agency) => ({
+    agencies?.content?.map((agency) => ({
       label: agency.companyName,
       value: agency.userId,
     })) ?? [];

@@ -339,7 +339,7 @@ const Dashboard = () => {
             Recent Agencies
           </Text>
 
-          <Badge colorScheme="blue">{recentAgencies.length} Agencies</Badge>
+          <Badge colorScheme="blue">{recentAgencies?.length} Agencies</Badge>
         </HStack>
 
         <VStack gap={4} align="stretch">
