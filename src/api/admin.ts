@@ -29,7 +29,7 @@ export interface AgencyDocument {
   url?: string;
 }
 
-export interface AgencyProfileDetails extends AgencyListType {
+export interface AgencyProfileDetails{
   companyName?: string;
   companyDescription?: string;
   companyWebsite?: string;
