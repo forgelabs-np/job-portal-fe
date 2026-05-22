@@ -300,6 +300,7 @@ export function JobCard({
                 fontSize="xs"
                 fontWeight="600"
                 onClick={() => onAssign(job)}
+                disabled={job.filledSlots >= job.totalSlots}
                 px={3}
               >
                 <Icon as={CgAssign} boxSize={3.5} />

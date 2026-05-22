@@ -61,11 +61,9 @@ interface GetApplicationParams {
   jobDemandId?: number;
   agencyId?: number;
   status?: string;
-  pageable: {
-    page: number;
-    size: number;
-    sort?: string[];
-  };
+ page?: number;
+  size?: number;
+
 }
 
 const getApplication = (params: GetApplicationParams) => {

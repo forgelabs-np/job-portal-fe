@@ -8,17 +8,29 @@ import { useMemo, useState } from "react";
 import { ApplicationModal, StatusBadge } from "@/app/applications/(components)/ApplicationModal";
 import { ScheduleInterviewModal } from "./ScheduleInterviewModal";
 import { useGetShortlistedCandidates, ShortListedResponse } from "@/api/interview";
+import { DataTable } from "@/shared/ui/datatable/NewDataTable";
 
 interface InterviewCandidatesTableProps {
   jobDemandId: string;
 }
 
 export const InterviewCandidatesTable = ({ jobDemandId }: InterviewCandidatesTableProps) => {
+  const [payload, setPayload] = useState({
+      page: 0,
+      pageSize: 10,
+    });
   const { data: shortlistedData, isLoading } = useGetShortlistedCandidates({
-    page: 0,
-    size: 100,
+    page: payload.page,
+    size: payload.pageSize,
     jobDemandId: Number(jobDemandId),
   });
+
+  // Calculate pagination values from API response
+  const pageCount = shortlistedData?.totalPages ?? 0;
+  const totalRecords = shortlistedData?.totalElements ?? 0;
+  const displayCount = shortlistedData?.content?.length ?? 0;
+  const next = payload.page < pageCount;
+  const previous = payload.page > 0;
 
   const [selectedViewId, setSelectedViewId] = useState<number | null>(null);
   
@@ -147,11 +159,25 @@ export const InterviewCandidatesTable = ({ jobDemandId }: InterviewCandidatesTab
           </Button>
         </HStack>
 
-        <Datatable
-          columns={columns}
-          data={shortlistedData?.content ?? []}
-          isLoading={isLoading}
-        />
+        <DataTable 
+                 columns={columns} 
+                 data={shortlistedData?.content ?? []} 
+                 isLoading={isLoading}
+                 payload={{
+                   ...payload,
+                   pageCount,
+                   count: totalRecords,
+                   display_count: displayCount,
+                   next,
+                   previous,
+                 }}
+                 setPayload={setPayload}
+                 onSearchChange={(searchTerm) => {
+                   // Handle search logic here
+                   console.log("Search:", searchTerm);
+                 }}
+                
+               />
       </Stack>
 
       <ApplicationModal

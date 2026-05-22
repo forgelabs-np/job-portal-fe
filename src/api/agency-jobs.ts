@@ -287,18 +287,24 @@ export interface PaginatedAgencyApplicationResponse {
   totalElements: number;
 }
 
-const getAgencyApplications = (params: { status?: string }) => {
+export interface AgencyApplicationFilterParams{
+  status?: string;
+  page?: number;
+  size?: number;
+}
+
+const getAgencyApplications = (params: AgencyApplicationFilterParams) => {
   return httpClient.get<ApiResponse<PaginatedAgencyApplicationResponse>>(
     api.AGENCY.JOBS.GET_APPLICATIONS,
     { params },
   );
 };
 
-export const useGetAgencyApplications = (params: { status?: string } = {}) => {
+export const useGetAgencyApplications = (params: AgencyApplicationFilterParams = {}) => {
   return useQuery({
     queryFn: () => getAgencyApplications(params),
     queryKey: [api.AGENCY.JOBS.GET_APPLICATIONS, params],
-    select: (resp) => resp?.data?.data?.content,
+    select: (resp) => resp?.data?.data,
   });
 };
 

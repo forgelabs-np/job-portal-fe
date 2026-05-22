@@ -29,6 +29,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { MdAutorenew, MdCancel, MdDelete, MdEventAvailable, MdOutlineEdit, MdSettings } from "react-icons/md";
 import { ScheduleInterviewModal } from "../[jobId]/(components)/ScheduleInterviewModal";
 import ViewInterviewModal from "./ViewInterviewModal";
+import { DataTable } from "@/shared/ui/datatable/NewDataTable";
 
 interface AdminInterviewListProps {
   jobDemandId?: number;
@@ -62,12 +63,16 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
   const [statusInterview, setStatusInterview] = useState<InterviewResponse | null>(null);
   const [resultInterview, setResultInterview] = useState<InterviewResponse | null>(null);
 
+  
+   const [payload, setPayload] = useState({
+      page: 0,
+      pageSize: 10,
+    });
+
+
   const params: InterviewFilterParams = {
-    pageable: {
-      page,
-      size,
-      sort: ["scheduledAt,desc"],
-    },
+     page: payload.page,
+    size: payload.pageSize,
     ...(jobDemandId && { jobDemandId }),
     ...(statusFilter && { status: statusFilter }),
     ...(resultFilter && { result: resultFilter }),
@@ -110,6 +115,13 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
   const { data, isLoading, refetch } = useGetAllInterviewsQuery(params);
   const { mutate: cancelInterview } = useCancelInterviewMutation();
   const { mutate: deleteInterview } = useDeleteInterviewMutation();
+
+   // Calculate pagination values from API response
+  const pageCount = data?.totalPages ?? 0;
+  const totalRecords = data?.totalElements ?? 0;
+  const displayCount = data?.content?.length ?? 0;
+  const next = payload.page < pageCount;
+  const previous = payload.page > 0;
 
   const handleCancelInterview = (interviewId: number) => {
     cancelInterview(interviewId, {
@@ -325,11 +337,25 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
 
       {/* Table */}
       <Box bg="white" borderRadius="xl" border="1px solid" borderColor="gray.200" p={2}>
-        <Datatable
-          columns={columns}
-          data={data?.content ?? []}
-          isLoading={isLoading}
-        />
+       <DataTable 
+                 columns={columns} 
+                 data={data?.content ?? []} 
+                 isLoading={isLoading}
+                 payload={{
+                   ...payload,
+                   pageCount,
+                   count: totalRecords,
+                   display_count: displayCount,
+                   next,
+                   previous,
+                 }}
+                 setPayload={setPayload}
+                 onSearchChange={(searchTerm) => {
+                   // Handle search logic here
+                   console.log("Search:", searchTerm);
+                 }}
+                
+               />
       </Box>
 
       {/* Confirmation Dialogs */}
