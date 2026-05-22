@@ -62,7 +62,7 @@ export interface LoginDetails {
 export interface SignupDetails {
   fullName: string;
   email: string;
-  roleEnums: ["ADMIN"] | ["AGENCY"] | ["CANDIDATE"];
+  roleEnums?: ["ADMIN"] | ["AGENCY"] | ["CANDIDATE"];
   password: string;
 }
 
