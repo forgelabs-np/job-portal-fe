@@ -16,6 +16,7 @@ import {
   StatusBadge,
 } from "../../(components)/ApplicationModal";
 import { EditApplicationModal } from "../../(components)/EditApplicationModal";
+import { DataTable } from "@/shared/ui/datatable/NewDataTable";
 
 const SelfApplicationTable = () => {
   const [jobDemandId, setJobDemandId] = useState("");
@@ -23,16 +24,30 @@ const SelfApplicationTable = () => {
   const [selectedViewId, setSelectedViewId] = useState<number | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
 
-  const { data: jobs } = useGetJobs({ size: 1000 });
+    const [payload, setPayload] = useState({
+      page: 0,
+      pageSize: 10,
+    });
+
+  const { data: jobs } = useGetJobs({
+    page: payload.page,
+    size: payload.pageSize,
+  });
+
 
   const { data, isLoading } = useGetSelfApplicationQuery({
     ...(jobDemandId && { jobDemandId: Number(jobDemandId) }),
     ...(status && { status }),
-    pageable: {
-      page: 0,
-      size: 100,
-    },
+    page: payload.page,
+    size: payload.pageSize,
   });
+
+
+   const pageCount = data?.totalPages ?? 0;
+  const totalRecords = data?.totalElements ?? 0;
+  const displayCount = data?.content?.length ?? 0;
+  const next = payload.page < pageCount;
+  const previous = payload.page > 0;
 
   const columns = useMemo<ColumnDef<ApplicationType>[]>(
     () => [
@@ -203,11 +218,31 @@ const SelfApplicationTable = () => {
           </NativeSelect.Root>
         </HStack>
 
-        <Datatable
+        <DataTable 
+                  columns={columns} 
+                  data={data?.content ?? []} 
+                  isLoading={isLoading}
+                  payload={{
+                    ...payload,
+                    pageCount,
+                    count: totalRecords,
+                    display_count: displayCount,
+                    next,
+                    previous,
+                  }}
+                  setPayload={setPayload}
+                  onSearchChange={(searchTerm) => {
+                    // Handle search logic here
+                    console.log("Search:", searchTerm);
+                  }}
+                 
+                />
+
+        {/* <Datatable
           columns={columns}
           data={data?.content ?? []}
           isLoading={isLoading}
-        />
+        /> */}
       </Stack>
 
       <ApplicationModal

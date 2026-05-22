@@ -275,6 +275,12 @@ interface CandidateJobsParams {
   size?: number;
 }
 
+interface CandidateApplicationParams{
+  status?: string;
+  page?: number;
+  size?: number;
+}
+
 interface CandidateJobsResponse {
   content: Job[];
   size: number;
@@ -415,7 +421,7 @@ export const useGetCandidateJobs = (params: CandidateJobsParams = {}) => {
 };
 
 // Applications
-const getCandidateApplications = (params: { status?: string }) => {
+const getCandidateApplications = (params: CandidateApplicationParams) => {
   return httpClient.get<ApiResponse<PaginatedCandidateApplicationResponse>>(
     api.CANDIDATE.APPLICATIONS.GET,
     { params },
@@ -423,12 +429,12 @@ const getCandidateApplications = (params: { status?: string }) => {
 };
 
 export const useGetCandidateApplications = (
-  params: { status?: string } = {},
+  params: CandidateApplicationParams = {},
 ) => {
   return useQuery({
     queryFn: () => getCandidateApplications(params),
     queryKey: [api.CANDIDATE.APPLICATIONS.GET, params],
-    select: (resp) => resp?.data?.data?.content,
+    select: (resp) => resp?.data?.data,
   });
 };
 

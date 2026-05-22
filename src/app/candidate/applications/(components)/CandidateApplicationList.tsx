@@ -11,6 +11,7 @@ import { Box, HStack, NativeSelect, Stack, Text, Badge } from "@chakra-ui/react"
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import CandidateApplicationModal from "./CandidateApplicationModal";
+import { DataTable } from "@/shared/ui/datatable/NewDataTable";
 
 const StatusBadge = ({
   status,
@@ -41,10 +42,23 @@ const StatusBadge = ({
 const CandidateApplicationList = () => {
   const [status, setStatus] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+   const [payload, setPayload] = useState({
+      page: 0,
+      pageSize: 10,
+    });
 
   const { data, isLoading } = useGetCandidateApplications({
     ...(status && { status }),
+     page: payload.page,
+    size: payload.pageSize,
   });
+
+   // Calculate pagination values from API response
+  const pageCount = data?.totalPages ?? 0;
+  const totalRecords = data?.totalElements ?? 0;
+  const displayCount = data?.content?.length ?? 0;
+  const next = payload.page < pageCount;
+  const previous = payload.page > 0;
 
   const { mutate: withdraw } = useWithdrawCandidateApplicationMutation();
 
@@ -174,11 +188,25 @@ const CandidateApplicationList = () => {
           </NativeSelect.Root>
         </HStack>
 
-        <Datatable
-          columns={columns}
-          data={data ?? []}
-          isLoading={isLoading}
-        />
+         <DataTable 
+                  columns={columns} 
+                  data={data?.content ?? []} 
+                  isLoading={isLoading}
+                  payload={{
+                    ...payload,
+                    pageCount,
+                    count: totalRecords,
+                    display_count: displayCount,
+                    next,
+                    previous,
+                  }}
+                  setPayload={setPayload}
+                  onSearchChange={(searchTerm) => {
+                    // Handle search logic here
+                    console.log("Search:", searchTerm);
+                  }}
+                 
+                />
       </Stack>
 
       <CandidateApplicationModal

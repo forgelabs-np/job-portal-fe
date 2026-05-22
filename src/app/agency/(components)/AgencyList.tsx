@@ -15,6 +15,7 @@ import { HStack, Tabs, Text, useDisclosure } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useCallback, useMemo, useState } from "react";
 import { Row } from "@tanstack/react-table";
+import { DataTable } from "@/shared/ui/datatable/NewDataTable";
 
 const TAB_STATUSES = ["PENDING", "APPROVED", "REJECTED"] as const;
 type Status = (typeof TAB_STATUSES)[number];
@@ -23,7 +24,14 @@ export type ConfirmAction = "Approve" | "Reject";
 export type ActionScope = "PROFILE" | "DOCUMENT";
 
 const AgencyTable = ({ status }: { status: Status }) => {
-  const { data, isLoading } = useGetAgenciesQuery({ status });
+   const [payload, setPayload] = useState({
+      page: 0,
+      pageSize: 10,
+    });
+  const { data, isLoading } = useGetAgenciesQuery({ status, page: payload.page,
+    size: payload.pageSize, });
+
+    console.log("Agency data:", data);
   const {
     onClose: onCloseConfirm,
     onOpen: onOpenConfirm,
@@ -46,6 +54,13 @@ const AgencyTable = ({ status }: { status: Status }) => {
     action: ConfirmAction;
     id: number;
   } | null>(null);
+
+   // Calculate pagination values from API response
+  const pageCount = data?.totalPages ?? 0;
+  const totalRecords = data?.totalElements ?? 0;
+  const displayCount = data?.content?.length ?? 0;
+  const next = payload.page < pageCount;
+  const previous = payload.page > 0;
 
   const {
     data: selectedProfile,
@@ -123,9 +138,9 @@ const AgencyTable = ({ status }: { status: Status }) => {
         header: "S.N.",
         cell: ({ row }) => row.index + 1,
       },
-      { accessorKey: "companyName", header: "Compny Name" },
+      { accessorKey: "companyName", header: "Company Name" },
       { accessorKey: "contactPersonName", header: "Contact Person Name" },
-      { accessorKey: "contactPersonEmail", header: "Compny Person Email" },
+      { accessorKey: "contactPersonEmail", header: "Contact Person Email" },
       { accessorKey: "contactPersonPhone", header: "Phone Number" },
       // { accessorKey: "companyName", header: "Compny Name" },
       {
@@ -159,8 +174,23 @@ const AgencyTable = ({ status }: { status: Status }) => {
 
   return (
     <>
-      <Datatable columns={columns} data={data ?? []} isLoading={isLoading} />
-      <AgencyProfileReviewDialog
+<DataTable
+  columns={columns}
+  data={(data?.content ?? []).filter(
+    (item): item is AgencyListType => item != null
+  )}
+  isLoading={isLoading}
+  payload={{
+    ...payload,
+    pageCount,
+    count: totalRecords,
+    display_count: displayCount,
+    next,
+    previous,
+  }}
+  setPayload={setPayload}
+/>  
+        <AgencyProfileReviewDialog
         open={openProfileModal}
         onClose={() => {
           onCloseProfileModal();

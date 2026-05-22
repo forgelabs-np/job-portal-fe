@@ -7,14 +7,28 @@ import { Box, HStack, NativeSelect, Stack, Text } from "@chakra-ui/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { AgencyApplicationModal, StatusBadge } from "./AgencyApplicationModal";
+import { DataTable } from "@/shared/ui/datatable/NewDataTable";
 
 const AgencyApplicationList = () => {
   const [status, setStatus] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [payload, setPayload] = useState({
+      page: 0,
+      pageSize: 10,
+    });
 
   const { data, isLoading } = useGetAgencyApplications({
     ...(status && { status }),
+    page: payload.page,
+    size: payload.pageSize,
   });
+
+   // Calculate pagination values from API response
+  const pageCount = data?.totalPages ?? 0;
+  const totalRecords = data?.totalElements ?? 0;
+  const displayCount = data?.content?.length ?? 0;
+  const next = payload.page < pageCount;
+  const previous = payload.page > 0;
 
   const columns = useMemo<ColumnDef<AgencyApplicationType>[]>(
     () => [
@@ -118,12 +132,25 @@ const AgencyApplicationList = () => {
           </NativeSelect.Root>
         </HStack>
 
-        <Datatable
-          columns={columns}
-          data={data ?? []}
-          isLoading={isLoading}
-
-        />
+        <DataTable 
+                  columns={columns} 
+                  data={data?.content ?? []} 
+                  isLoading={isLoading}
+                  payload={{
+                    ...payload,
+                    pageCount,
+                    count: totalRecords,
+                    display_count: displayCount,
+                    next,
+                    previous,
+                  }}
+                  setPayload={setPayload}
+                  onSearchChange={(searchTerm) => {
+                    // Handle search logic here
+                    console.log("Search:", searchTerm);
+                  }}
+                 
+                />
       </Stack>
 
       <AgencyApplicationModal

@@ -13,11 +13,16 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import { ApplicationModal, StatusBadge } from "./ApplicationModal";
 import { EditApplicationModal } from "./EditApplicationModal";
+import { DataTable } from "@/shared/ui/datatable/NewDataTable";
 
 const ApplicationsTable = () => {
   const [jobDemandId, setJobDemandId] = useState("");
   const [agencyId, setAgencyId] = useState("");
   const [status, setStatus] = useState("");
+   const [payload, setPayload] = useState({
+      page: 0,
+      pageSize: 10,
+    });
 
   const { data: jobs } = useGetJobs({ size: 1000 });
   const { data: agencies } = useGetAgenciesQuery({ status: "APPROVED" });
@@ -26,11 +31,16 @@ const ApplicationsTable = () => {
     ...(jobDemandId && { jobDemandId: Number(jobDemandId) }),
     ...(agencyId && { agencyId: Number(agencyId) }),
     ...(status && { status }),
-    pageable: {
-      page: 0,
-      size: 100,
-    },
+   page: payload.page,
+    size: payload.pageSize,
   });
+
+  // Calculate pagination values from API response
+  const pageCount = data?.totalPages ?? 0;
+  const totalRecords = data?.totalElements ?? 0;
+  const displayCount = data?.content?.length ?? 0;
+  const next = payload.page < pageCount;
+  const previous = payload.page > 0;
 
   const [selectedViewId, setSelectedViewId] = useState<number | null>(null);
   const [editId, setEditId] = useState<number | null>(null);
@@ -219,11 +229,25 @@ const ApplicationsTable = () => {
           </NativeSelect.Root>
         </HStack>
 
-        <Datatable
-          columns={columns}
-          data={data?.content ?? []}
-          isLoading={isLoading}
-        />
+       <DataTable 
+                 columns={columns} 
+                 data={data?.content ?? []} 
+                 isLoading={isLoading}
+                 payload={{
+                   ...payload,
+                   pageCount,
+                   count: totalRecords,
+                   display_count: displayCount,
+                   next,
+                   previous,
+                 }}
+                 setPayload={setPayload}
+                //  onSearchChange={(searchTerm) => {
+                //    // Handle search logic here
+                //    console.log("Search:", searchTerm);
+                //  }}
+                
+               />
       </Stack>
 
       <ApplicationModal

@@ -56,11 +56,10 @@ export interface InterviewFilterParams {
   status?: string;
   result?: string;
   agencyId?: number;
-  pageable: {
+ 
     page: number;
     size: number;
     sort?: string[];
-  };
 }
 
 export interface PaginatedInterviewResponse {

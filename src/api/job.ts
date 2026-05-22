@@ -274,7 +274,7 @@ export const useAssignJobMutation = () => {
     }: {
       error: AxiosError<{ message: string; error: string }>;
     }) => {
-      errorNotification(error?.response?.data?.message);
+      errorNotification(error?.message ?? "Failed to assign job");
     },
   });
 };

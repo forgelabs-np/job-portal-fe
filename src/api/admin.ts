@@ -11,6 +11,14 @@ export interface AgencyListType {
   companyName: string;
 }
 
+export interface AgencyListResponse {
+  content: AgencyListType[];
+  size: number;
+  page: number;
+  totalPages: number;
+  totalElements: number;
+}
+
 export interface AgencyDocument {
   id: number;
   documentType: string;
@@ -55,13 +63,13 @@ interface ProcessAgencyDocumentPayload {
   agencyId: number;
 }
 
-const getAgencies = (params: { status: string }) => {
-  return httpClient.get<ApiResponse<AgencyListType[]>>(api.ADMIN.GET_AGENCY, {
+const getAgencies = (params: { status: string; page: number; size: number }) => {
+  return httpClient.get<ApiResponse<AgencyListResponse>>(api.ADMIN.GET_AGENCY, {
     params,
   });
 };
 
-export const useGetAgenciesQuery = (params: { status: string }) => {
+export const useGetAgenciesQuery = (params: { status: string; page: number; size: number }) => {
   return useQuery({
     queryFn: () => getAgencies(params),
     queryKey: [api.ADMIN.GET_AGENCY, params],

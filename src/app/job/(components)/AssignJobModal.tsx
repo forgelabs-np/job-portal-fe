@@ -72,7 +72,6 @@ const AssignJobModal = ({
         shouldDirty: true,
       });
     } else if (!hasSelectAll && hadSelectAll) {
-      // Select All was just unchecked - deselect all
       setValue("agencyIds", [], {
         shouldValidate: true,
         shouldDirty: true,
@@ -90,7 +89,6 @@ const AssignJobModal = ({
   const onSubmit = (data: AssignJobFormValues) => {
     if (!jobId) return;
 
-    // Filter out the "select_all" option from the submission
     const agencyIds = data.agencyIds.filter((id) => id !== "select_all") as number[];
 
     const payload: AssignJobPayloadType = {
