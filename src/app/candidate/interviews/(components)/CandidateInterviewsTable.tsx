@@ -17,7 +17,7 @@ const CandidateInterviewsTable = () => {
   });
   
   const { data, isLoading } = useGetCandidateInterviewsQuery({
-    pageable: { page: payload.page, size: payload.pageSize },
+     page: payload.page, size: payload.pageSize
   });
   
   const [viewId, setViewId] = useState<number | null>(null);

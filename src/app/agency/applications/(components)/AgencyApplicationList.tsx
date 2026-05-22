@@ -46,7 +46,7 @@ const AgencyApplicationList = () => {
               {row.original.jobTitle}
             </Text>
             <Text fontSize="xs" color="gray.400">
-              {row.original.jobCity}, {row.original.jobCountry}
+              {row.original.city}, {row.original.country}
             </Text>
           </Box>
         ),

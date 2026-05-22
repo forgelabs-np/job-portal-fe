@@ -264,6 +264,8 @@ export interface AgencyApplicationType {
   jobTitle: string;
   jobCountry: string;
   jobCity: string;
+  country: string;
+  city: string;
   candidateId: number;
   candidateName: string;
   candidateTrade: string;
