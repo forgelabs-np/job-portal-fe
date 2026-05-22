@@ -63,13 +63,13 @@ interface ProcessAgencyDocumentPayload {
   agencyId: number;
 }
 
-const getAgencies = (params: { status: string; page: number; size: number }) => {
+const getAgencies = (params: { status: string; page?: number; size?: number }) => {
   return httpClient.get<ApiResponse<AgencyListResponse>>(api.ADMIN.GET_AGENCY, {
     params,
   });
 };
 
-export const useGetAgenciesQuery = (params: { status: string; page: number; size: number }) => {
+export const useGetAgenciesQuery = (params: { status: string; page?: number; size?: number }) => {
   return useQuery({
     queryFn: () => getAgencies(params),
     queryKey: [api.ADMIN.GET_AGENCY, params],

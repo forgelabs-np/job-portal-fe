@@ -206,7 +206,7 @@ const ApplicationsTable = () => {
               bg="white"
             >
               <option value="">All Agencies</option>
-              {agencies?.map((agency) => (
+              {agencies?.content?.map((agency) => (
                 <option key={agency.userId} value={agency.userId}>
                   {agency.companyName}
                 </option>
