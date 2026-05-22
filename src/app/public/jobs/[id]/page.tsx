@@ -259,14 +259,14 @@ export default function JobDetailPage() {
                 </Box>
                 
                <Flex gap={2}>
-  <IconButton
+  {/* <IconButton
     aria-label="Save job"
     variant="outline"
     borderColor={colors.border}
     color={isSaved ? colors.crimson : colors.textMuted}
   >
     <Bookmark size={18} />
-  </IconButton>
+  </IconButton> */}
 
   <IconButton
     aria-label="Share job"
