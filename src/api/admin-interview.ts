@@ -12,7 +12,7 @@ export type InterviewStatus = "SCHEDULED" | "RESCHEDULED" | "COMPLETED" | "CANCE
 export interface InterviewRequest {
   id?: number;
   jobApplicationId: number;
-  scheduledAt: string; // ISO date-time
+  scheduledAt: string;
   timezone: string;
   interviewLink: string;
   interviewType: "ONLINE" | "IN_PERSON";
@@ -56,10 +56,10 @@ export interface InterviewFilterParams {
   status?: string;
   result?: string;
   agencyId?: number;
- 
-    page: number;
-    size: number;
-    sort?: string[];
+
+  page: number;
+  size: number;
+  sort?: string[];
 }
 
 export interface PaginatedInterviewResponse {

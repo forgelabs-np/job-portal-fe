@@ -157,6 +157,7 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
   const handleClose = () => {
     resetId(undefined);
     onClose();
+    reset(createJobDefaultValues)
   };
 
   useEffect(() => {

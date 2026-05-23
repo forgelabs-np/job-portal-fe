@@ -203,7 +203,7 @@ const AgencyProfile = () => {
               </HStack>
             </VStack>
 
-            <Button
+            {/* <Button
               bg={WEBSITE_THEME_COLOR}
               color="white"
               _hover={{ opacity: 0.9 }}
@@ -211,7 +211,7 @@ const AgencyProfile = () => {
               borderRadius="xl"
             >
               Edit Profile
-            </Button>
+            </Button> */}
           </Flex>
         </Box>
 

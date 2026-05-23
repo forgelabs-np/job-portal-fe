@@ -9,9 +9,12 @@ export const passwordSchema = (validationName = "Password") =>
     .matches(/(?=.*[A-Z])/, `${validationName} must contain at least one uppercase letter.`)
     .matches(/(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>\/?])/, `${validationName} must contain at least one special character.`);
 
+
+    export const loginPasswordSchema = (validationName = "Password") =>
+  stringRequiredSchema(validationName, 128)
 export const loginSchema = Yup.object({
   email: emailRequiredSchema("Email"),
-  password: passwordSchema(),
+  password: loginPasswordSchema(),
 });
 
 export const signupSchema = Yup.object({
