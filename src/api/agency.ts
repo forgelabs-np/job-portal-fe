@@ -5,6 +5,7 @@ import { errorNotification, successNotification } from "@/utils/toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { InterviewFilterParams, PaginatedInterviewResponse, InterviewResponse } from "./admin-interview";
+import { AgencyProfileForm } from "@/app/agency/(components)/AgencyVerificationModal";
 
 export interface AgencyProfile {
   id: number;
@@ -43,6 +44,10 @@ export interface AgencyDocumentUploadRequest {
   file: File;
 }
 
+export interface CreateAgencyProfilePayload {
+  data: AgencyProfileForm;
+}
+
 export const REQUIRED_DOCUMENTS: { type: AgencyDocumentType; label: string }[] = [
   { type: "TRADE_LICENCE", label: "Trade Licence" },
   { type: "COMPANY_REGISTRATION", label: "Company Registration" },
@@ -50,7 +55,7 @@ export const REQUIRED_DOCUMENTS: { type: AgencyDocumentType; label: string }[] =
   { type: "OWNER_CITIZENSHIP", label: "Owner Citizenship" },
 ];
 
-const createAgencyProfile = (payload: AgencyProfileRequest) => {
+const createAgencyProfile = (payload: CreateAgencyProfilePayload) => {
   return httpClient.post(api.AGENCY.CREATE_PROFILE, payload);
 };
 
@@ -67,7 +72,7 @@ export const useCreateAgencyProfile = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: AgencyProfileRequest) => createAgencyProfile(payload),
+    mutationFn: (payload: CreateAgencyProfilePayload) => createAgencyProfile(payload),
 
     onSuccess: (response) => {
       successNotification(response?.data?.message);
