@@ -1,7 +1,7 @@
 "use client";
 
 import { SignupDetails, useSignupMutation } from "@/api/auth";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
 import { Button, FormProvider, PasswordInput, TextFieldInput } from "@/shared";
 import { useOtpEmailStore } from "@/store";
@@ -148,7 +148,7 @@ export const RegisterPage = ({
               borderRadius="full"
               boxShadow={`0 4px 16px rgba(13,105,68,0.28)`}
               _hover={{
-                bg: "#0a5535",
+                bg: BRAND_COLORS[700],
                 transform: "translateY(-1px)",
                 boxShadow: `0 8px 24px rgba(13,105,68,0.35)`,
               }}

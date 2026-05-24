@@ -6,7 +6,7 @@ import { PinInput as ChakraPinInput, Group } from "@chakra-ui/react";
 
 import { FormWrapper } from "../wrapper";
 import { CustomPinInputProps, PinInputProps } from "@/shared/types";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 
 const CustomPinInput = React.forwardRef<HTMLInputElement, CustomPinInputProps>(
   function PinInput(props, ref) {
@@ -21,8 +21,10 @@ const CustomPinInput = React.forwardRef<HTMLInputElement, CustomPinInputProps>(
               <ChakraPinInput.Input
                 key={index}
                 index={index}
+                border={"1px Solid"}
+                borderColor={BRAND_COLORS[300]}
                 _focus={{
-                  borderColor: "primary.300",
+                  borderColor: BRAND_COLORS[700],
                   outline: "none",
                 }}
               />
