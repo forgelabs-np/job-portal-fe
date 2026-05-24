@@ -32,7 +32,7 @@ import {
 } from "recharts";
 
 import { RecentAgency, RecentJob, useGetDashboardQuery } from "@/api/dashboard";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 
 const Dashboard = () => {
@@ -394,11 +394,11 @@ const StatCard = ({ label, value, icon }: StatCardProps) => {
           w="52px"
           h="52px"
           borderRadius="xl"
-          bg="green.50"
+          bg={BRAND_COLORS[50]}
           align="center"
           justify="center"
         >
-          <Icon as={icon} boxSize={6} color="green.600" />
+          <Icon as={icon} boxSize={6} color={BRAND_COLORS[500]} />
         </Flex>
 
         <Stat.Root>

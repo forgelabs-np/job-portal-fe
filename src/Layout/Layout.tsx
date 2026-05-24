@@ -1,11 +1,11 @@
 import { Box, Separator, Stack } from "@chakra-ui/react";
-import { Navbar } from "./Navbar";
 import Footer from "./Footer";
 import { usePathname } from "next/navigation";
+import { Navbar } from "@/components/LandingPage/Navbar";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
 
-    const pathname = usePathname();
+  const pathname = usePathname();
   const isMarketingHome = pathname === "/";
 
   if (isMarketingHome) {
