@@ -7,6 +7,7 @@ import Link from "next/link";
 import { generateNextPath } from "@/utils/router";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import { BRAND_COLORS } from "@/constants/color";
 
 // Icons
 const AgencyIcon = () => (
@@ -59,7 +60,7 @@ const ArrowRightIcon = () => (
   </svg>
 );
 
-type AccentType = "green" | "dark";
+type AccentType = "red" | "dark";
 
 interface PortalOption {
   name: string;
@@ -91,14 +92,14 @@ const hoverTokens: Record<
     border: string;
   }
 > = {
-  green: {
-    bg: "#166534",
+  red: {
+    bg: BRAND_COLORS[600],
     iconBg: "rgba(255,255,255,0.18)",
     iconColor: "white",
     text: "white",
     desc: "rgba(255,255,255,0.72)",
     link: "white",
-    border: "#166534",
+    border: BRAND_COLORS[500],
   },
   dark: {
     bg: "#0f1f17",
@@ -123,14 +124,14 @@ const defaultTokens: Record<
     border: string;
   }
 > = {
-  green: {
-    bg: "#f0fdf4",
+  red: {
+    bg: "white",
     iconBg: "white",
-    iconColor: "#166534",
+    iconColor: BRAND_COLORS[500],
     text: "#0f1f17",
     desc: "#6b7280",
-    link: "#166534",
-    border: "#bbf7d0",
+    link: BRAND_COLORS[500],
+    border: BRAND_COLORS[500],
   },
   dark: {
     bg: "#f9fafb",
@@ -261,7 +262,7 @@ export const RoleModal = ({
         "For agency owners and managers overseeing global distribution.",
       linkLabel: isRegister ? "Register Agency" : "Enter Console",
       href: isRegister ? ROUTES.SIGNUP : ROUTES.LOGIN,
-      accent: "green",
+      accent: "red",
     },
     {
       name: "candidate",

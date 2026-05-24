@@ -5,6 +5,7 @@ import FeaturesSection from "@/components/Homepage/FeatureSection";
 import HeroSection from "@/components/Homepage/HeroSection";
 import ImageSection from "@/components/Homepage/ImageSection";
 import TrustedBy from "@/components/Homepage/TrustedBy";
+import LandingPageMainComponent from "@/components/LandingPage/LandingPageMainComponent";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -21,11 +22,7 @@ export default function Home() {
 
   return (
     <Box>
-      <HeroSection />
-      <ImageSection />
-      <TrustedBy />
-      <FeaturesSection />
-      <DemandSection />
+     <LandingPageMainComponent />
     </Box>
   );
 }
