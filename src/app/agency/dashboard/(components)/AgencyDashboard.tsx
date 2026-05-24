@@ -43,7 +43,7 @@ import {
   RecentCandidate,
   useGetAgencyDashboardQuery,
 } from "@/api/dashboard";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { useCurrentUserStore } from "@/store";
 import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
 
@@ -430,12 +430,12 @@ const StatCard = ({ label, value, icon }: StatCardProps) => {
           w="52px"
           h="52px"
           borderRadius="xl"
-          bg="green.50"
+          bg={BRAND_COLORS[50]}
           align="center"
           justify="center"
           _dark={{ bg: "green.900/20" }}
         >
-          <Icon as={icon} boxSize={6} color="green.600" />
+          <Icon as={icon} boxSize={6} color={BRAND_COLORS[600]} />
         </Flex>
 
         <Stat.Root>

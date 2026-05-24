@@ -1,4 +1,4 @@
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { Box, Text, Badge, HStack, Button, Icon } from "@chakra-ui/react";
 import {
   Eye,
@@ -22,19 +22,26 @@ export interface Job {
   title: string;
   country: Country;
   city: string;
+  description: string;
+  requirements: string;
   totalSlots: number;
-  filledSlots: number;
+  filledSlots: number | null;
   remainingSlots: number;
-  status: string;
-  isOpen: boolean;
+  appliedCount: number | null;
+  status: "OPEN" | "CLOSED" | string;
+  isOpen: boolean | null;
   salaryAmount: number;
   salaryCurrency: string;
   salaryPeriod: string;
-  genderPreference: string;
+  genderPreference: "MALE" | "FEMALE" | "ANY" | string;
   preferredNationalities: string[];
-  workingHoursPerWeek: number | null;
-  contractDurationYears: number | null;
-  overtimePolicy: string | null;
+  minExperienceYears: number;
+  maxExperienceYears: number;
+  requiredSkills: string;
+  educationLevel: string;
+  workingHoursPerWeek: number;
+  contractDurationYears: number;
+  overtimePolicy: string;
   accommodationProvided: boolean;
   accommodationDetails: string | null;
   foodProvided: boolean;
@@ -45,10 +52,15 @@ export interface Job {
   medicalInsuranceDetails: string | null;
   airTicketProvided: boolean;
   airTicketDetails: string | null;
-  leavePolicy: string | null;
-  probationPeriodMonths: number | null;
-  terminationClause: string | null;
-  additionalBenefits: string | null;
+  leavePolicy: string;
+  probationPeriodMonths: number;
+  terminationClause: string;
+  additionalBenefits: string;
+  deadline: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+  createdBy: string | null;
+  isPublic: boolean;
 }
 
 interface JobCardProps {
@@ -57,7 +69,7 @@ interface JobCardProps {
   onEdit: (job: Job) => void;
   onDelete: (job: Job) => void;
   onApply?: (job: Job) => void;
-  onAssign: (job: Job) => void;
+  onAssign?: (job: Job) => void;
 }
 
 export function JobCard({
@@ -269,7 +281,7 @@ export function JobCard({
               color="white"
               // disabled={job.filledSlots >= job.totalSlots || !job.isOpen}
               onClick={() => onApply(job)}
-              _hover={{ bg: "green.700" }}
+              _hover={{ bg: BRAND_COLORS[500] }}
             >
               <Icon as={BsSendFill} boxSize={3.5} />
               Apply

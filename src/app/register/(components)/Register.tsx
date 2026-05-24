@@ -1,18 +1,15 @@
 "use client";
 
-import {
-  LoginDetails,
-  SignupDetails,
-  useLoginMutation,
-  useSignupMutation,
-} from "@/api/auth";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { SignupDetails, useSignupMutation } from "@/api/auth";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
 import { Button, FormProvider, PasswordInput, TextFieldInput } from "@/shared";
 import { useOtpEmailStore } from "@/store";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signupSchema } from "@/schema/auth";
 
 const ArrowRightIcon = () => (
   <svg
@@ -36,8 +33,6 @@ interface LoginPageProps {
   description?: string;
   emailPlaceholder?: string;
   onSignIn?: (email: string, password: string) => void;
-  onRegister?: () => void;
-  onBackToSelection?: () => void;
   userType: string;
 }
 
@@ -47,19 +42,27 @@ export const RegisterPage = ({
   description = "Manage the global manpower distribution network.",
   emailPlaceholder = "admin@nexuflow.com",
   userType,
-  onRegister,
-  onBackToSelection,
 }: LoginPageProps) => {
-  const methods = useForm<SignupDetails>();
+  const methods = useForm<SignupDetails & { confirmPassword: string }>({
+    resolver: yupResolver(signupSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
   const router = useRouter();
 
   const { mutate, isPending } = useSignupMutation();
   const { setOtpEmail } = useOtpEmailStore();
 
-  const onSubmit = (data: SignupDetails) => {
+  const onSubmit = (data: SignupDetails & { confirmPassword: string }) => {
     setOtpEmail(data?.email);
+    const { confirmPassword, ...rest } = data;
+    void confirmPassword;
     const payload = {
-      ...data,
+      ...(rest as SignupDetails),
       roleEnums: [userType] as ["ADMIN"] | ["AGENCY"] | ["CANDIDATE"],
     };
     mutate(payload, {
@@ -131,6 +134,12 @@ export const RegisterPage = ({
               borderRadius="lg"
               label="Password"
             />
+            <PasswordInput
+              name="confirmPassword"
+              borderColor="#e5e7eb"
+              borderRadius="lg"
+              label="Confirm Password"
+            />
             <Button
               bg={WEBSITE_THEME_COLOR}
               loading={isPending}
@@ -139,7 +148,7 @@ export const RegisterPage = ({
               borderRadius="full"
               boxShadow={`0 4px 16px rgba(13,105,68,0.28)`}
               _hover={{
-                bg: "#0a5535",
+                bg: BRAND_COLORS[700],
                 transform: "translateY(-1px)",
                 boxShadow: `0 8px 24px rgba(13,105,68,0.35)`,
               }}

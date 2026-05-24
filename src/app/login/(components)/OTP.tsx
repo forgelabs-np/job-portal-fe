@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, useRef, KeyboardEvent, ClipboardEvent } from "react";
-import { Box, Flex, Text, HStack, Stack } from "@chakra-ui/react";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
-import { Button, FormProvider, PinInput } from "@/shared";
-import { useForm } from "react-hook-form";
+import { useResendOtpMutation, useVerifySignupMutation, VerifySignupDetails } from "@/api/auth";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
-import { useRouter } from "next/navigation";
+import { Button, FormProvider, PinInput } from "@/shared";
 import { useOtpEmailStore } from "@/store";
-import { useVerifySignupMutation, VerifySignupDetails } from "@/api/auth";
+import { Box, Flex, Spinner, Stack, Text } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 const ArrowRightIcon = () => (
   <svg
@@ -68,6 +67,7 @@ export const OtpPage = ({
   const { otpEmail } = useOtpEmailStore();
 
   const { mutate, isPending } = useVerifySignupMutation();
+  const { mutate: resendOtpMutate, isPending: isResending } = useResendOtpMutation();
 
   const onSubmit = (data: VerifySignupDetails) => {
     const payload = {
@@ -79,6 +79,10 @@ export const OtpPage = ({
         router.push(ROUTES.LOGIN);
       },
     });
+  };
+
+  const handleResend = () => {
+    resendOtpMutate({ email: otpEmail });
   };
 
   return (
@@ -139,7 +143,7 @@ export const OtpPage = ({
             </Text>
 
             <Text fontSize="13px" fontWeight="700" color={WEBSITE_THEME_COLOR}>
-              {sentTo}
+              {otpEmail}
             </Text>
           </Box>
 
@@ -150,14 +154,14 @@ export const OtpPage = ({
 
             <Button
               bg={WEBSITE_THEME_COLOR}
-              loading={isPending}
+              loading={isPending || isResending}
               w={"full"}
               type="submit"
               p={6}
               borderRadius="full"
               boxShadow={`0 4px 16px rgba(13,105,68,0.28)`}
               _hover={{
-                bg: "#0a5535",
+                bg: BRAND_COLORS[700],
                 transform: "translateY(-1px)",
                 boxShadow: `0 8px 24px rgba(13,105,68,0.35)`,
               }}
@@ -171,6 +175,8 @@ export const OtpPage = ({
 
           {/* Footer */}
           <Flex direction="column" align="center" gap={2} mt={6}>
+            {isResending?
+            <Spinner/>:
             <Text fontSize="13px" color="#9ca3af">
               Didn&apos;t receive the code?{" "}
               <Text
@@ -179,11 +185,12 @@ export const OtpPage = ({
                 fontWeight="700"
                 cursor="pointer"
                 _hover={{ textDecoration: "underline" }}
-                onClick={onResend}
+                onClick={handleResend}
               >
                 Resend Code
               </Text>
             </Text>
+            }
             <Text
               fontSize="10px"
               fontWeight="700"

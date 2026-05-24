@@ -7,6 +7,11 @@ export const api = {
     VERIFY_REGISTER: "/auth/verify-signup",
     ME: "/auth/me",
     LOGOUT: "/auth/logout",
+    RESENT_OTP_VERIFICATION: "/auth/resend-verification",
+    RESET_PASSWORD: "/auth/reset-password",
+    FORGOT_PASSWORD: "/auth/forgot-password",
+    CHANGE_PASSWORD: "/auth/change-password",
+    REFRESH_TOKEN: "/auth/refresh-token",
   },
   ADMIN: {
     GET_AGENCY: "/admin/agency/profiles",

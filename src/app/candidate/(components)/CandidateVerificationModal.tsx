@@ -5,6 +5,7 @@ import {
   useCreateCandidateProfile,
   useUploadCandidateDocument,
   UpdateCandidateProfilePayload,
+  CandidateDocument,
 } from "@/api/candidate-api";
 import { Button, Dialog, FormProvider, TextFieldInput, FileDropzone } from "@/shared";
 import { SelectFieldInput } from "@/shared/ui/Select";
@@ -25,7 +26,9 @@ import {
 import { User, IdCard, Folder } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import candidateVerificationSchema from "@/schema/candidate";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
 import { successNotification, errorNotification } from "@/utils/toast";
@@ -105,7 +108,21 @@ export const CandidateVerificationModal = ({
   isOpen,
   onClose,
 }: CandidateVerificationModalProps) => {
-  const methods = useForm<UpdateCandidateProfilePayload>();
+  const methods = useForm<UpdateCandidateProfilePayload>({
+    resolver: yupResolver(candidateVerificationSchema) as Resolver<UpdateCandidateProfilePayload>,
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      trade: "",
+      dateOfBirth: "",
+      maritalStatus: "SINGLE",
+      passportNumber: "",
+      passportIssueDate: "",
+      passportExpiryDate: "",
+      documentsFolderLink: "",
+      introVideoLink: "",
+    },
+  });
   const { logout } = useAuthStore();
   const { profile } = useCurrentUserStore();
   const router = useRouter();
@@ -116,10 +133,13 @@ export const CandidateVerificationModal = ({
 
   useEffect(() => {
     if (profile?.onboardingStage === "DOCUMENTS") {
+      // eslint-disable-next-line
       setCurrentStep(1);
     }
   }, [profile?.onboardingStage]);
-  const [documents, setDocuments] = useState<Record<CandidateDocType, any | null>>({
+  const [documents, setDocuments] = useState<
+    Record<CandidateDocType, File | CandidateDocument | null>
+  >({
     PASSPORT: null,
     PCC: null,
     CV: null,
@@ -157,11 +177,18 @@ export const CandidateVerificationModal = ({
     if (!candidateProfile?.documents || candidateProfile.documents.length === 0)
       return;
 
-    const newDocs: any = { ...documents };
-    candidateProfile.documents.forEach((doc: any) => {
-      newDocs[doc.documentType] = doc;
+    // eslint-disable-next-line
+    setDocuments((prev) => {
+      const newDocs: Record<CandidateDocType, File | CandidateDocument | null> = {
+        ...prev,
+      };
+
+      candidateProfile.documents.forEach((doc) => {
+        newDocs[doc.documentType as CandidateDocType] = doc;
+      });
+
+      return newDocs;
     });
-    setDocuments(newDocs);
   }, [candidateProfile]);
 
   const handleLogout = async () => {
@@ -208,8 +235,8 @@ export const CandidateVerificationModal = ({
           const file = documents[doc.type];
           if (file instanceof File) {
             return uploadDocument({
-              documentType: doc.type as any,
-              file: file,
+              documentType: doc.type,
+              file,
             });
           }
           return Promise.resolve();
@@ -219,7 +246,7 @@ export const CandidateVerificationModal = ({
       await fetchAndStoreCurrentUser();
       successNotification("Documents submitted and uploaded successfully!");
       router.push(ROUTES.CANDIDATE_DASHBOARD);
-    } catch (err) {
+    } catch {
       // Error is handled in the mutation
     }
   };
@@ -345,12 +372,13 @@ export const CandidateVerificationModal = ({
                               placeholder="e.g. Welder, Electrician, Plumber"
                               required
                             />
-                            <TextFieldInput
-                              name="dateOfBirth"
-                              label="Date of Birth"
-                              type="date"
-                              required
-                            />
+                          <TextFieldInput
+  name="dateOfBirth"
+  label="Date of Birth"
+  type="date"
+  required
+  max={new Date().toISOString().split("T")[0]}
+/>
                             <SelectFieldInput
                               name="maritalStatus"
                               label="Marital Status"
@@ -380,12 +408,16 @@ export const CandidateVerificationModal = ({
                               label="Passport Issue Date"
                               type="date"
                               required
+                                max={new Date().toISOString().split("T")[0]}
+
                             />
                             <TextFieldInput
                               name="passportExpiryDate"
                               label="Passport Expiry Date"
                               type="date"
                               required
+                                min={new Date().toISOString().split("T")[0]}
+
                             />
                           </SimpleGrid>
                         </Box>
@@ -402,12 +434,12 @@ export const CandidateVerificationModal = ({
                               name="documentsFolderLink"
                               label="Documents Folder Link"
                               placeholder="https://drive.google.com/..."
-                              required
                             />
                             <TextFieldInput
                               name="introVideoLink"
                               label="Intro Video Link"
                               placeholder="https://youtube.com/..."
+                              required
                             />
                           </SimpleGrid>
                         </Box>

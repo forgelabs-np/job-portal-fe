@@ -1,9 +1,10 @@
 "use client";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
 import { SidebarItemProps } from "@/shared/types";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { useAuthStore } from "@/store";
+import { useLogoutUserMutation } from "@/api/auth";
 import { Accordion, Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import { Users2 } from "lucide-react";
 import Link from "next/link";
@@ -22,6 +23,7 @@ import { GlobeIcon } from "../Footer";
 import { SidebarItem } from "./SidebarItems";
 
 import { MdVideoCall } from "react-icons/md";
+import { LogoIcon } from "@/assets/svg/landing";
 
 const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Dashboard", href: ROUTES.ADMIN_DASHBOARD, icon: <MdDashboard /> },
@@ -55,14 +57,14 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
   },
   {
     name: "Applications",
-    
+
     icon: <FaFileSignature />,
     subItems: [
       {
         name: "Agency Application",
         href: ROUTES.ADMIN_AGENCY_APPLICATIONS,
         icon: <FaFileAlt />
-,
+        ,
       },
       {
         name: "Self Application",
@@ -122,11 +124,11 @@ const NavItem = ({ item, collapsed, isActive }: NavItemProps) => {
       justify={collapsed ? "center" : "flex-start"}
       transition="all 0.2s ease"
       position="relative"
-      bg={isActive ? "#b6e5d2" : "transparent"}
-      color={isActive ? WEBSITE_THEME_COLOR : "black"}
+      bg={isActive ? BRAND_COLORS[600] : "transparent"}
+      color={isActive ? "white" : "black"}
       fontWeight={isActive ? "600" : "400"}
       _hover={{
-        bg: isActive ? "#b6e5d2" : "#08b36e",
+        bg: isActive ? BRAND_COLORS[500] : BRAND_COLORS[500],
         color: "white",
         transform: "translateX(2px)",
       }}
@@ -194,7 +196,8 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
+  const {mutate:logoutMutation,isPending:isLogoutPending} = useLogoutUserMutation();
   // const [collapsed, setCollapsed] = useState(false);
   const isAdmin = user?.roles?.includes("ADMIN");
   const isCandidate = user?.roles?.includes("CANDIDATE");
@@ -206,10 +209,14 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
+
+const handleLogout = () => {
+  logoutMutation(undefined, {
+    onSuccess: () => {
+      router.push("/");
+    },
+  });
+};
 
   const sidebarWidth = collapsed ? "72px" : "240px";
 
@@ -241,33 +248,28 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         flexShrink={0}
       >
         <Flex align="center" gap={2.5}>
-          <Box
-            w="36px"
-            h="36px"
-            bg={WEBSITE_THEME_COLOR}
-            borderRadius="10px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexShrink={0}
-            border="1px solid rgba(255,255,255,0.2)"
-            backdropFilter="blur(4px)"
-            color={WEBSITE_THEME_COLOR}
-          >
-            <GlobeIcon />
-          </Box>
-          {!collapsed && (
-            <Text
-              fontWeight="800"
-              fontSize="22px"
-              letterSpacing="-0.03em"
-              whiteSpace="nowrap"
+          {collapsed &&
+            <Box
+              w="36px"
+              h="36px"
+              bg={WEBSITE_THEME_COLOR}
+              borderRadius="10px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flexShrink={0}
+              border="1px solid rgba(255,255,255,0.2)"
+              backdropFilter="blur(4px)"
+              color={WEBSITE_THEME_COLOR}
             >
-              Nexu
-              <Text as="span" color={WEBSITE_THEME_COLOR} fontStyle="italic">
-                Flow
-              </Text>
-            </Text>
+              <GlobeIcon />
+            </Box>
+          }
+          {!collapsed && (
+            <Box pl={5}>
+
+              <LogoIcon />
+            </Box>
           )}
         </Flex>
 
@@ -303,7 +305,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
       )}
 
       {!collapsed && (
-        <Box px={6} pt={5} pb={2}>
+        <Box px={6} pb={2}>
           <Text
             fontSize="9px"
             fontWeight="700"
@@ -322,7 +324,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         alignItems="stretch"
         gap="1"
         px={collapsed ? 1 : 2}
-        pt={collapsed ? 3 : 1}
+        pt={collapsed ? 2 : 0}
         overflowY="auto"
         overflowX="hidden"
         css={{
@@ -335,24 +337,24 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
         }}
       >
         <Accordion.Root collapsible>
-    {sidebarItems.map((item) =>
-      item.subItems ? (
-        <SidebarItem
-          key={item.name}
-          {...item}
-          collapsed={collapsed}
-          isActive={pathname === item.href}
-        />
-      ) : (
-        <NavItem
-          key={item.name}
-          item={item}
-          collapsed={collapsed}
-          isActive={pathname === item.href}
-        />
-      )
-    )}
-  </Accordion.Root>
+          {sidebarItems.map((item) =>
+            item.subItems ? (
+              <SidebarItem
+                key={item.name}
+                {...item}
+                collapsed={collapsed}
+                isActive={pathname === item.href}
+              />
+            ) : (
+              <NavItem
+                key={item.name}
+                item={item}
+                collapsed={collapsed}
+                isActive={pathname === item.href}
+              />
+            )
+          )}
+        </Accordion.Root>
       </VStack>
 
       <Box
@@ -412,7 +414,11 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
               transition="all 0.2s"
               onClick={handleLogout}
             >
-              <MdLogout size={18} />
+              {isLogoutPending ? (
+                <Box className="spinner" />
+              ) : (
+                <MdLogout size={18} />
+              )}
             </Flex>
           </Tooltip>
         ) : (
@@ -425,6 +431,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
             borderRadius="10px"
             _hover={{ bg: "rgba(255,0,0,0.12)", color: "#ff6b6b" }}
             transition="all 0.2s"
+            loading={isLogoutPending}
           >
             <Flex align="center" gap={2}>
               <MdLogout size={15} />

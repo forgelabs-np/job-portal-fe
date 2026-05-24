@@ -2,6 +2,8 @@ export const ROUTES = {
   LOGIN: "/login",
   SIGNUP: "/register",
   VERIFY: "/register/verify",
+  FORGOT_PASSWORD: "/forgot-password",
+  RESET_PASSWORD: "/reset-password",
   ADMIN_DASHBOARD: "/dashboard",
   AGENCY_DASHBOARD: "/agency/dashboard",
   AGENCY_CANDIDATES: "/agency/candidates",
@@ -23,4 +25,5 @@ export const ROUTES = {
   CANDIDATE_INTERVIEWS: "/candidate/interviews",
   CANDIDATE_LOGIN: "/login/candidate",
   CANDIDATE_SIGNUP: "/register/candidate",
+  HOME: "/",
 };

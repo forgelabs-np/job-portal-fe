@@ -2,13 +2,16 @@
 
 import TokenService from "@/utils/token";
 import { LoginDetails, LoginType, useLoginMutation } from "@/api/auth";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { ROUTES } from "@/constants/routes";
 import { Button, FormProvider, PasswordInput, TextFieldInput } from "@/shared";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthStore } from "@/store";
+import { loginSchema } from "@/schema/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const ArrowRightIcon = () => (
   <svg
@@ -33,7 +36,6 @@ interface LoginPageProps {
   emailPlaceholder?: string;
   onSignIn?: (email: string, password: string) => void;
   onRegister?: () => void;
-  onBackToSelection?: () => void;
   userType: LoginType;
 }
 
@@ -43,9 +45,14 @@ export const LoginPage = ({
   description = "Manage the global manpower distribution network.",
   emailPlaceholder = "admin@nexuflow.com",
   userType = "agency",
-  onBackToSelection,
 }: LoginPageProps) => {
-  const methods = useForm<LoginDetails>();
+  const methods = useForm<LoginDetails>({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const { mutate, isPending } = useLoginMutation(userType);
   const router = useRouter();
@@ -68,7 +75,6 @@ export const LoginPage = ({
   };
 
   const onSubmit = (data: LoginDetails) => {
-    console.log(data, "data");
     mutate(data, {
       onSuccess: () => {
         const tokenDetails = TokenService.getTokenDetails();
@@ -135,6 +141,18 @@ export const LoginPage = ({
               borderRadius="lg"
               label="Password"
             />
+            <Flex justify="flex-end">
+              <Text
+                fontSize="13px"
+                color={WEBSITE_THEME_COLOR}
+                fontWeight="600"
+                cursor="pointer"
+                _hover={{ textDecoration: "underline" }}
+                onClick={() => router.push("/forgot-password")}
+              >
+                Forgot Password?
+              </Text>
+            </Flex>
             <Button
               bg={WEBSITE_THEME_COLOR}
               loading={isPending}
@@ -143,7 +161,7 @@ export const LoginPage = ({
               borderRadius="full"
               boxShadow={`0 4px 16px rgba(13,105,68,0.28)`}
               _hover={{
-                bg: "#0a5535",
+                bg: BRAND_COLORS[700],
                 transform: "translateY(-1px)",
                 boxShadow: `0 8px 24px rgba(13,105,68,0.35)`,
               }}

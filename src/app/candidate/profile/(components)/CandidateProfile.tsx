@@ -15,7 +15,7 @@ import {
   Image,
   NativeSelect,
 } from "@chakra-ui/react";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import {
   useGetCandidateProfile,
   useCreateCandidateProfile,
@@ -39,6 +39,7 @@ import {
   Plus,
 } from "lucide-react";
 import Link from "next/link";
+import { ChangePasswordDialog } from "@/shared/components/ChangePasswordDialog";
 
 const CandidateProfile = () => {
   const { data: profile, isLoading } = useGetCandidateProfile();
@@ -49,6 +50,7 @@ const CandidateProfile = () => {
   const [showDocUpload, setShowDocUpload] = useState(false);
   const [docType, setDocType] = useState<CandidateDocumentType | "">("");
   const [docFile, setDocFile] = useState<File | null>(null);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
   const methods = useForm();
 
@@ -183,18 +185,32 @@ const CandidateProfile = () => {
             PERSONAL INFORMATION & DOCUMENTS
           </Text>
         </VStack>
+        <HStack>
+          
+
         {!isEditing && (
           <Button
             bg={WEBSITE_THEME_COLOR}
             borderRadius="full"
             onClick={() => setIsEditing(true)}
-            _hover={{ bg: "#0a5535", transform: "translateY(-1px)" }}
+            _hover={{ bg: BRAND_COLORS[500], transform: "translateY(-1px)" }}
             transition="all 0.2s"
             boxShadow="sm"
           >
             Edit Profile
           </Button>
         )}
+         <Button
+                bg={WEBSITE_THEME_COLOR}
+                color="white"
+                onClick={() => setIsChangePasswordOpen(true)}
+                _hover={{ bg: "#0a5535" }}
+                px={3}
+                borderRadius="2xl"
+              >
+                Change Password
+              </Button>
+        </HStack>
       </Flex>
 
       {isEditing ? (
@@ -451,6 +467,7 @@ const CandidateProfile = () => {
             p={8}
             border="1px solid"
             borderColor="gray.100"
+            mb={6}
             boxShadow="sm"
           >
             <Flex justify="space-between" align="center" mb={5}>
@@ -464,7 +481,7 @@ const CandidateProfile = () => {
                 onClick={() => setShowDocUpload(!showDocUpload)}
                 color={WEBSITE_THEME_COLOR}
                 borderColor={WEBSITE_THEME_COLOR}
-                _hover={{ bg: "green.50" }}
+                _hover={{ bg: BRAND_COLORS[50] }}
               >
                 {showDocUpload ? "Cancel Upload" : <><Plus size={16} /> Update Document</>}
               </Button>
@@ -569,10 +586,10 @@ const CandidateProfile = () => {
                                 doc.status === "PENDING"
                                   ? "orange"
                                   : doc.status === "APPROVED"
-                                  ? "green"
-                                  : doc.status === "REJECTED"
-                                  ? "red"
-                                  : "gray"
+                                    ? "green"
+                                    : doc.status === "REJECTED"
+                                      ? "red"
+                                      : "gray"
                               }
                               fontSize="2xs"
                             >
@@ -608,8 +625,29 @@ const CandidateProfile = () => {
               </VStack>
             )}
           </Box>
+
+          {/* Change Password */}
+          <Box
+            bg="white"
+            borderRadius="2xl"
+            p={8}
+            border="1px solid"
+            borderColor="gray.100"
+            boxShadow="sm"
+          >
+            <Flex justify="space-between" align="center">
+              <Text fontSize="lg" fontWeight="700" color="gray.800">
+                Change Password
+              </Text>
+             
+            </Flex>
+          </Box>
         </>
       )}
+      <ChangePasswordDialog
+        isOpen={isChangePasswordOpen}
+        onClose={() => setIsChangePasswordOpen(false)}
+      />
     </Box>
   );
 };

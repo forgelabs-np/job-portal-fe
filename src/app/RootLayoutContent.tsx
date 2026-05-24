@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { AgencyApprovalGuard } from "./agency/(components)/AgencyApprovalGaurd";
 import { CandidateProfileGuard } from "./candidate/(components)/CandidateProfileGuard";
 import { fetchAndStoreCurrentUser } from "@/api/auth";
+import { LoadingOverlay } from "@/shared/components/LoadingOverlay";
 
 export default function RootLayoutContent({
   children,
@@ -17,7 +18,7 @@ export default function RootLayoutContent({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated, authReady, initializeAuth } = useAuthStore();
+  const { isAuthenticated, authReady, initializeAuth, isLoggingOut } = useAuthStore();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -36,7 +37,11 @@ export default function RootLayoutContent({
   const isPublicRoute =
     pathname === "/" ||
     pathname.startsWith("/login") ||
-    pathname.startsWith("/register");
+    pathname.startsWith("/register") ||
+    pathname.startsWith("/public") ||
+    pathname.startsWith("/forgot-password")||
+    pathname.startsWith("/reset-password")
+
 
   const isDashboardRoute =
     pathname.startsWith("/dashboard") ||
@@ -45,8 +50,8 @@ export default function RootLayoutContent({
     pathname.startsWith("/candidate") ||
     pathname.startsWith("/country-management") ||
     pathname.startsWith("/job") ||
-    pathname.startsWith("/applications")||
-      pathname.startsWith("/interview");
+    pathname.startsWith("/applications") ||
+    pathname.startsWith("/interview");
 
   const resolveRedirectPath = () => {
     const tokenDetails = TokenService.getTokenDetails();
@@ -61,7 +66,7 @@ export default function RootLayoutContent({
     if (!authReady) return;
 
     if (!isAuthenticated && !isPublicRoute) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(ROUTES.HOME);
       return;
     }
 
@@ -84,17 +89,25 @@ export default function RootLayoutContent({
       (isCandidate && (!profileComplete || profile?.onboardingStage !== "COMPLETE"));
 
     return (
-      <DashboardLayout hideNavigation={hideNavigation}>
-        {isAgency ? (
-          <AgencyApprovalGuard>{children}</AgencyApprovalGuard>
-        ) : isCandidate ? (
-          <CandidateProfileGuard>{children}</CandidateProfileGuard>
-        ) : (
-          children
-        )}
-      </DashboardLayout>
+      <>
+        {isLoggingOut && <LoadingOverlay />}
+        <DashboardLayout hideNavigation={hideNavigation}>
+          {isAgency ? (
+            <AgencyApprovalGuard>{children}</AgencyApprovalGuard>
+          ) : isCandidate ? (
+            <CandidateProfileGuard>{children}</CandidateProfileGuard>
+          ) : (
+            children
+          )}
+        </DashboardLayout>
+      </>
     );
   }
 
-  return <Layout>{children}</Layout>;
+  return (
+    <>
+      {isLoggingOut && <LoadingOverlay />}
+      <Layout>{children}</Layout>
+    </>
+  );
 }

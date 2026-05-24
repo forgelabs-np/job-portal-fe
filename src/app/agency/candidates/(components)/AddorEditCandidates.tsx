@@ -17,13 +17,17 @@ import {
   HStack,
   Separator,
   SimpleGrid,
+  Skeleton,
   Text,
   Steps,
   Flex,
+  VStack,
 } from "@chakra-ui/react";
 import { FileText, Folder, IdCard, User, Video } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FormProvider as ReactHookFormProvider, useFieldArray, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { candidateVerificationSchema } from "@/schema/candidate";
 import { successNotification, errorNotification } from "@/utils/toast";
 
 interface SectionHeaderProps {
@@ -225,6 +229,7 @@ const AddOrEditCandidates = ({
 
   const methods = useForm<CandidateFormType>({
     defaultValues,
+    resolver: yupResolver(candidateVerificationSchema) as any,
   });
 
   const { control, reset } = methods;
@@ -238,7 +243,7 @@ const AddOrEditCandidates = ({
   const { mutateAsync: uploadDocument, isPending: isUploadingDocuments } =
     useUploadCandidateDocMutation();
 
-  const { data: candidateData } = useGetCandidateById(Number(id));
+  const { data: candidateData, isLoading: isCandidateLoading, isFetching } = useGetCandidateById(Number(id),);
 
   const handleClose = () => {
     resetId(undefined);
@@ -356,7 +361,61 @@ const AddOrEditCandidates = ({
       size="xl"
       hasCloseTrigger
     >
-      {currentStep === 0 ? (
+      {isEdit && (isCandidateLoading || isFetching) ? (
+        <Box display="flex" flexDirection="column" height="65vh" overflow="hidden" px={1} py={4}>
+          <VStack gap={6} align="stretch">
+            {/* Stepper Skeleton */}
+            <Flex justify="space-between" align="center" px={2} mb={4}>
+              <HStack gap={4}>
+                <Skeleton height="10" width="10" borderRadius="full" />
+                <VStack align="start" gap={1}>
+                  <Skeleton height="4" width="24" />
+                  <Skeleton height="3" width="40" />
+                </VStack>
+              </HStack>
+              <Skeleton height="2px" flex={1} mx={4} />
+              <HStack gap={4}>
+                <Skeleton height="10" width="10" borderRadius="full" />
+                <VStack align="start" gap={1}>
+                  <Skeleton height="4" width="24" />
+                  <Skeleton height="3" width="40" />
+                </VStack>
+              </HStack>
+            </Flex>
+
+            {/* Section 1: Personal Information Skeleton */}
+            <VStack gap={4} align="stretch">
+              <Skeleton height="4" width="50%" />
+              <Flex gap={4}>
+                <Skeleton height="10" flex={1} />
+                <Skeleton height="10" flex={1} />
+              </Flex>
+              <Flex gap={4}>
+                <Skeleton height="10" flex={1} />
+                <Skeleton height="10" flex={1} />
+              </Flex>
+              <Skeleton height="10" width="48%" />
+            </VStack>
+
+            {/* Section 2: Passport Details Skeleton */}
+            <VStack gap={4} align="stretch">
+              <Skeleton height="4" width="40%" />
+              <Flex gap={4}>
+                <Skeleton height="10" flex={1} />
+                <Skeleton height="10" flex={1} />
+              </Flex>
+              <Skeleton height="10" width="48%" />
+            </VStack>
+
+            {/* Section 3: Documents & Media Skeleton */}
+            <VStack gap={4} align="stretch">
+              <Skeleton height="4" width="45%" />
+              <Skeleton height="10" width="100%" />
+              <Skeleton height="10" width="100%" />
+            </VStack>
+          </VStack>
+        </Box>
+      ) : currentStep === 0 ? (
         <FormProvider methods={methods} onSubmit={handleNextStep}>
           <Box display="flex" flexDirection="column" height="65vh" overflow="hidden">
             {/* Stepper Indicator */}
@@ -404,12 +463,13 @@ const AddOrEditCandidates = ({
                   <SimpleGrid columns={2} gap={4}>
                     <TextFieldInput name="firstName" label="First Name" required />
                     <TextFieldInput name="lastName" label="Last Name" required />
-                    <TextFieldInput name="trade" label="Job" required />
+                    <TextFieldInput name="trade" label="Job" />
                     <TextFieldInput
                       name="dateOfBirth"
                       label="Date of Birth"
                       type="date"
                       required
+                      max={new Date().toISOString().split('T')[0]}
                     />
                     <SelectFieldInput
                       name="maritalStatus"
@@ -438,12 +498,16 @@ const AddOrEditCandidates = ({
                       label="Issue Date"
                       type="date"
                       required
+                      max={new Date().toISOString().split('T')[0]}
+
                     />
                     <TextFieldInput
                       name="passportExpiryDate"
                       label="Expiry Date"
                       type="date"
                       required
+                      min={new Date().toISOString().split('T')[0]}
+
                     />
                   </SimpleGrid>
 

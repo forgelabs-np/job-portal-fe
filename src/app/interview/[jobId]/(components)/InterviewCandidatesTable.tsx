@@ -16,9 +16,9 @@ interface InterviewCandidatesTableProps {
 
 export const InterviewCandidatesTable = ({ jobDemandId }: InterviewCandidatesTableProps) => {
   const [payload, setPayload] = useState({
-      page: 0,
-      pageSize: 10,
-    });
+    page: 0,
+    pageSize: 10,
+  });
   const { data: shortlistedData, isLoading } = useGetShortlistedCandidates({
     page: payload.page,
     size: payload.pageSize,
@@ -33,13 +33,13 @@ export const InterviewCandidatesTable = ({ jobDemandId }: InterviewCandidatesTab
   const previous = payload.page > 0;
 
   const [selectedViewId, setSelectedViewId] = useState<number | null>(null);
-  
+
   // For individual schedule
-  const [scheduleCandidate, setScheduleCandidate] = useState<{id: number, name: string} | null>(null);
-  
+  const [scheduleCandidate, setScheduleCandidate] = useState<{ id: number, name: string } | null>(null);
+
   // For bulk schedule
   const [isBulkScheduleOpen, setIsBulkScheduleOpen] = useState(false);
-  
+
   const columns = useMemo<ColumnDef<ShortListedResponse>[]>(
     () => [
       {
@@ -66,7 +66,7 @@ export const InterviewCandidatesTable = ({ jobDemandId }: InterviewCandidatesTab
         header: "Agency",
         cell: ({ row }) => (
           <Text fontSize="sm" color="gray.700">
-            {row.original.agencyName ??"SELF"}
+            {row.original.agencyName ?? "SELF"}
           </Text>
         ),
       },
@@ -159,25 +159,25 @@ export const InterviewCandidatesTable = ({ jobDemandId }: InterviewCandidatesTab
           </Button>
         </HStack>
 
-        <DataTable 
-                 columns={columns} 
-                 data={shortlistedData?.content ?? []} 
-                 isLoading={isLoading}
-                 payload={{
-                   ...payload,
-                   pageCount,
-                   count: totalRecords,
-                   display_count: displayCount,
-                   next,
-                   previous,
-                 }}
-                 setPayload={setPayload}
-                 onSearchChange={(searchTerm) => {
-                   // Handle search logic here
-                   console.log("Search:", searchTerm);
-                 }}
-                
-               />
+        <DataTable
+          columns={columns}
+          data={shortlistedData?.content ?? []}
+          isLoading={isLoading}
+          payload={{
+            ...payload,
+            pageCount,
+            count: totalRecords,
+            display_count: displayCount,
+            next,
+            previous,
+          }}
+          setPayload={setPayload}
+          onSearchChange={(searchTerm) => {
+            // Handle search logic here
+            console.log("Search:", searchTerm);
+          }}
+
+        />
       </Stack>
 
       <ApplicationModal

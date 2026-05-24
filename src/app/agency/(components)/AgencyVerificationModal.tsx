@@ -15,8 +15,10 @@ import { errorNotification } from "@/utils/toast";
 import { Box, Flex, HStack, Skeleton, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { AgencyVerificationForm } from "./AgencyVerificationForm";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { agencyVerificationSchema } from "@/schema/agency";
 
 interface AgencyVerificationModalProps {
   isOpen: boolean;
@@ -27,8 +29,8 @@ interface AgencyVerificationModalProps {
 export interface AgencyProfileForm {
   companyName: string;
   companyDescription: string;
-  companyWebsite: string;
-  companyLogoUrl: string;
+  companyWebsite?: string;
+  companyLogoUrl?: string;
   companyAddress: string;
   companyPhone: string;
   registrationNumber: string;
@@ -44,7 +46,21 @@ export const AgencyVerificationModal = ({
   onClose,
   onSuccess,
 }: AgencyVerificationModalProps) => {
-  const methods = useForm<AgencyProfileForm>();
+  const methods = useForm<AgencyProfileForm>({
+    resolver: yupResolver(agencyVerificationSchema) as Resolver<AgencyProfileForm>, defaultValues: {
+      companyName: "",
+      companyDescription: "",
+      companyWebsite: "",
+      companyLogoUrl: "",
+      companyAddress: "",
+      companyPhone: "",
+      registrationNumber: "",
+      taxId: "",
+      contactPersonName: "",
+      contactPersonEmail: "",
+      contactPersonPhone: "",
+    },
+  });
   const { logout } = useAuthStore();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);

@@ -14,13 +14,17 @@ export const useOtpEmailStore = create<OtpEmailStore>((set) => ({
   setOtpEmail: (email) => set(() => ({ otpEmail: email })),
 }));
 
+
+
 export type AuthStore = {
   user: MofinTokenDetails | null;
   isAuthenticated: boolean;
   role: string | null;
   authReady: boolean;
+  isLoggingOut: boolean;
   setUser: (user: MofinTokenDetails | null) => void;
   logout: () => void;
+  setLoggingOut: (isLoggingOut: boolean) => void;
   initializeAuth: () => void;
 };
 
@@ -32,12 +36,14 @@ const initialAuthState =
         isAuthenticated: true,
         role: initialTokenUser.roles?.[0] ?? null,
         authReady: true,
+        isLoggingOut: false,
       }
     : {
         user: null,
         isAuthenticated: false,
         role: null,
         authReady: true,
+        isLoggingOut: false,
       };
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -45,6 +51,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticated: initialAuthState.isAuthenticated,
   role: initialAuthState.role,
   authReady: initialAuthState.authReady,
+  isLoggingOut: initialAuthState.isLoggingOut,
   setUser: (user) =>
     set({
       user,
@@ -60,8 +67,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
       isAuthenticated: false,
       role: null,
       authReady: true,
+      isLoggingOut: false,
     });
   },
+  setLoggingOut: (isLoggingOut) => set({ isLoggingOut }),
   initializeAuth: () => {
     const user = TokenService.getTokenDetails();
     console.log(user, "user");

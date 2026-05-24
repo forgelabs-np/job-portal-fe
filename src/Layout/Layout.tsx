@@ -1,8 +1,20 @@
 import { Box, Separator, Stack } from "@chakra-ui/react";
-import { Navbar } from "./Navbar";
 import Footer from "./Footer";
+import { usePathname } from "next/navigation";
+import { Navbar } from "@/components/LandingPage/Navbar";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
+
+  const pathname = usePathname();
+  const isMarketingHome = pathname === "/";
+
+  if (isMarketingHome) {
+    return (
+      <Box as="main" minH="100vh" w="100%" overflowX="hidden">
+        {children}
+      </Box>
+    );
+  }
   return (
     <>
       <Stack alignItems="stretch" minH="100vh" bg="white" gap={0}>
@@ -14,7 +26,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </Box>
 
         <Separator borderColor="gray.200" mt={5} />
-        <Footer />
+        {/* <Footer /> */}
       </Stack>
     </>
   );

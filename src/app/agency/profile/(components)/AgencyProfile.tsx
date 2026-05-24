@@ -19,6 +19,7 @@ import {
   Skeleton,
   Image,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import {
   Globe,
   Phone,
@@ -32,6 +33,7 @@ import {
   Fingerprint,
 } from "lucide-react";
 import Link from "next/link";
+import { ChangePasswordDialog } from "@/shared/components/ChangePasswordDialog";
 
 interface InfoItemProps {
   icon: React.ReactNode;
@@ -124,6 +126,7 @@ const ProfileSkeleton = () => (
 
 const AgencyProfile = () => {
   const { data: profile, isLoading } = useGetAgencyProfile();
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
   if (isLoading) {
     return <ProfileSkeleton />;
@@ -206,12 +209,23 @@ const AgencyProfile = () => {
             <Button
               bg={WEBSITE_THEME_COLOR}
               color="white"
+              onClick={() => setIsChangePasswordOpen(true)}
+              _hover={{ opacity: 0.9 }}
+              px={6}
+              borderRadius="xl"
+            >
+              Change Password
+            </Button>
+
+            {/* <Button
+              bg={WEBSITE_THEME_COLOR}
+              color="white"
               _hover={{ opacity: 0.9 }}
               px={8}
               borderRadius="xl"
             >
               Edit Profile
-            </Button>
+            </Button> */}
           </Flex>
         </Box>
 
@@ -320,7 +334,13 @@ const AgencyProfile = () => {
             <Text color="gray.500">No documents available.</Text>
           )}
         </Box>
+
+      
       </Stack>
+      <ChangePasswordDialog
+        isOpen={isChangePasswordOpen}
+        onClose={() => setIsChangePasswordOpen(false)}
+      />
     </Container>
   );
 };
