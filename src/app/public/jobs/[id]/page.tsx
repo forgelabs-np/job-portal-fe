@@ -3,39 +3,40 @@
 import { useGetCandidateJobs } from "@/api/candidate-api";
 import { colors, radii } from "@/components/LandingPage/theme";
 import {
-    Badge,
-    Box,
-    Button,
-    Container,
-    Flex,
-    Grid,
-    IconButton,
-    Separator,
-    Spinner,
-    Stack,
-    Tag,
-    Text
+  Badge,
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  IconButton,
+  Separator,
+  Spinner,
+  Stack,
+  Tag,
+  Text
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import {
-    ArrowLeft,
-    Banknote,
-    Bookmark,
-    Bus,
-    Calendar,
-    Clock,
-    FileText,
-    Heart,
-    Home,
-    MapPin,
-    Plane,
-    Send,
-    Share2,
-    Utensils
+  ArrowLeft,
+  Banknote,
+  Bookmark,
+  Bus,
+  Calendar,
+  Clock,
+  FileText,
+  Heart,
+  Home,
+  MapPin,
+  Plane,
+  Send,
+  Share2,
+  Utensils
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRoleModalStore } from "@/store/roleModalStore";
 
 const MotionBox = motion(Box);
 
@@ -117,8 +118,8 @@ const formatDate = (dateString: string): string => {
 const getCompanyName = (job: JobListing): string => {
   const words = job.description.split(' ');
   for (let i = 0; i < Math.min(words.length, 15); i++) {
-    if (words[i].includes('Corp') || words[i].includes('Ltd') || 
-        words[i].includes('Company') || words[i].includes('Inc')) {
+    if (words[i].includes('Corp') || words[i].includes('Ltd') ||
+      words[i].includes('Company') || words[i].includes('Inc')) {
       return words[i];
     }
   }
@@ -128,7 +129,7 @@ const getCompanyName = (job: JobListing): string => {
 export default function JobDetailPage() {
   const params = useParams();
   const router = useRouter();
-//   const toast = useToast();
+  //   const toast = useToast();
   const { data: apiData, isLoading } = useGetCandidateJobs();
   const [job, setJob] = useState<JobListing | null>(null);
   const [isSaved, setIsSaved] = useState(false);
@@ -142,16 +143,17 @@ export default function JobDetailPage() {
     }
   }, [apiData, params.id]);
 
+  const { openLoginModal } = useRoleModalStore();
+
   const handleApply = () => {
-   
-    router.push(`/jobs/${job?.id}/apply`);
+    openLoginModal();
   };
 
-  
+
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
-    
+
   };
 
   if (isLoading) {
@@ -185,20 +187,20 @@ export default function JobDetailPage() {
   const daysPerWeek = job.workingHoursPerWeek > 40 ? 6 : 5;
 
   return (
-    <Box  minH="100vh" py={{ base: 6, md: 10 }}>
+    <Box minH="100vh" py={{ base: 6, md: 10 }}>
       <Container maxW="1200px">
         {/* Back Button */}
-       <Link href="/public/jobs">
-  <Button
-    variant="ghost"
-    mb={6}
-    color={colors.textMuted}
-    _hover={{ color: colors.crimson }}
-  >
-    <ArrowLeft size={18} />
-    Back to Jobs
-  </Button>
-</Link>
+        <Link href="/public/jobs">
+          <Button
+            variant="ghost"
+            mb={6}
+            color={colors.textMuted}
+            _hover={{ color: colors.crimson }}
+          >
+            <ArrowLeft size={18} />
+            Back to Jobs
+          </Button>
+        </Link>
 
         <Grid templateColumns={{ base: "1fr", lg: "2fr 1fr" }} gap={6}>
           {/* Main Content */}
@@ -207,14 +209,14 @@ export default function JobDetailPage() {
             <MotionBox
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-            //   bg={colors.white}
+              //   bg={colors.white}
               border="1px solid"
               borderColor={colors.border}
               borderRadius={radii.lg}
               p={6}
               mb={6}
               shadow="md"
-                            //   bg={colors.borderLight}
+            //   bg={colors.borderLight}
 
             >
               <Flex justify="space-between" align="start" mb={4} wrap="wrap" gap={4} >
@@ -257,9 +259,9 @@ export default function JobDetailPage() {
                     )}
                   </Flex>
                 </Box>
-                
-               <Flex gap={2}>
-  {/* <IconButton
+
+                <Flex gap={2}>
+                  {/* <IconButton
     aria-label="Save job"
     variant="outline"
     borderColor={colors.border}
@@ -268,15 +270,15 @@ export default function JobDetailPage() {
     <Bookmark size={18} />
   </IconButton> */}
 
-  <IconButton
-    aria-label="Share job"
-    variant="outline"
-    borderColor={colors.border}
-    onClick={handleShare}
-  >
-    <Share2 size={18} />
-  </IconButton>
-</Flex>
+                  <IconButton
+                    aria-label="Share job"
+                    variant="outline"
+                    borderColor={colors.border}
+                    onClick={handleShare}
+                  >
+                    <Share2 size={18} />
+                  </IconButton>
+                </Flex>
               </Flex>
 
               <Separator my={4} />
@@ -338,14 +340,14 @@ export default function JobDetailPage() {
               borderRadius={radii.lg}
               p={6}
               mb={6}
-                            shadow="md"
+              shadow="md"
 
             >
               <Text fontSize="xl" fontWeight="700" mb={4}>Job Description</Text>
               <Text fontSize="sm" color={colors.text} lineHeight="1.7" mb={4}>
                 {job.description}
               </Text>
-              
+
               <Text fontSize="xl" fontWeight="700" mb={4} mt={6}>Requirements</Text>
               <Text fontSize="sm" color={colors.text} lineHeight="1.7" mb={4}>
                 {job.requirements}
@@ -353,23 +355,23 @@ export default function JobDetailPage() {
 
               {/* Skills */}
               <Box mt={4}>
-  <Text fontSize="sm" fontWeight="600" mb={2}>
-    Required Skills:
-  </Text>
+                <Text fontSize="sm" fontWeight="600" mb={2}>
+                  Required Skills:
+                </Text>
 
-  <Flex gap={2} flexWrap="wrap">
-    {job.requiredSkills.split(",").map((skill, index) => (
-      <Tag.Root
-        key={index}
-        size="sm"
-        bg={colors.bgWarm}
-        color={colors.text}
-      >
-        <Tag.Label>{skill.trim()}</Tag.Label>
-      </Tag.Root>
-    ))}
-  </Flex>
-</Box>
+                <Flex gap={2} flexWrap="wrap">
+                  {job.requiredSkills.split(",").map((skill, index) => (
+                    <Tag.Root
+                      key={index}
+                      size="sm"
+                      bg={colors.bgWarm}
+                      color={colors.text}
+                    >
+                      <Tag.Label>{skill.trim()}</Tag.Label>
+                    </Tag.Root>
+                  ))}
+                </Flex>
+              </Box>
             </MotionBox>
 
             {/* Benefits & Perks */}
@@ -382,7 +384,7 @@ export default function JobDetailPage() {
               borderColor={colors.border}
               borderRadius={radii.lg}
               p={6}
-                            shadow="md"
+              shadow="md"
 
             >
               <Text fontSize="xl" fontWeight="700" mb={4}>Benefits & Perks</Text>
@@ -461,11 +463,11 @@ export default function JobDetailPage() {
                 borderRadius={radii.lg}
                 p={6}
                 mb={6}
-                                            shadow="md"
+                shadow="md"
 
               >
                 <Text fontSize="lg" fontWeight="700" mb={4}>Apply Now</Text>
-                
+
                 <Stack gap={3} mb={6}>
                   <Flex justify="space-between">
                     <Text fontSize="sm" color={colors.textMuted}>Total Slots:</Text>
@@ -498,19 +500,19 @@ export default function JobDetailPage() {
                   _hover={{ bg: colors.crimsonDark }}
                   mb={3}
                 >
-                    <Send size={18} />
+                  <Send size={18} />
                   Apply Now
                 </Button>
-                
-              <Button
-  w="full"
-  variant="outline"
-  borderColor={colors.border}
-  color={colors.text}
->
-  <FileText size={18} style={{ marginRight: 8 }} />
-  Download Job Details
-</Button>
+
+                <Button
+                  w="full"
+                  variant="outline"
+                  borderColor={colors.border}
+                  color={colors.text}
+                >
+                  <FileText size={18} style={{ marginRight: 8 }} />
+                  Download Job Details
+                </Button>
               </Box>
 
               {/* Additional Info */}

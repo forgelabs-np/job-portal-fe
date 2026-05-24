@@ -15,7 +15,7 @@ import {
   Image,
   NativeSelect,
 } from "@chakra-ui/react";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import {
   useGetCandidateProfile,
   useCreateCandidateProfile,
@@ -188,7 +188,7 @@ const CandidateProfile = () => {
             bg={WEBSITE_THEME_COLOR}
             borderRadius="full"
             onClick={() => setIsEditing(true)}
-            _hover={{ bg: "#0a5535", transform: "translateY(-1px)" }}
+            _hover={{ bg: BRAND_COLORS[500], transform: "translateY(-1px)" }}
             transition="all 0.2s"
             boxShadow="sm"
           >
@@ -464,7 +464,7 @@ const CandidateProfile = () => {
                 onClick={() => setShowDocUpload(!showDocUpload)}
                 color={WEBSITE_THEME_COLOR}
                 borderColor={WEBSITE_THEME_COLOR}
-                _hover={{ bg: "green.50" }}
+                _hover={{ bg: BRAND_COLORS[50] }}
               >
                 {showDocUpload ? "Cancel Upload" : <><Plus size={16} /> Update Document</>}
               </Button>
@@ -569,10 +569,10 @@ const CandidateProfile = () => {
                                 doc.status === "PENDING"
                                   ? "orange"
                                   : doc.status === "APPROVED"
-                                  ? "green"
-                                  : doc.status === "REJECTED"
-                                  ? "red"
-                                  : "gray"
+                                    ? "green"
+                                    : doc.status === "REJECTED"
+                                      ? "red"
+                                      : "gray"
                               }
                               fontSize="2xs"
                             >

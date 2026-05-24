@@ -36,8 +36,8 @@ export default function RootLayoutContent({
   const isPublicRoute =
     pathname === "/" ||
     pathname.startsWith("/login") ||
-    pathname.startsWith("/register")||
-        pathname.startsWith("/public")
+    pathname.startsWith("/register") ||
+    pathname.startsWith("/public")
 
 
   const isDashboardRoute =
@@ -47,8 +47,8 @@ export default function RootLayoutContent({
     pathname.startsWith("/candidate") ||
     pathname.startsWith("/country-management") ||
     pathname.startsWith("/job") ||
-    pathname.startsWith("/applications")||
-      pathname.startsWith("/interview");
+    pathname.startsWith("/applications") ||
+    pathname.startsWith("/interview");
 
   const resolveRedirectPath = () => {
     const tokenDetails = TokenService.getTokenDetails();
@@ -63,7 +63,7 @@ export default function RootLayoutContent({
     if (!authReady) return;
 
     if (!isAuthenticated && !isPublicRoute) {
-      router.replace(ROUTES.LOGIN);
+      router.replace(ROUTES.HOME);
       return;
     }
 

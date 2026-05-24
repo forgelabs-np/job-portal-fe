@@ -4,6 +4,7 @@ import { useAuthStore } from "@/store";
 import { Avatar, MenuRoot } from "@/shared";
 import { Sidebar } from "./sidebar/Sidebar";
 import { useState } from "react";
+import { BRAND_COLORS } from "@/constants/color";
 
 const SIDEBAR_EXPANDED = "240px";
 const SIDEBAR_COLLAPSED = "72px";
@@ -38,43 +39,43 @@ export const DashboardLayout = ({
         {/* Sticky Header */}
         {!hideNavigation && (
           <Box
-          bg="white"
-          borderBottom="1px solid"
-          borderBottomColor="gray.200"
-          px={6}
-          py={4}
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="center"
-          position="sticky"
-          top={0}
-          zIndex={10}
-          boxShadow="0 1px 0 rgba(0,0,0,0.06)"
-        >
-          <HStack gap={4}>
-            <Box textAlign="right">
-              <Text fontSize="sm" fontWeight="600" color="gray.900">
-                {user?.sub}
-              </Text>
-              <Text
-                fontSize="xs"
-                color="gray.500"
-                letterSpacing="0.04em"
-                textTransform="uppercase"
-              >
-                {isAdmin ? "Admin" : isCandidate ? "Candidate" : "Agency"}
-              </Text>
-            </Box>
-            <MenuRoot>
-              <Avatar
-                size="sm"
-                name={user?.name || "U"}
-                bg="teal.600"
-                color="white"
-              />
-            </MenuRoot>
-          </HStack>
-        </Box>
+            bg="white"
+            borderBottom="1px solid"
+            borderBottomColor="gray.200"
+            px={6}
+            py={4}
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+            position="sticky"
+            top={0}
+            zIndex={10}
+            boxShadow="0 1px 0 rgba(0,0,0,0.06)"
+          >
+            <HStack gap={4}>
+              <Box textAlign="right">
+                <Text fontSize="sm" fontWeight="600" color="gray.900">
+                  {user?.sub}
+                </Text>
+                <Text
+                  fontSize="xs"
+                  color="gray.500"
+                  letterSpacing="0.04em"
+                  textTransform="uppercase"
+                >
+                  {isAdmin ? "Admin" : isCandidate ? "Candidate" : "Agency"}
+                </Text>
+              </Box>
+              <MenuRoot>
+                <Avatar
+                  size="sm"
+                  name={user?.name || "U"}
+                  bg={BRAND_COLORS[600]}
+                  color="white"
+                />
+              </MenuRoot>
+            </HStack>
+          </Box>
         )}
 
         {/* Page Content */}

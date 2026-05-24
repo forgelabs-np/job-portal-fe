@@ -23,4 +23,5 @@ export const ROUTES = {
   CANDIDATE_INTERVIEWS: "/candidate/interviews",
   CANDIDATE_LOGIN: "/login/candidate",
   CANDIDATE_SIGNUP: "/register/candidate",
+  HOME: "/",
 };

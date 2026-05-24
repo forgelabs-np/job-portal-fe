@@ -4,8 +4,11 @@ import { Box, Flex, Text, Button, Container } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { colors, fonts, radii } from "./theme";
+import { useRoleModalStore } from "@/store/roleModalStore";
 
 export function CTASection() {
+  const { openLoginModal } = useRoleModalStore();
+
   return (
     <Box
       as="section"
@@ -92,6 +95,7 @@ export function CTASection() {
               _hover={{ bg: "white", color: colors.crimson }}
               transition="all 0.25s"
               gap={2}
+              onClick={() => openLoginModal()}
             >
               Looking to hire?
               <ArrowRight size={16} />
@@ -103,9 +107,10 @@ export function CTASection() {
               bg={colors.goldLight}
               color="black"
               fontSize="sm"
-              _hover={{ bg: colors.goldLight,color:"white" }}
+              _hover={{ bg: colors.goldLight, color: "white" }}
               transition="all 0.25s"
               gap={2}
+              onClick={() => openLoginModal()}
             >
               Looking for work?
               <ArrowRight size={16} />

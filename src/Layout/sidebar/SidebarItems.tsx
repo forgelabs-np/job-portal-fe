@@ -7,7 +7,7 @@ import {
   AccordionItemTrigger,
 } from "@/shared";
 import { usePathname } from "next/navigation";
-import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { BRAND_COLORS, WEBSITE_THEME_COLOR } from "@/constants/color";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 const LinkItemContent = ({
@@ -19,39 +19,39 @@ const LinkItemContent = ({
   hasSubItems,
 }: SidebarItemProps & { hasSubItems?: boolean }) => (
   <Flex
-  align="center"
-      gap={6}
-      px={collapsed ? "0" : "5"}
-      py="2.5"
-      mx="1"
-      borderRadius="10px"
-      cursor="pointer"
-      justify={collapsed ? "center" : "space-between"}
-      transition="all 0.2s ease"
-      position="relative"
-      bg={isActive ? "#b6e5d2" : "transparent"}
-      color={isActive ? WEBSITE_THEME_COLOR : "gray.700"}
-      fontWeight={isActive ? "600" : "400"}
-      _hover={{
-        bg: isActive ? "#b6e5d2" : "#08b36e",
-        color: "white",
-        transform: "translateX(2px)",
-      }}
-      css={{
-        "&::before": isActive
-          ? {
-            content: '""',
-            position: "absolute",
-            left: "-8px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: "3px",
-            height: "60%",
-            background: "white",
-            borderRadius: "0 4px 4px 0",
-          }
-          : {},
-      }}
+    align="center"
+    gap={6}
+    px={collapsed ? "0" : "5"}
+    py="2.5"
+    mx="1"
+    borderRadius="10px"
+    cursor="pointer"
+    justify={collapsed ? "center" : "space-between"}
+    transition="all 0.2s ease"
+    position="relative"
+    bg={isActive ? BRAND_COLORS[600] : "transparent"}
+    color={isActive ? "white" : "gray.700"}
+    fontWeight={isActive ? "600" : "400"}
+    _hover={{
+      bg: isActive ? BRAND_COLORS[500] : BRAND_COLORS[500],
+      color: "white",
+      transform: "translateX(2px)",
+    }}
+    css={{
+      "&::before": isActive
+        ? {
+          content: '""',
+          position: "absolute",
+          left: "-8px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          width: "3px",
+          height: "60%",
+          background: "white",
+          borderRadius: "0 4px 4px 0",
+        }
+        : {},
+    }}
   >
     <Flex align="center" gap={3} minW={0}>
       {/* Child line indicator */}

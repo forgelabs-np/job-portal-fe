@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { colors, fonts } from "./theme";
 import { RoleModal } from "../ui/RoleModal";
+import { useRoleModalStore } from "@/store/roleModalStore";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -21,8 +22,9 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const { loginOpen, openLoginModal, closeLoginModal } = useRoleModalStore();
+
 
   return (
     <>
@@ -100,7 +102,9 @@ export function Navbar() {
               py={3}
               gap={4}
             >
-              <LogoIcon />
+              <Link href={ROUTES.HOME}>
+                <LogoIcon />
+              </Link>
               {/* Logo */}
               {/* <Flex
               as="a"
@@ -199,7 +203,7 @@ export function Navbar() {
                   _hover={{ bg: colors.crimson, color: "white" }}
                   transition="all 0.2s"
                   textDecoration="none"
-                  onClick={() => setLoginOpen(true)}
+                  onClick={() => openLoginModal()}
 
                 >
                   Log In
@@ -328,7 +332,7 @@ export function Navbar() {
           </Box>
         </Box>
       </Box>
-      <RoleModal open={loginOpen} onClose={() => setLoginOpen(false)} mode="login" />
+      <RoleModal open={loginOpen} onClose={() => closeLoginModal()} mode="login" />
       <RoleModal open={registerOpen} onClose={() => setRegisterOpen(false)} mode="register" />
     </>
   );
