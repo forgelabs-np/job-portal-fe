@@ -17,7 +17,8 @@ const AgencyInterviewsTable = () => {
   });
   
   const { data, isLoading } = useGetAgencyInterviewsQuery({
-    pageable: { page: payload.page, size: payload.pageSize },
+    page: payload.page,
+    size: payload.pageSize,
   });
   
   const [viewId, setViewId] = useState<number | null>(null);

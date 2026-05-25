@@ -37,7 +37,7 @@ export function SelectFieldInput({
       invalid={!!errors[name]}
     >
       <NativeSelect.Root>
-        <NativeSelect.Field {...register(name)} required={required}>
+        <NativeSelect.Field {...register(name)}>
           <option value="">{placeholder}</option>
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>

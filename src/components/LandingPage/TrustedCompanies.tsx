@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Text, Container } from "@chakra-ui/react";
+import { Box, Text, Container, Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { colors, fonts } from "./theme";
 
@@ -42,8 +42,7 @@ function CompanyLogo({ company }: { company: TrustedCompany }) {
       transition="opacity 0.2s"
     >
       {company.logoUrl ? (
-        <Box
-          as="img"
+        <Image
           src={company.logoUrl}
           alt={company.name}
           h="32px"

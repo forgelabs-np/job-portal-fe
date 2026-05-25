@@ -2,12 +2,12 @@ import { FormControlProps } from "@/shared/types";
 import { TextFieldInput } from "../input";
 import { Textarea } from "../textarea";
 
-export const FormControl = ({ inputType, ...restProps }: FormControlProps) => {
-  switch (inputType) {
+export const FormControl = (props: FormControlProps) => {
+  switch (props.inputType) {
     case "input":
-      return <TextFieldInput {...restProps} />;
+      return <TextFieldInput {...props} />;
 
     case "textarea":
-      return <Textarea {...restProps} />;
+      return <Textarea {...props} />;
   }
 };

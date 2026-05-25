@@ -243,6 +243,8 @@ export interface CandidateApplicationType {
   jobTitle: string;
   country: string;
   city: string;
+  jobCountry?: string;
+  jobCity?: string;
   notes: string;
   status: "PENDING" | "APPROVED" | "REJECTED" | "SHORTLISTED" | "WITHDRAWN";
   appliedAt: string;

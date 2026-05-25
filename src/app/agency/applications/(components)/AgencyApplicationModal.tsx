@@ -1,9 +1,8 @@
 "use client";
 
 import {
-  AgencyApplicationDocument,
   useGetAgencyApplicationById,
-  useWithdrawApplicationMutation,
+  useWithdrawApplicationMutation
 } from "@/api/agency-jobs";
 import { Button, Dialog } from "@/shared";
 import {
@@ -22,12 +21,12 @@ import { useState } from "react";
 import {
   BsBriefcase,
   BsCalendar,
+  BsFileEarmark,
   BsGeoAlt,
+  BsInfoCircle,
   BsPerson,
   BsTools,
   BsXCircle,
-  BsFileEarmark,
-  BsInfoCircle,
 } from "react-icons/bs";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";

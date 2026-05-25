@@ -6,7 +6,7 @@ export const getInitialExpandedSidebarMenu = (
   const pathname = window.location.pathname;
 
   const activeMenu = sidebarItems.find((sidebarItem) =>
-    pathname.startsWith(sidebarItem.href),
+    sidebarItem.href ? pathname.startsWith(sidebarItem.href) : false,
   )?.name;
 
   if (activeMenu) return [activeMenu];

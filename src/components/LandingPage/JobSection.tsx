@@ -1,32 +1,31 @@
 "use client";
 
-import { Box, Flex, Text, Button, Container, Badge, Image } from "@chakra-ui/react";
+import { useGetCandidateJobs } from "@/api/candidate-api";
+import { Badge, Box, Button, Container, Flex, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import {
-  MapPin,
-  Users,
-  Clock,
-  Calendar,
-  Banknote,
   ArrowRight,
-  ExternalLink,
+  Banknote,
+  Calendar,
+  Clock,
+  MapPin,
+  Users
 } from "lucide-react";
-import { colors, fonts, radii } from "./theme";
-import { useGetCandidateJobs } from "@/api/candidate-api";
 import Link from "next/link";
+import { colors, radii } from "./theme";
 
 const MotionBox = motion(Box);
 
 // ─── Types based on API response ───────────────────────────
 export interface Country {
-  id: number;
+  id?: number;
   name: string;
-  code: string;
+  code?: string;
   currencyCode: string | null;
-  currencySymbol: string | null;
-  isEnabled: boolean | null;
-  createdAt: string | null;
-  updatedAt: string | null;
+  currencySymbol?: string | null;
+  isEnabled?: boolean | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
 export interface JobListing {
@@ -407,7 +406,7 @@ export function JobsSection({ jobs: propJobs, isLoading = false }: Props) {
         >
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
-            : jobs.map((job: JobListing, i: number) => <JobCard key={job.id} job={job} index={i} />)}
+            : jobs.map((job, i) => <JobCard key={job.id} job={job} index={i} />)}
         </Box>
 
         {/* View all */}

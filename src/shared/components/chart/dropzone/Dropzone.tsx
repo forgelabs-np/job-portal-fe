@@ -6,7 +6,7 @@ import { Button, Grid, Text, VStack } from "@chakra-ui/react";
 import { DropzoneProps } from "@/shared/types";
 
 import { MultiFilePreview, SingleFilePreview } from "./Preview";
-import { CloudAddIcon } from "@/assets/svg";
+import { CloudUpload } from "lucide-react";
 
 export const Dropzone = ({ name, multiple }: DropzoneProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -83,7 +83,7 @@ export const Dropzone = ({ name, multiple }: DropzoneProps) => {
         py={{ base: 5, md: 3 }}
       >
         <input ref={inputRef} {...getInputProps()} />
-        <CloudAddIcon />
+        <CloudUpload size={32} color="#5c5c5c" />
         <Text
           fontSize={"sm"}
           fontWeight={"semibold"}

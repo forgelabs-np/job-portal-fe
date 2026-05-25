@@ -1,7 +1,10 @@
-import { Swiper as SwiperType } from "swiper";
+type SwiperNavigation = {
+  slidePrev: () => void;
+  slideNext: () => void;
+};
 
 export type NavigationProps = {
-  swiper: SwiperType | null;
+  swiper: SwiperNavigation | null;
   isBeginning: boolean;
   isEnd: boolean;
 };

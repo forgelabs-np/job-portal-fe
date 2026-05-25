@@ -304,7 +304,7 @@ const CandidateApplicationModal = ({
                       <DetailRow
                         icon={<BsGeoAlt />}
                         label="Location"
-                        value={`${application.jobCity}, ${application.jobCountry}`}
+                        value={`${application.jobCity ?? application.city}, ${application.jobCountry ?? application.country}`}
                       />
                       <DetailRow
                         icon={<BsCalendar />}

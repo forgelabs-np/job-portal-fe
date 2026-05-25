@@ -192,8 +192,8 @@ export default function ContactUsPage() {
                                                 <Text fontSize="xs" color={c.muted} mb={1.5} >
                                                     {m.sub}
                                                 </Text>
-                                                {m.isLink ? (
-                                                    <Link href={m.href} target={m.href?.startsWith("http") ? "_blank" : undefined}>
+                                                {m.isLink && m.href ? (
+                                                    <Link href={m.href} target={m.href.startsWith("http") ? "_blank" : undefined}>
                                                         <Text
                                                             as="a"
                                                             fontSize="sm"

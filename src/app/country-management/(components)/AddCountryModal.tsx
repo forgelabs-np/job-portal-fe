@@ -1,6 +1,10 @@
 "use client";
-import { useGetAllCountries, useToggleRoleMutation } from "@/api/country";
-import { CloseCircleIcon, SearchIcon } from "@/assets/svg";
+import {
+  CountriesApiType,
+  useGetAllCountries,
+  useToggleRoleMutation,
+} from "@/api/country";
+import { SearchIcon } from "@/assets/svg";
 import { CloseButton } from "@/shared";
 import { useDebounce } from "@/utils/debounce";
 import {
@@ -23,15 +27,6 @@ import {
 import { useState } from "react";
 import { LuPlus } from "react-icons/lu";
 
-interface CountriesApiType {
-  id: string;
-  name: string;
-  code: string;
-  currencyCode: string;
-  currencySymbol: string;
-  isEnabled: boolean;
-}
-
 interface RegisterDestinationModalProps {
   open: boolean;
   onClose: () => void;
@@ -40,8 +35,8 @@ interface RegisterDestinationModalProps {
 const CountryItem = ({ country }: { country: CountriesApiType }) => {
   const { mutate: toggleCountry, isPending } = useToggleRoleMutation();
 
-  const handleToggle = (id: string) => {
-    toggleCountry(id, {
+  const handleToggle = (id: number) => {
+    toggleCountry(String(id), {
       onSuccess: () => {},
     });
   };

@@ -14,6 +14,14 @@ export interface CountriesApiType {
   isEnabled: boolean;
 }
 
+interface CountriesResponse {
+  content: CountriesApiType[];
+  size: number;
+  page: number;
+  totalPages: number;
+  totalElements: number;
+}
+
 const getApprovedCountries = () => {
   return httpClient.get<ApiResponse<CountriesApiType[]>>(
     api.ADMIN.APPROVED_COUNTRIES,
@@ -36,7 +44,7 @@ interface CountriesParams {
 }
 
 const getAllCountries = (params: CountriesParams) => {
-  return httpClient.get<ApiResponse<CountriesApiType[]>>(
+  return httpClient.get<ApiResponse<CountriesResponse>>(
     api.ADMIN.ALL_COUNTRIES,
     { params },
   );

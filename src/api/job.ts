@@ -122,7 +122,7 @@ export interface CreateJobPayload {
 }
 
 export interface CreateJobPayloadType {
-  data: CreateJobFormType;
+  data: CreateJobPayload["data"];
 }
 
 export interface AssignJobPayload {

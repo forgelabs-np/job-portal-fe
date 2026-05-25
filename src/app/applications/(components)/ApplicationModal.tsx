@@ -58,21 +58,30 @@ export interface JobApplication {
 }
 
 const statusConfig: Record<
-  "PENDING" | "APPROVED" | "REJECTED" | "SHORTLISTED",
+  string,
   { color: string; bg: string; label: string }
 > = {
   PENDING: { color: "#b45309", bg: "#fef3c7", label: "Pending" },
   SHORTLISTED: { color: "#ffffff", bg: "#40a600", label: "Shortlisted" },
   APPROVED: { color: "#065f46", bg: "#d1fae5", label: "Approved" },
   REJECTED: { color: "#991b1b", bg: "#fee2e2", label: "Rejected" },
+  SCHEDULED: { color: "#1d4ed8", bg: "#dbeafe", label: "Scheduled" },
+  RESCHEDULED: { color: "#6d28d9", bg: "#ede9fe", label: "Rescheduled" },
+  COMPLETED: { color: "#065f46", bg: "#d1fae5", label: "Completed" },
+  CANCELLED: { color: "#991b1b", bg: "#fee2e2", label: "Cancelled" },
+  NO_SHOW: { color: "#9a3412", bg: "#ffedd5", label: "No Show" },
 };
 
 export const StatusBadge = ({
   status,
 }: {
-  status: "PENDING" | "APPROVED" | "REJECTED" | "SHORTLISTED";
+  status: string;
 }) => {
-  const cfg = statusConfig[status] ?? statusConfig.PENDING;
+  const cfg = statusConfig[status] ?? {
+    color: "#374151",
+    bg: "#f3f4f6",
+    label: status,
+  };
   return (
     <Box
       as="span"

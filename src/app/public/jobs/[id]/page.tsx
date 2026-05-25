@@ -42,14 +42,14 @@ const MotionBox = motion(Box);
 
 // Types (same as before)
 export interface Country {
-  id: number;
+  id?: number;
   name: string;
-  code: string;
+  code?: string;
   currencyCode: string | null;
-  currencySymbol: string | null;
-  isEnabled: boolean | null;
-  createdAt: string | null;
-  updatedAt: string | null;
+  currencySymbol?: string | null;
+  isEnabled?: boolean | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
 export interface JobListing {
@@ -137,7 +137,7 @@ export default function JobDetailPage() {
   useEffect(() => {
     if (apiData) {
       const foundJob = apiData.find(
-        (j: JobListing) => j.id === parseInt(params.id as string)
+        (j) => j.id === parseInt(params.id as string)
       );
       setJob(foundJob || null);
     }

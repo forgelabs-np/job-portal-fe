@@ -1,14 +1,13 @@
-import { ConfigType } from "@/types";
 import React from "react";
 
 export type LayoutProps = {
   children: React.ReactNode;
-  config: ConfigType;
+  config: Record<string, unknown>;
 };
 
 export type NavItemProps = {
   href?: string;
-  menuName?: string;
+  name: string;
   subItems?: NavItemProps[];
 };
 
@@ -19,7 +18,6 @@ export type SidebarProps = {
 
 export type SidebarItemProps = NavItemProps & {
   isLastChild?: boolean;
-  name: string;
   icon?: React.ReactNode;
   isChild?: boolean;
   isActive?: boolean;

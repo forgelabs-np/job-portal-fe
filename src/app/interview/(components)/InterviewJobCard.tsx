@@ -25,7 +25,11 @@ export function InterviewJobCard({
     job.airTicketProvided && "✈️",
   ].filter(Boolean) as string[];
 
-  const filledPercent = Math.round((job.filledSlots / job.totalSlots) * 100);
+  const filledSlots = job.filledSlots ?? 0;
+  const totalSlots = job.totalSlots ?? 0;
+  const remainingSlots = job.remainingSlots ?? Math.max(totalSlots - filledSlots, 0);
+  const filledPercent =
+    totalSlots > 0 ? Math.round((filledSlots / totalSlots) * 100) : 0;
 
   return (
     <Box
@@ -132,7 +136,7 @@ export function InterviewJobCard({
               color="gray.600"
               _dark={{ color: "gray.300" }}
             >
-              {job.filledSlots} / {job.totalSlots} filled
+              {filledSlots} / {totalSlots} filled
             </Text>
           </HStack>
           <Box
@@ -151,7 +155,7 @@ export function InterviewJobCard({
             />
           </Box>
           <Text fontSize="10px" color="gray.400" mt={1}>
-            {job.remainingSlots} slots remaining
+            {remainingSlots} slots remaining
           </Text>
         </Box>
 

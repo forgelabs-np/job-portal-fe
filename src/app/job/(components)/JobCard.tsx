@@ -88,7 +88,9 @@ export function JobCard({
     job.airTicketProvided && "✈️",
   ].filter(Boolean) as string[];
 
-  const filledPercent = Math.round((job.filledSlots / job.totalSlots) * 100);
+  const filledSlots = job.filledSlots ?? 0;
+  const filledPercent =
+    job.totalSlots > 0 ? Math.round((filledSlots / job.totalSlots) * 100) : 0;
 
   return (
     <Box
@@ -195,7 +197,7 @@ export function JobCard({
               color="gray.600"
               _dark={{ color: "gray.300" }}
             >
-              {job.filledSlots} / {job.totalSlots} filled
+              {filledSlots} / {job.totalSlots} filled
             </Text>
           </HStack>
           <Box
@@ -312,8 +314,8 @@ export function JobCard({
                 // colorPalette="green"
                 fontSize="xs"
                 fontWeight="600"
-                onClick={() => onAssign(job)}
-                disabled={job.filledSlots >= job.totalSlots}
+                onClick={() => onAssign?.(job)}
+                disabled={!onAssign || filledSlots >= job.totalSlots}
                 px={3}
               >
                 <Icon as={CgAssign} boxSize={3.5} />

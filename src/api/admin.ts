@@ -30,6 +30,8 @@ export interface AgencyDocument {
 }
 
 export interface AgencyProfileDetails{
+  userId?: number;
+  email?: string;
   companyName?: string;
   companyDescription?: string;
   companyWebsite?: string;
@@ -44,6 +46,9 @@ export interface AgencyProfileDetails{
   approvalStatus?: string;
   profileStatus?: string;
   profileApprovalStatus?: string;
+  profileComplete?: boolean;
+  onboardingStage?: string;
+  createdAt?: string;
   status?: string;
   rejectionReason?: string | null;
   documents?: AgencyDocument[];

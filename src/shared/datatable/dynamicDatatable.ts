@@ -1,7 +1,7 @@
 import { QueryFunction } from "@tanstack/react-query";
 
 import { TableHeaderProps } from "./header";
-import { TableProps } from "../ui";
+import { TableProps } from "../types";
 
 export type DynamicDatatableProps<T> = Pick<TableProps<T>, "columns"> & {
   queryKey: string[];

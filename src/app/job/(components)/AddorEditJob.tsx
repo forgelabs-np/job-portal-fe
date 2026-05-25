@@ -14,19 +14,18 @@ import { SelectFieldInput } from "@/shared/ui/Select";
 import {
   Box,
   Button,
+  Circle,
+  HStack,
+  Separator,
   SimpleGrid,
   Text,
-  HStack,
-  Circle,
-  Separator,
 } from "@chakra-ui/react";
 import {
   Briefcase,
-  Users,
   DollarSign,
   FileText,
   Gift,
-  Clock,
+  Users
 } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -230,7 +229,7 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
         isPublic: data.isPublic,
         deadline: data.deadline
           ? new Date(data.deadline).toISOString()
-          : undefined,
+          : "",
         ...(isEdit ? { id: id } : {}),
       };
 

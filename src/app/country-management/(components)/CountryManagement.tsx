@@ -49,7 +49,7 @@ const CountryManagement = () => {
   return (
     <>
       <Text fontWeight="bold" fontSize="xl" mb={4}>
-        Agencies
+        Country Management  
       </Text>
       <Stack gap={4}>
         <HStack justify="flex-end">

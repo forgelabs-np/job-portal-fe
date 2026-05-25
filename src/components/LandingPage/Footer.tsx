@@ -1,11 +1,11 @@
 "use client";
 
-import { Box, Flex, Text, Input, Button, Container, SimpleGrid, Link } from "@chakra-ui/react";
-import { Phone, PhoneCall, Mail, MapPin } from "lucide-react";
-import { colors, fonts, radii } from "./theme";
-import { CeImage, IecImage, InterpidLogo, Iso1Image, IsoImage } from "@/assets/images/landing";
+import { CeImage, IecImage, Iso1Image, IsoImage } from "@/assets/images/landing";
 import { LogoIcon } from "@/assets/svg/landing";
+import { Box, Button, Container, Flex, Input, Link, Text } from "@chakra-ui/react";
+import { Mail, MapPin, Phone, PhoneCall } from "lucide-react";
 import Image from "next/image";
+import { colors, fonts } from "./theme";
 
 const quickLinks = ["Home", "Job listing", "Hiring companies", "Our specialization", "Recruitment process", "Contact us"];
 const countries = ["Saudi Arabia", "UAE (Dubai)", "Kuwait", "Oman", "Qatar", "Romania", "Malaysia"];
@@ -107,7 +107,7 @@ export function Footer() {
             <Flex gap={2} flexWrap="wrap">
               {certifications.map((cert) => (
                 <Box
-                  key={cert}
+                  key={cert.src}
                   w="60px"
                   h="60px"
                   borderRadius="full"

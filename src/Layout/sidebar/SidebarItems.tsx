@@ -167,8 +167,8 @@ export const SidebarItem = (props: SidebarItemProps) => {
             <VStack align="stretch" gap={1}>
               {props.subItems?.map((subItem) => (
                 <LinkItem
-                  key={subItem.menuName}
-                  name={subItem.menuName ?? ""}
+                  key={subItem.name}
+                  // name={subItem.menuName ?? ""}
                   {...subItem}
                   isChild
                   collapsed={props.collapsed}
