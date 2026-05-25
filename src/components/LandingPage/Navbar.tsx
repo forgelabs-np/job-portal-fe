@@ -12,12 +12,12 @@ import { RoleModal } from "../ui/RoleModal";
 import { useRoleModalStore } from "@/store/roleModalStore";
 
 const navLinks = [
-  { label: "About", href: "#about" },
+  { label: "About", href: ROUTES.PUBLIC.ABOUT },
   { label: "Job Listing", href: "/public/jobs" },
   { label: "Hiring Companies", href: "#companies" },
-  { label: "Our Specialization", href: "#specialization" },
-  { label: "Recruitment Process", href: "#process" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Our Specialization", href: ROUTES.PUBLIC.SPECIALIZATION },
+  { label: "Recruitment Process", href: ROUTES.PUBLIC.RECRUITMENT_PROCESS },
+  { label: "Contact Us", href: ROUTES.PUBLIC.CONTACT },
 ];
 
 export function Navbar() {

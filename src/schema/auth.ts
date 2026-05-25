@@ -25,3 +25,24 @@ export const signupSchema = Yup.object({
     .required("Confirm Password is required.")
     .oneOf([Yup.ref("password")], "Confirm Password must match Password."),
 });
+
+export const changePasswordSchema = Yup.object({
+  currentPassword: stringRequiredSchema("Current Password", 128),
+  newPassword: passwordSchema("New Password"),
+  confirmPassword: Yup.string()
+    .required("Confirm Password is required.")
+    .oneOf([Yup.ref("newPassword")], "Confirm Password must match New Password."),
+});
+
+export const resetPasswordSchema = Yup.object({
+  token: stringRequiredSchema("OTP"),
+
+  newPassword: passwordSchema("New Password"),
+
+  confirmPassword: Yup.string()
+    .required("Confirm Password is required.")
+    .oneOf(
+      [Yup.ref("newPassword")],
+      "Confirm Password must match New Password."
+    ),
+});

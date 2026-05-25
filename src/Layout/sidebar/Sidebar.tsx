@@ -4,6 +4,7 @@ import { ROUTES } from "@/constants/routes";
 import { SidebarItemProps } from "@/shared/types";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { useAuthStore } from "@/store";
+import { useLogoutUserMutation } from "@/api/auth";
 import { Accordion, Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import { Users2 } from "lucide-react";
 import Link from "next/link";
@@ -195,7 +196,8 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
+  const {mutate:logoutMutation,isPending:isLogoutPending} = useLogoutUserMutation();
   // const [collapsed, setCollapsed] = useState(false);
   const isAdmin = user?.roles?.includes("ADMIN");
   const isCandidate = user?.roles?.includes("CANDIDATE");
@@ -207,10 +209,14 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
+
+const handleLogout = () => {
+  logoutMutation(undefined, {
+    onSuccess: () => {
+      router.push("/");
+    },
+  });
+};
 
   const sidebarWidth = collapsed ? "72px" : "240px";
 
@@ -408,7 +414,11 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
               transition="all 0.2s"
               onClick={handleLogout}
             >
-              <MdLogout size={18} />
+              {isLogoutPending ? (
+                <Box className="spinner" />
+              ) : (
+                <MdLogout size={18} />
+              )}
             </Flex>
           </Tooltip>
         ) : (
@@ -421,6 +431,7 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
             borderRadius="10px"
             _hover={{ bg: "rgba(255,0,0,0.12)", color: "#ff6b6b" }}
             transition="all 0.2s"
+            loading={isLogoutPending}
           >
             <Flex align="center" gap={2}>
               <MdLogout size={15} />

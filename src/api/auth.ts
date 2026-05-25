@@ -7,7 +7,8 @@ import { errorNotification, successNotification } from "@/utils/toast";
 import TokenService from "@/utils/token";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import router from "next/router";
+import { useAuthStore } from "@/store";
+
 
 export const getCurrentUser = () => {
   return httpClient.get<ApiResponse<CurrentUser>>(api.AUTH.ME);
@@ -40,18 +41,32 @@ export const fetchAndStoreCurrentUser = async () => {
   }
 };
 
+
+
 export const useLogoutUserMutation = () => {
+    const {logout, setLoggingOut} = useAuthStore();
+
   return useMutation({
     mutationFn: () => postLogout(TokenService.getToken()?.refresh_token ?? ""),
-    onSuccess: () => {
-      useCurrentUserStore.getState().clearProfile();
-      TokenService.clearToken();
-      successNotification("Logged out successfully");
-      router.push("/login");
+
+    onMutate: () => {
+      setLoggingOut(true);
     },
+
+    onSuccess: () => {
+     logout();
+
+      successNotification("Logged out successfully");
+    },
+
+    onSettled: () => {
+      setLoggingOut(false);
+    },
+
     onError: () => {
       TokenService.clearToken();
       useCurrentUserStore.getState().clearProfile();
+      setLoggingOut(false);
     },
   });
 };
@@ -69,6 +84,26 @@ export interface SignupDetails {
 export interface VerifySignupDetails {
   email: string;
   otp: string;
+}
+
+export interface ChangePasswordDetails {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ResetPasswordDetails {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ForgotPasswordDetails {
+  email: string;
+}
+
+export interface ResendOtpDetails {
+  email: string;
 }
 
 export type LoginType = "agency" | "admin" | "candidate";
@@ -152,6 +187,117 @@ export const useVerifySignupMutation = () => {
         err.response?.data?.message ??
           err.response?.data?.error ??
           "Signup failed!",
+      );
+    },
+  });
+};
+
+const changePassword = (data: ChangePasswordDetails) => {
+  return httpClient.post(api.AUTH.CHANGE_PASSWORD, { data });
+};
+
+export const useChangePasswordMutation = () => {
+  return useMutation({
+    mutationFn: changePassword,
+    onSuccess: () => {
+      successNotification("Password changed successfully");
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message?: string; error?: string }>;
+      errorNotification(
+        err.response?.data?.message ??
+          err.response?.data?.error ??
+          "Failed to change password",
+      );
+    },
+  });
+};
+
+const resetPassword = (data: ResetPasswordDetails) => {
+  return httpClient.post(api.AUTH.RESET_PASSWORD, { data });
+};
+
+export const useResetPasswordMutation = () => {
+  return useMutation({
+    mutationFn: resetPassword,
+    onSuccess: () => {
+      successNotification("Password reset successfully");
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message?: string; error?: string }>;
+      errorNotification(
+        err.response?.data?.message ??
+          err.response?.data?.error ??
+          "Failed to reset password",
+      );
+    },
+  });
+};
+
+const forgotPassword = (data: ForgotPasswordDetails) => {
+  return httpClient.post(api.AUTH.FORGOT_PASSWORD, { data });
+};
+
+export const useForgotPasswordMutation = () => {
+  return useMutation({
+    mutationFn: forgotPassword,
+    onSuccess: () => {
+      successNotification("Password reset link sent to your email");
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message?: string; error?: string }>;
+      errorNotification(
+        err.response?.data?.message ??
+          err.response?.data?.error ??
+          "Failed to send reset link",
+      );
+    },
+  });
+};
+
+const resendOtpVerification = (data: ResendOtpDetails) => {
+  return httpClient.post(api.AUTH.RESENT_OTP_VERIFICATION, { data });
+};
+
+export const useResendOtpMutation = () => {
+  return useMutation({
+    mutationFn: resendOtpVerification,
+    onSuccess: () => {
+      successNotification("OTP sent to your email");
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message?: string; error?: string }>;
+      errorNotification(
+        err.response?.data?.message ??
+          err.response?.data?.error ??
+          "Failed to resend OTP",
+      );
+    },
+  });
+};
+
+const refreshToken = (refreshToken: string) => {
+  return httpClient.post(api.AUTH.REFRESH_TOKEN, { data: { refreshToken } });
+};
+
+export const useRefreshTokenMutation = () => {
+  return useMutation({
+    mutationFn: refreshToken,
+    onSuccess: (response) => {
+      if (response?.data?.data?.accessToken) {
+        const tokens = {
+          access_token: response.data.data.accessToken,
+          refresh_token: response.data.data.refreshToken,
+        };
+        TokenService.setToken(tokens);
+      }
+    },
+    onError: (error) => {
+      const err = error as AxiosError<{ message?: string; error?: string }>;
+      errorNotification(
+        err.response?.data?.message ??
+          err.response?.data?.error ??
+          "Failed to refresh token",
       );
     },
   });
