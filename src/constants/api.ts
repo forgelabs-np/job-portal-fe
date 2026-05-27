@@ -49,6 +49,14 @@ export const api = {
       DELETE: "/admin/interviews/{interviewId}",
       SHORTLISTED: "/admin/shortlisted",
       SHORTLISTED_BY_ID: "/admin/shortlisted/{applicationId}",
+    },
+    ANNOUNCEMENTS: {
+      CREATE: "/admin/announcements",
+      GET_ALL: "/admin/announcements",
+      GET_BY_ID: "/admin/announcements/{id}",
+      UPDATE: "/admin/announcements/{id}",
+      DELETE: "/admin/announcements/{id}",
+      PIN: "/admin/announcements/{id}/pin",
     }
   },
   AGENCY: {
@@ -75,6 +83,11 @@ export const api = {
       GET: "/agency/interviews",
       GET_BY_ID: "/agency/interviews/{interviewId}",
     },
+    ANNOUNCEMENTS: {
+      GET: "/announcements",
+      GET_BY_ID: "/announcements/{id}",
+      GET_LATEST: "/announcements/latest",
+    },
   },
   CANDIDATE: {
     DASHBOARD: "/candidate/dashboard",
@@ -92,6 +105,11 @@ export const api = {
     INTERVIEWS: {
       GET: "/candidate/interviews",
       GET_BY_ID: "/candidate/interviews/{interviewId}",
+    },
+    ANNOUNCEMENTS: {
+      GET: "/announcements",
+      GET_BY_ID: "/announcements/{id}",
+      GET_LATEST: "/announcements/latest",
     },
   },
 };
