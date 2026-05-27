@@ -114,7 +114,7 @@ const AnnouncementCard = ({ announcement, onEdit, onDelete, onPin }: {
               size="sm"
               variant="ghost"
               color={BRAND_COLORS[600]}
-              onClick={() => onPin(announcement.id)}
+              // onClick={() => onPin(announcement.id)}
               aria-label={announcement.isPinned ? "Unpin" : "Pin"}
             >
               {announcement.isPinned ? <PinOff size={16} /> : <Pin size={16} />}
@@ -131,7 +131,7 @@ const AnnouncementCard = ({ announcement, onEdit, onDelete, onPin }: {
               size="sm"
               variant="ghost"
               color="red.500"
-              onClick={() => onDelete(announcement.id)}
+              // onClick={() => onDelete(announcement.id)}
               aria-label="Delete"
             >
               <Trash2 size={16} />
