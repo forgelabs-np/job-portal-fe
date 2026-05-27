@@ -18,6 +18,7 @@ import {
   MdDashboard,
   MdLogout,
   MdPerson,
+  MdCampaign,
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
 import { SidebarItem } from "./SidebarItems";
@@ -73,6 +74,11 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
       },
     ],
   },
+  {
+    name: "Announcements",
+    href: ROUTES.ADMIN_ANNOUNCEMENTS,
+    icon: <MdCampaign />,
+  },
 ];
 
 const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
@@ -89,6 +95,7 @@ const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
   },
   { name: "Jobs", href: ROUTES.AGENCY_JOBS, icon: <BsBagDash /> },
   { name: "Interviews", href: ROUTES.AGENCY_INTERVIEWS, icon: <MdVideoCall size={20} /> },
+  { name: "Announcements", href: ROUTES.AGENCY_ANNOUNCEMENTS, icon: <MdCampaign /> },
   { name: "Profile", href: ROUTES.AGENCY_PROFILE, icon: <MdPerson /> },
 ];
 
@@ -101,6 +108,7 @@ const CANDIDATE_SIDEBAR_ITEMS: SidebarItemProps[] = [
   },
   { name: "Jobs", href: ROUTES.CANDIDATE_JOBS, icon: <BsBagDash /> },
   { name: "Interviews", href: ROUTES.CANDIDATE_INTERVIEWS, icon: <MdVideoCall size={20} /> },
+  // { name: "Announcements", href: ROUTES.CANDIDATE_ANNOUNCEMENTS, icon: <MdCampaign /> },
   { name: "Profile", href: ROUTES.CANDIDATE_PROFILE, icon: <MdPerson /> },
 
 ];
