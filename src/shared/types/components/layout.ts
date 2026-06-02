@@ -8,7 +8,6 @@ export type LayoutProps = {
 export type NavItemProps = {
   href?: string;
   name: string;
-  subItems?: NavItemProps[];
 };
 
 export type SidebarProps = {
