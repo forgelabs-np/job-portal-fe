@@ -6,12 +6,16 @@ export { useCurrentUserStore } from "@/store/currentUserStore";
 
 export type OtpEmailStore = {
   otpEmail: string;
+  otpUserType?: string;
   setOtpEmail: (email: string) => void;
+  setOtpUserType: (userType: string) => void;
 };
 
 export const useOtpEmailStore = create<OtpEmailStore>((set) => ({
   otpEmail: "",
+  otpUserType: undefined,
   setOtpEmail: (email) => set(() => ({ otpEmail: email })),
+  setOtpUserType: (userType) => set(() => ({ otpUserType: userType })),
 }));
 
 

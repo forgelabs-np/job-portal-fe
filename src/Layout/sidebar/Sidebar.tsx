@@ -108,7 +108,7 @@ const CANDIDATE_SIDEBAR_ITEMS: SidebarItemProps[] = [
   },
   { name: "Jobs", href: ROUTES.CANDIDATE_JOBS, icon: <BsBagDash /> },
   { name: "Interviews", href: ROUTES.CANDIDATE_INTERVIEWS, icon: <MdVideoCall size={20} /> },
-  // { name: "Announcements", href: ROUTES.CANDIDATE_ANNOUNCEMENTS, icon: <MdCampaign /> },
+  { name: "Announcements", href: ROUTES.CANDIDATE_ANNOUNCEMENTS, icon: <MdCampaign /> },
   { name: "Profile", href: ROUTES.CANDIDATE_PROFILE, icon: <MdPerson /> },
 
 ];

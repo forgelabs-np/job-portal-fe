@@ -205,7 +205,7 @@ const Dashboard = () => {
 
                   <Legend />
 
-                  <Bar dataKey="total" radius={[8, 8, 0, 0]} fill="#26a8c9" />
+                  <Bar dataKey="total" radius={[8, 8, 0, 0]} fill="#26a8c9"  />
 
                   <Bar dataKey="filled" radius={[8, 8, 0, 0]} fill="#910707" />
 
@@ -362,7 +362,7 @@ const Dashboard = () => {
                   </Text>
                 </VStack>
 
-                <Badge colorScheme="green">{agency.approvalStatus}</Badge>
+                <Badge colorPalette="green">{agency.approvalStatus}</Badge>
               </HStack>
             </Box>
           ))}
@@ -394,11 +394,11 @@ const StatCard = ({ label, value, icon }: StatCardProps) => {
           w="52px"
           h="52px"
           borderRadius="xl"
-          bg={BRAND_COLORS[50]}
+          // bg={BRAND_COLORS[50]}
           align="center"
           justify="center"
         >
-          <Icon as={icon} boxSize={6} color={BRAND_COLORS[500]} />
+          <Icon as={icon} boxSize={7} color={BRAND_COLORS[500]} />
         </Flex>
 
         <Stat.Root>

@@ -216,7 +216,7 @@ export function ScheduleInterviewModal({
                 type="date"
                 required
                 bg="white"
-                max={new Date().toISOString().split('T')[0]}
+                min={new Date().toISOString().split('T')[0]}
               />
 
               <TextFieldInput
@@ -254,6 +254,7 @@ export function ScheduleInterviewModal({
                 bg="white"
                 rows={3}
               />
+              
             </Field.Root>
           </Stack>
         </Box>

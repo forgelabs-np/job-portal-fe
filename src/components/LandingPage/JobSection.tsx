@@ -155,6 +155,11 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
+      <Link
+              href={`/public/jobs/${job.id}`}
+              style={{ textDecoration: "none" }}
+            >
+
       <Box
         bg={colors.white}
         border="1px solid"
@@ -171,7 +176,7 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
         display="flex"
         flexDirection="column"
         gap={4}
-      >
+        >
         {/* Company header */}
         <Flex align="flex-start" gap={3}>
           <Box
@@ -276,7 +281,7 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
               fontWeight="700"
               color={urgent ? colors.crimson : colors.gold}
               ml={1}
-            >
+              >
               • {daysLeft} days left
             </Text>
           </Flex>
@@ -325,6 +330,7 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
           <ArrowRight size={14} />
         </Button>
       </Box>
+</Link>
     </MotionBox>
   );
 }

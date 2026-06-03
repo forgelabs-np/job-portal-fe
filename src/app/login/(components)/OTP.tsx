@@ -64,7 +64,10 @@ export const OtpPage = ({
 }: OtpPageProps) => {
   const methods = useForm<VerifySignupDetails>();
   const router = useRouter();
-  const { otpEmail } = useOtpEmailStore();
+  const { otpEmail, otpUserType } = useOtpEmailStore();
+
+  const redirectRoute =
+    otpUserType === "CANDIDATE" ? ROUTES.CANDIDATE_LOGIN : ROUTES.LOGIN;
 
   const { mutate, isPending } = useVerifySignupMutation();
   const { mutate: resendOtpMutate, isPending: isResending } = useResendOtpMutation();
@@ -76,7 +79,7 @@ export const OtpPage = ({
     };
     mutate(payload, {
       onSuccess: () => {
-        router.push(ROUTES.LOGIN);
+        router.push(redirectRoute);
       },
     });
   };
@@ -200,7 +203,7 @@ export const OtpPage = ({
               cursor="pointer"
               _hover={{ color: WEBSITE_THEME_COLOR }}
               transition="color 0.15s ease"
-              onClick={() => router.push(ROUTES.LOGIN)}
+              onClick={() => router.push(redirectRoute)}
             >
               Back to Login
             </Text>
