@@ -1,28 +1,33 @@
-"use client";
-
-import DemandSection from "@/components/Homepage/DemandSection";
-import FeaturesSection from "@/components/Homepage/FeatureSection";
-import HeroSection from "@/components/Homepage/HeroSection";
-import ImageSection from "@/components/Homepage/ImageSection";
-import TrustedBy from "@/components/Homepage/TrustedBy";
+import { Box } from "@chakra-ui/react";
 import LandingPageMainComponent from "@/components/LandingPage/LandingPageMainComponent";
-import { Box, Button, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Find Overseas Jobs in Middle East | Job Portal Nepal",
+  description:
+    "Apply for high-paying jobs in Qatar, Dubai, UAE, and across the Middle East. Connect with verified manpower agencies and recruitment partners. Secure your overseas employment today.",
+  keywords: [
+    "overseas jobs nepal",
+    "jobs in middle east",
+    "qatar jobs",
+    "dubai jobs",
+    "uae employment",
+    "manpower agency",
+    "gulf jobs",
+    "foreign employment",
+  ],
+  openGraph: {
+    title: "Find Overseas Jobs in Middle East | Job Portal Nepal",
+    description:
+      "Apply for high-paying jobs in Qatar, Dubai, UAE, and across the Middle East.",
+    type: "website",
+  },
+};
 
 export default function Home() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["ping"],
-    queryFn: async () => {
-      const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-      return res.json();
-    },
-  });
-
-  if (isLoading) return <Text>Loading...</Text>;
-
   return (
     <Box>
-     <LandingPageMainComponent />
+      <LandingPageMainComponent />
     </Box>
   );
 }
