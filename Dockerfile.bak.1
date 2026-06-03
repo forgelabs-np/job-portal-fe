@@ -8,9 +8,11 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 FROM base AS builder
+# Accept build arguments for public env vars
 ARG NEXT_PUBLIC_API_ENDPOINT
 ARG NEXT_PUBLIC_API_IMAGE_ENDPOINT
 
+# Make them available at build time
 ENV NEXT_PUBLIC_API_ENDPOINT=$NEXT_PUBLIC_API_ENDPOINT
 ENV NEXT_PUBLIC_API_IMAGE_ENDPOINT=$NEXT_PUBLIC_API_IMAGE_ENDPOINT
 
@@ -27,17 +29,14 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
 RUN addgroup --system --gid 1001 nodejs \
-    && adduser --system --uid 1001 nextjs
+  && adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
+# Copy the built .next folder
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-# 🔧 Fix cache permissions
-RUN mkdir -p /app/.next/cache/images && chown -R nextjs:nodejs /app/.next
-
 USER nextjs
-
 EXPOSE 3000
 CMD ["npm", "start"]
