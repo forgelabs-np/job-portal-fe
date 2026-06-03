@@ -55,10 +55,11 @@ export const RegisterPage = ({
   const router = useRouter();
 
   const { mutate, isPending } = useSignupMutation();
-  const { setOtpEmail } = useOtpEmailStore();
+  const { setOtpEmail, setOtpUserType } = useOtpEmailStore();
 
   const onSubmit = (data: SignupDetails & { confirmPassword: string }) => {
     setOtpEmail(data?.email);
+    setOtpUserType(userType);
     const { confirmPassword, ...rest } = data;
     void confirmPassword;
     const payload = {

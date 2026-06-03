@@ -310,6 +310,8 @@ export function Navbar() {
                         borderRadius="md"
                         bg="transparent"
                         _hover={{ bg: colors.crimson, color: "white" }}
+                                      onClick={() => setRegisterOpen(true)}
+
                       >
                         Log In
                       </Button>
@@ -321,6 +323,8 @@ export function Navbar() {
                         fontWeight="600"
                         borderRadius="md"
                         _hover={{ bg: colors.crimsonDark }}
+                                      onClick={() => setRegisterOpen(true)}
+
                       >
                         Sign Up
                       </Button>

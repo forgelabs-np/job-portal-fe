@@ -281,7 +281,7 @@ export const RoleModal = ({
       open={open}
       onClose={onClose}
       hasCloseTrigger
-      contentMinWidth="680px"
+      contentMinWidth={{ base: "80%", md: "680px" }}
     >
       <Box p={10}>
         <Box mb={8}>
@@ -306,7 +306,7 @@ export const RoleModal = ({
           </Text>
         </Box>
 
-        <Grid templateColumns="1fr 1fr" gap={4}>
+        <Grid templateColumns={{ base: "1fr" ,md: "1fr 1fr" }} gap={4}>
           {portals.map((portal) => (
             <PortalCard key={portal.title} portal={portal} onClose={onClose} />
           ))}

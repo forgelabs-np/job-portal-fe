@@ -173,10 +173,11 @@ export const LoginPage = ({
           </Flex>
 
           {/* Footer */}
-          <Flex direction="column" align="center" gap={2} mt={6}>
-            <Text fontSize="13px" color="#9ca3af">
-              {userType === "candidate"
-                ? "New candidate?"
+          {userType !== "admin" ? (
+            <Flex direction="column" align="center" gap={2} mt={6}>
+              <Text fontSize="13px" color="#9ca3af">
+                {userType === "candidate"
+                  ? "New candidate?"
 
                 : "New agency?"}{" "}
               <Text
@@ -209,7 +210,7 @@ export const LoginPage = ({
             >
               Back to Selection
             </Text> */}
-          </Flex>
+          </Flex>) : null}
         </Box>
       </Flex>
     </FormProvider>

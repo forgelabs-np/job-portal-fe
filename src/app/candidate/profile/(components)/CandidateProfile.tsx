@@ -626,22 +626,7 @@ const CandidateProfile = () => {
             )}
           </Box>
 
-          {/* Change Password */}
-          <Box
-            bg="white"
-            borderRadius="2xl"
-            p={8}
-            border="1px solid"
-            borderColor="gray.100"
-            boxShadow="sm"
-          >
-            <Flex justify="space-between" align="center">
-              <Text fontSize="lg" fontWeight="700" color="gray.800">
-                Change Password
-              </Text>
-             
-            </Flex>
-          </Box>
+        
         </>
       )}
       <ChangePasswordDialog
