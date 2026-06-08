@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Box, Flex, Text, Container } from "@chakra-ui/react";
 import { motion, useInView } from "framer-motion";
-import { colors, fonts } from "./theme";
+import { colors, fonts, landingColors } from "./theme";
 
 const MotionBox = motion(Box);
 
@@ -62,7 +62,7 @@ export function StatsSection() {
       py={{ base: 16, md: 20 }}
       borderTop="1px solid"
       borderBottom="1px solid"
-      borderColor={colors.border}
+      borderColor={landingColors.border}
     >
       <Container maxW="1280px">
         <Flex
@@ -97,9 +97,9 @@ export function StatsSection() {
               >
                 <AnimatedNumber target={stat.value} />
                 {stat.fraction && (
-                  <Text as="span" color={colors.crimson}>{stat.fraction}</Text>
+                  <Text as="span" color={landingColors.gold}>{stat.fraction}</Text>
                 )}
-                <Text as="span" color={stat.color === colors.text ? colors.crimson : stat.color}>
+                <Text as="span" color={landingColors.gold}>
                   {stat.suffix}
                 </Text>
               </Text>

@@ -81,7 +81,7 @@ export const landingGlobeColors = {
   baseColor: [1, 1, 1] as [number, number, number], // white globe
   glowColor: [0.9, 0.9, 0.9] as [number, number, number], // soft white glow
   dark: 0,
-  mapBrightness: 12,    
+  mapBrightness: 12,
 } as const;
 
 export function Globe({
