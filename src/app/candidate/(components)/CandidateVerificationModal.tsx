@@ -7,7 +7,7 @@ import {
   UpdateCandidateProfilePayload,
   CandidateDocument,
 } from "@/api/candidate-api";
-import { Button, Dialog, FormProvider, TextFieldInput, FileDropzone } from "@/shared";
+import { Button, Dialog, FormProvider, TextFieldInput, FileDropzone, DateFieldInput } from "@/shared";
 import { SelectFieldInput } from "@/shared/ui/Select";
 import { fetchAndStoreCurrentUser } from "@/api/auth";
 import { useAuthStore, useCurrentUserStore } from "@/store";
@@ -372,10 +372,9 @@ export const CandidateVerificationModal = ({
                               placeholder="e.g. Welder, Electrician, Plumber"
                               required
                             />
-                          <TextFieldInput
+                          <DateFieldInput
   name="dateOfBirth"
   label="Date of Birth"
-  type="date"
   required
   max={new Date().toISOString().split("T")[0]}
 />
@@ -403,18 +402,16 @@ export const CandidateVerificationModal = ({
                               placeholder="Enter passport number"
                               required
                             />
-                            <TextFieldInput
+                            <DateFieldInput
                               name="passportIssueDate"
                               label="Passport Issue Date"
-                              type="date"
                               required
                                 max={new Date().toISOString().split("T")[0]}
 
                             />
-                            <TextFieldInput
+                            <DateFieldInput
                               name="passportExpiryDate"
                               label="Passport Expiry Date"
-                              type="date"
                               required
                                 min={new Date().toISOString().split("T")[0]}
 

@@ -8,7 +8,7 @@ import {
 } from "@/api/job";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
 import { createJobDefaultValues } from "@/constants/defaultVaules";
-import { Dialog, FormProvider, TextFieldInput } from "@/shared";
+import { Dialog, FormProvider, TextFieldInput, DateFieldInput } from "@/shared";
 import { SwitchFieldInput } from "@/shared/components/form/input/Switch";
 import { SelectFieldInput } from "@/shared/ui/Select";
 import {
@@ -272,7 +272,7 @@ const AddOrEditJob = ({ onClose, open, id, resetId }: AddOrEditJobProps) => {
                 required
               />{" "}
               <TextFieldInput name="city" label="City" />
-              <TextFieldInput name="deadline" label="Deadline" type="date" />
+              <DateFieldInput name="deadline" label="Deadline" />
               <Box>
                 <SwitchFieldInput name="isPublic" label="Post Publicly?" />
               </Box>

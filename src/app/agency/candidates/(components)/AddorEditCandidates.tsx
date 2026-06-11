@@ -8,7 +8,7 @@ import {
   useUploadCandidateDocMutation,
 } from "@/api/candidates";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
-import { Dialog, FormProvider, TextFieldInput, FileDropzone } from "@/shared";
+import { Dialog, FormProvider, TextFieldInput, FileDropzone, DateFieldInput } from "@/shared";
 import { SelectFieldInput } from "@/shared/ui/Select";
 import {
   Box,
@@ -464,10 +464,9 @@ const AddOrEditCandidates = ({
                     <TextFieldInput name="firstName" label="First Name" required />
                     <TextFieldInput name="lastName" label="Last Name" required />
                     <TextFieldInput name="trade" label="Job" />
-                    <TextFieldInput
+                    <DateFieldInput
                       name="dateOfBirth"
                       label="Date of Birth"
-                      type="date"
                       required
                       max={new Date().toISOString().split('T')[0]}
                     />
@@ -493,18 +492,16 @@ const AddOrEditCandidates = ({
                       label="Passport Number"
                       required
                     />
-                    <TextFieldInput
+                    <DateFieldInput
                       name="passportIssueDate"
                       label="Issue Date"
-                      type="date"
                       required
                       max={new Date().toISOString().split('T')[0]}
 
                     />
-                    <TextFieldInput
+                    <DateFieldInput
                       name="passportExpiryDate"
                       label="Expiry Date"
-                      type="date"
                       required
                       min={new Date().toISOString().split('T')[0]}
 

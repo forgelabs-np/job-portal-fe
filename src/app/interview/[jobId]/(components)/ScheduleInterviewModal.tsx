@@ -13,7 +13,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
-import { Dialog, FormProvider, TextFieldInput } from "@/shared";
+import { Dialog, FormProvider, TextFieldInput, DateFieldInput } from "@/shared";
 import { MultiSelectFieldInput } from "@/shared/ui/MultiSelectFieldInput";
 import { SelectFieldInput } from "@/shared/ui/Select";
 
@@ -210,10 +210,9 @@ export function ScheduleInterviewModal({
             />
 
             <HStack gap={4} align="flex-start">
-              <TextFieldInput
+              <DateFieldInput
                 name="date"
                 label="Interview Date"
-                type="date"
                 required
                 bg="white"
                 min={new Date().toISOString().split('T')[0]}
@@ -254,7 +253,7 @@ export function ScheduleInterviewModal({
                 bg="white"
                 rows={3}
               />
-              
+
             </Field.Root>
           </Stack>
         </Box>

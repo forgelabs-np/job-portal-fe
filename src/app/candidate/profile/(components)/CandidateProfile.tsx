@@ -23,7 +23,7 @@ import {
   CandidateDocumentType,
 } from "@/api/candidate-api";
 import PageNoData from "@/shared/ui/NoDataAvailable/PageNoData";
-import { Button, FormProvider, TextFieldInput } from "@/shared";
+import { Button, FormProvider, TextFieldInput, DateFieldInput } from "@/shared";
 import { SelectFieldInput } from "@/shared/ui/Select";
 import { FileDropzone } from "@/shared/components/form/dropzone";
 import { useForm } from "react-hook-form";
@@ -250,13 +250,12 @@ const CandidateProfile = () => {
                 borderColor="#e5e7eb"
                 borderRadius="lg"
               />
-              <TextFieldInput
+              <DateFieldInput
                 name="dateOfBirth"
                 label="Date of Birth"
                 placeholder="YYYY-MM-DD"
                 borderColor="#e5e7eb"
                 borderRadius="lg"
-                type="date"
               />
               <SelectFieldInput
                 name="maritalStatus"
@@ -275,21 +274,19 @@ const CandidateProfile = () => {
                 borderColor="#e5e7eb"
                 borderRadius="lg"
               />
-              <TextFieldInput
+              <DateFieldInput
                 name="passportIssueDate"
                 label="Passport Issue Date"
                 placeholder="YYYY-MM-DD"
                 borderColor="#e5e7eb"
                 borderRadius="lg"
-                type="date"
               />
-              <TextFieldInput
+              <DateFieldInput
                 name="passportExpiryDate"
                 label="Passport Expiry Date"
                 placeholder="YYYY-MM-DD"
                 borderColor="#e5e7eb"
                 borderRadius="lg"
-                type="date"
               />
               <TextFieldInput
                 name="documentsFolderLink"
