@@ -172,7 +172,7 @@ export default function JobDetailPage() {
           Job not found
         </Alert> */}
         <Link href="/public/jobs">
-          <Button bg={colors.crimson} color="white">
+          <Button bg={colors.goldLight} color="white">
             Back to Jobs
           </Button>
         </Link>
@@ -195,7 +195,7 @@ export default function JobDetailPage() {
             variant="ghost"
             mb={6}
             color={colors.textMuted}
-            _hover={{ color: colors.crimson }}
+            _hover={{ color: colors.gold }}
           >
             <ArrowLeft size={18} />
             Back to Jobs
@@ -231,7 +231,7 @@ export default function JobDetailPage() {
                       alignItems="center"
                       justifyContent="center"
                     >
-                      <Text fontSize="2xl" fontWeight="800" color={colors.crimson}>
+                      <Text fontSize="2xl" fontWeight="800" color={colors.gold}>
                         {companyName.charAt(0)}
                       </Text>
                     </Box>
@@ -286,7 +286,7 @@ export default function JobDetailPage() {
               {/* Key Info Grid */}
               <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4}>
                 <Flex align="center" gap={3}>
-                  <Box color={colors.crimson}>
+                  <Box color={colors.gold}>
                     <MapPin size={18} />
                   </Box>
                   <Box>
@@ -295,7 +295,7 @@ export default function JobDetailPage() {
                   </Box>
                 </Flex>
                 <Flex align="center" gap={3}>
-                  <Box color={colors.crimson}>
+                  <Box color={colors.gold}>
                     <Banknote size={18} />
                   </Box>
                   <Box>
@@ -306,7 +306,7 @@ export default function JobDetailPage() {
                   </Box>
                 </Flex>
                 <Flex align="center" gap={3}>
-                  <Box color={colors.crimson}>
+                  <Box color={colors.gold}>
                     <Clock size={18} />
                   </Box>
                   <Box>
@@ -315,7 +315,7 @@ export default function JobDetailPage() {
                   </Box>
                 </Flex>
                 <Flex align="center" gap={3}>
-                  <Box color={colors.crimson}>
+                  <Box color={colors.gold}>
                     <Calendar size={18} />
                   </Box>
                   <Box>
@@ -391,7 +391,7 @@ export default function JobDetailPage() {
               <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4}>
                 {job.accommodationProvided && (
                   <Flex align="center" gap={3}>
-                    <Home size={18} color={colors.crimson} />
+                    <Home size={18} color={colors.gold} />
                     <Box>
                       <Text fontSize="sm" fontWeight="600">Accommodation</Text>
                       <Text fontSize="xs" color={colors.textMuted}>{job.accommodationDetails || "Provided by company"}</Text>
@@ -400,7 +400,7 @@ export default function JobDetailPage() {
                 )}
                 {job.foodProvided && (
                   <Flex align="center" gap={3}>
-                    <Utensils size={18} color={colors.crimson} />
+                    <Utensils size={18} color={colors.gold} />
                     <Box>
                       <Text fontSize="sm" fontWeight="600">Food</Text>
                       <Text fontSize="xs" color={colors.textMuted}>{job.foodDetails || "Meals provided"}</Text>
@@ -409,7 +409,7 @@ export default function JobDetailPage() {
                 )}
                 {job.transportationProvided && (
                   <Flex align="center" gap={3}>
-                    <Bus size={18} color={colors.crimson} />
+                    <Bus size={18} color={colors.gold} />
                     <Box>
                       <Text fontSize="sm" fontWeight="600">Transportation</Text>
                       <Text fontSize="xs" color={colors.textMuted}>{job.transportationDetails || "Company provided"}</Text>
@@ -418,7 +418,7 @@ export default function JobDetailPage() {
                 )}
                 {job.medicalInsuranceProvided && (
                   <Flex align="center" gap={3}>
-                    <Heart size={18} color={colors.crimson} />
+                    <Heart size={18} color={colors.gold} />
                     <Box>
                       <Text fontSize="sm" fontWeight="600">Medical Insurance</Text>
                       <Text fontSize="xs" color={colors.textMuted}>{job.medicalInsuranceDetails || "Comprehensive coverage"}</Text>
@@ -427,7 +427,7 @@ export default function JobDetailPage() {
                 )}
                 {job.airTicketProvided && (
                   <Flex align="center" gap={3}>
-                    <Plane size={18} color={colors.crimson} />
+                    <Plane size={18} color={colors.gold} />
                     <Box>
                       <Text fontSize="sm" fontWeight="600">Air Ticket</Text>
                       <Text fontSize="xs" color={colors.textMuted}>{job.airTicketDetails || "Provided"}</Text>
@@ -493,11 +493,11 @@ export default function JobDetailPage() {
 
                 <Button
                   w="full"
-                  bg={colors.crimson}
+                  bg={colors.goldLight}
                   color="white"
                   size="lg"
                   onClick={handleApply}
-                  _hover={{ bg: colors.crimsonDark }}
+                  _hover={{ bg: colors.gold }}
                   mb={3}
                 >
                   <Send size={18} />

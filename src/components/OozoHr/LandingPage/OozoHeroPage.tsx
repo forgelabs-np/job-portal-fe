@@ -1,183 +1,151 @@
 "use client";
 
-// import { landingColors } from "@/components/Landing/landingTheme";
-// import {
-//     DEFAULT_LANDING_GLOBE_ARCS,
-//     DEFAULT_LANDING_GLOBE_MARKERS,
-//     Globe,
-//     landingGlobeColors,
-// } from "@/components/ui/cobe-globe";
 import { ROUTES } from "@/constants/routes";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Container } from "@chakra-ui/react";
 import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
-import LocationGlobe from "@/components/LandingPage/LocationGlobe";
+
+import { Globe, DEFAULT_LANDING_GLOBE_ARCS, DEFAULT_LANDING_GLOBE_MARKERS, landingGlobeColors } from "@/components/ui/globe";
 import { landingColors } from "@/components/LandingPage/theme";
-import { DEFAULT_LANDING_GLOBE_ARCS, DEFAULT_LANDING_GLOBE_MARKERS, Globe, landingGlobeColors } from "@/components/ui/globe";
 
 export function OozoHeroPage() {
     const reduce = useReducedMotion();
 
     return (
         <Box
-            id="top"
             as="section"
             position="relative"
+            bg="#050505"
             overflow="hidden"
-            pt={{ base: 12, md: 20 }}
-            pb={{ base: 16, md: 24 }}
-            px={{ base: 4, md: 8 }}
-            bg={"black"}
+            py={{ base: 20, md: 28 }}
         >
+            {/* subtle gradient background */}
             <Box
                 position="absolute"
                 inset={0}
-                bgGradient="radial(circle at 70% 30%, rgba(212,175,55,0.12) 0%, transparent 45%)"
-                pointerEvents="none"
-            />
-            <Box
-                position="absolute"
-                top="20%"
-                left="-10%"
-                w="40%"
-                h="40%"
-                borderRadius="full"
-                bg={landingColors.goldMuted}
-                filter="blur(120px)"
-                opacity={0.4}
+                bgGradient="radial(circle at 70% 30%, rgba(212,175,55,0.10), transparent 55%)"
                 pointerEvents="none"
             />
 
-            <Flex
-                maxW="1280px"
-                mx="auto"
-                direction={{ base: "column", lg: "row" }}
-                align="center"
-                gap={{ base: 14, lg: 8 }}
-            >
-                <Box flex="1" maxW={{ lg: "52%" }} zIndex={1}>
-                    <Text
-                        fontSize={{ base: "2.2rem", md: "3.25rem", lg: "3.5rem" }}
-                        fontWeight="800"
-                        lineHeight="1.08"
-                        color={landingColors.text}
-                        letterSpacing="-0.03em"
-                    >
-                        Global Talent{" "}
-                        <Text as="span" color={landingColors.gold}>
-                            Seamlessly
-                        </Text>{" "}
-                        Integrated
-                    </Text>
-                    <Text
-                        mt={6}
-                        fontSize={{ base: "md", md: "lg" }}
-                        color={landingColors.textMuted}
-                        lineHeight="1.7"
-                        maxW="520px"
-                    >
-                        Empowering the world&apos;s most ambitious agencies and candidates with
-                        scalable high-performance recruitment.
-                    </Text>
-                    <Flex mt={10} gap={4} flexWrap="wrap">
-                        <Link href={ROUTES.SIGNUP} style={{ textDecoration: "none" }}>
-                            <Button
-                                size="lg"
-                                borderRadius="xl"
-                                px={8}
-                                bg={landingColors.gold}
-                                color="#0a0a0a"
-                                fontWeight="800"
-                                letterSpacing="0.06em"
-                                _hover={{
-                                    bg: landingColors.goldBright,
-                                    transform: "translateY(-2px)",
-                                    boxShadow: `0 12px 40px ${landingColors.goldMuted}`,
-                                }}
-                                transition="all 0.25s ease"
-                            >
-                                GET STARTED
-                            </Button>
-                        </Link>
-                        <Link href={ROUTES.LOGIN} style={{ textDecoration: "none" }}>
-                            <Button
-                                size="lg"
-                                borderRadius="xl"
-                                px={8}
-                                variant="outline"
-                                borderWidth="2px"
-                                borderColor="rgba(255,255,255,0.35)"
-                                color={landingColors.text}
-                                fontWeight="700"
-                                letterSpacing="0.06em"
-                                bg="transparent"
-                                _hover={{
-                                    borderColor: landingColors.gold,
-                                    color: landingColors.gold,
-                                    bg: "rgba(212,175,55,0.06)",
-                                }}
-                                transition="all 0.25s ease"
-                            >
-                                AGENCY LOGIN
-                            </Button>
-                        </Link>
-                    </Flex>
-                </Box>
-
+            <Container maxW="1200px">
                 <Flex
-                    flex="1"
-                    justify="center"
+                    direction={{ base: "column", lg: "row" }}
                     align="center"
-                    position="relative"
-                    minH={{ base: "380px", md: "min(520px, 52vh)" }}
-                    w="full"
+                    justify="space-between"
+                    gap={{ base: 14, lg: 10 }}
                 >
-                    <Box
-                        position="relative"
-                        w="min(100%, clamp(300px, 58vw, 480px))"
-                        h="min(100%, clamp(300px, 58vw, 480px))"
-                        aspectRatio={1}
-                    >
-                        <Box
-                            position="absolute"
-                            inset="-8%"
-                            borderRadius="full"
-                            bg={`radial-gradient(circle, ${landingColors.goldMuted} 0%, transparent 65%)`}
-                            filter="blur(8px)"
-                        />
+                    {/* LEFT CONTENT */}
+                    <Box flex="1" zIndex={2}>
+                        <Text
+                            fontSize={{ base: "2.5rem", md: "3.5rem", lg: "4rem" }}
+                            fontWeight="900"
+                            lineHeight="1.05"
+                            letterSpacing="-0.04em"
+                            color="white"
+                        >
+                            Global Talent{" "}
+                            <Text as="span" color={landingColors.gold}>
+                                Seamlessly
+                            </Text>{" "}
+                            Integrated
+                        </Text>
+
+                        <Text
+                            mt={6}
+                            fontSize={{ base: "md", md: "lg" }}
+                            color="rgba(255,255,255,0.65)"
+                            maxW="520px"
+                            lineHeight="1.8"
+                        >
+                            Empowering ambitious agencies and candidates with scalable,
+                            high-performance recruitment infrastructure built for the modern world.
+                        </Text>
+
+                        {/* CTA */}
+                        <Flex mt={10} gap={4} flexWrap="wrap">
+                            <Link href={ROUTES.SIGNUP}>
+                                <Button
+                                    size="lg"
+                                    px={10}
+                                    borderRadius="full"
+                                    bg={landingColors.gold}
+                                    color="#0a0a0a"
+                                    fontWeight="800"
+                                    _hover={{
+                                        transform: "translateY(-2px)",
+                                        bg: landingColors.goldBright,
+                                        boxShadow: "0 15px 40px rgba(212,175,55,0.25)",
+                                    }}
+                                    transition="all 0.25s ease"
+                                >
+                                    Get Started
+                                </Button>
+                            </Link>
+
+                            <Link href={ROUTES.LOGIN}>
+                                <Button
+                                    size="lg"
+                                    px={10}
+                                    borderRadius="full"
+                                    variant="outline"
+                                    borderColor="rgba(255,255,255,0.25)"
+                                    color="white"
+                                    _hover={{
+                                        borderColor: landingColors.gold,
+                                        color: landingColors.gold,
+                                        bg: "rgba(212,175,55,0.08)",
+                                    }}
+                                    transition="all 0.25s ease"
+                                >
+                                    Agency Login
+                                </Button>
+                            </Link>
+                        </Flex>
+                    </Box>
+
+                    {/* RIGHT GLOBE */}
+                    <Flex flex="1" justify="center" align="center">
                         <Box
                             position="relative"
-                            w="full"
-                            h="full"
-                            borderRadius="3xl"
-                            // bg={`linear-gradient(145deg, #1f1f1f 0%, #0a0a0a 50%, #151515 100%)`}
-                            // border="1px solid"
-                            // borderColor={landingColors.border}
-                            // boxShadow={`0 40px 80px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.06)`}
-                            overflow="hidden"
+                            w={{ base: "320px", md: "420px", lg: "480px" }}
+                            h={{ base: "320px", md: "420px", lg: "480px" }}
                         >
-                            <Box w="full" h="full" p={{ base: 2, md: 3 }}>
-                                <Box w="full" h="full" minH={{ base: "260px", md: "320px" }}>
-                                    <Globe
-                                        markers={DEFAULT_LANDING_GLOBE_MARKERS}
-                                        arcs={DEFAULT_LANDING_GLOBE_ARCS}
-                                        markerColor={landingGlobeColors.markerColor}
-                                        arcColor={landingGlobeColors.arcColor}
-                                        baseColor={landingGlobeColors.baseColor}
-                                        glowColor={landingGlobeColors.glowColor}
-                                        dark={landingGlobeColors.dark}
-                                        mapBrightness={landingGlobeColors.mapBrightness}
-                                        speed={reduce ? 0 : 0.00135}
-                                    />
+                            {/* outer glow ring */}
+                            <Box
+                                position="absolute"
+                                inset="-10%"
+                                borderRadius="full"
+                                bg="radial-gradient(circle, rgba(212,175,55,0.18), transparent 60%)"
+                                filter="blur(10px)"
+                            />
 
-                                    {/* <LocationGlobe /> */}
-
-                                </Box>
+                            {/* glass frame */}
+                            <Box
+                                position="absolute"
+                                inset={0}
+                                borderRadius="full"
+                                bg="rgba(255,255,255,0.02)"
+                                border="1px solid rgba(255,255,255,0.08)"
+                                boxShadow="0 40px 120px rgba(0,0,0,0.6)"
+                                backdropFilter="blur(10px)"
+                                overflow="hidden"
+                            >
+                                <Globe
+                                    markers={DEFAULT_LANDING_GLOBE_MARKERS}
+                                    arcs={DEFAULT_LANDING_GLOBE_ARCS}
+                                    markerColor={landingGlobeColors.markerColor}
+                                    arcColor={landingGlobeColors.arcColor}
+                                    baseColor={landingGlobeColors.baseColor}
+                                    glowColor={landingGlobeColors.glowColor}
+                                    dark={landingGlobeColors.dark}
+                                    mapBrightness={landingGlobeColors.mapBrightness}
+                                    speed={reduce ? 0 : 0.0012}
+                                />
                             </Box>
                         </Box>
-                    </Box>
+                    </Flex>
                 </Flex>
-            </Flex>
+            </Container>
         </Box>
     );
 }

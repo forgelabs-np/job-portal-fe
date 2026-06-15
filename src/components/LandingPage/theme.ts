@@ -6,6 +6,7 @@ export const colors = {
   gold: "#D4A017",
   goldLight: "#E6B830",
   goldMuted: "rgba(212,160,23,0.15)",
+  goldDark: "#be9224",
 
   // Neutrals
   bg: "#F5F0E8",

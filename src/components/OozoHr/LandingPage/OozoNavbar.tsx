@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { useRoleModalStore } from "@/store/roleModalStore";
-import { colors, fonts } from "@/components/LandingPage/theme";
+import { colors, fonts, landingColors } from "@/components/LandingPage/theme";
 import { RoleModal } from "@/components/ui/RoleModal";
 
 const navLinks = [
@@ -29,9 +29,9 @@ export function OozoNavbar() {
 
     return (
         <>
-            <Box as="header" position="sticky" top={0} zIndex={100}>
+            <Box as="header" position="sticky" top={0} zIndex={100} mb="-36px">
                 {/* ── Crimson topbar — extra bottom padding so the white card overlaps it ── */}
-                <Box bg={colors.crimsonDark} pt={2.5} pb="36px">
+                <Box bg={colors.goldDark} pt={2.5} pb="36px">
                     <Box maxW="1300px" mx="auto" px={{ base: 4, md: 6 }}>
                         <Flex
                             justify="space-between"
@@ -104,7 +104,15 @@ export function OozoNavbar() {
                             gap={4}
                         >
                             <Link href={ROUTES.HOME}>
-                                <LogoIcon />
+                               <Flex align="baseline" gap={1} >
+                                                          <Text fontWeight="800" fontSize="2xl" color={colors.textMuted}
+                                                          >
+                                                              Oozo
+                                                          </Text>
+                                                          <Text fontWeight="600" fontSize="2xl" color={landingColors.gold}>
+                                                              HR
+                                                          </Text>
+                                                      </Flex>
                             </Link>
                             {/* Logo */}
                             {/* <Flex
@@ -142,7 +150,7 @@ export function OozoNavbar() {
                                                 fontWeight="500"
                                                 color={colors.textMuted}
                                                 fontFamily={fonts.body}
-                                                _hover={{ color: colors.crimson }}
+                                                _hover={{ color: colors.goldLight }}
                                                 transition="color 0.2s"
                                                 display="block"
                                                 textDecoration="none"
@@ -170,7 +178,7 @@ export function OozoNavbar() {
                                     color={colors.textMuted}
                                     cursor="pointer"
                                     borderRadius="md"
-                                    _hover={{ color: colors.crimson }}
+                                    _hover={{ color: colors.gold }}
                                     transition="color 0.2s"
                                 >
                                     <Search size={18} />
@@ -190,9 +198,9 @@ export function OozoNavbar() {
                                     as="a"
                                     size="sm"
                                     variant="outline"
-                                    borderColor={colors.crimson}
+                                    borderColor={colors.gold}
                                     borderWidth="1.5px"
-                                    color={colors.crimson}
+                                    color={colors.goldDark}
                                     fontFamily={fonts.body}
                                     fontWeight="600"
                                     fontSize="sm"
@@ -201,7 +209,7 @@ export function OozoNavbar() {
                                     px={5}
                                     display={{ base: "none", md: "flex" }}
                                     bg="transparent"
-                                    _hover={{ bg: colors.crimson, color: "white" }}
+                                    _hover={{ bg: colors.gold, color: "white" }}
                                     transition="all 0.2s"
                                     textDecoration="none"
                                     onClick={() => openLoginModal()}
@@ -214,7 +222,7 @@ export function OozoNavbar() {
                                 <Button
                                     as="a"
                                     size="sm"
-                                    bg={colors.crimson}
+                                    bg={colors.goldDark}
                                     color="white"
                                     fontFamily={fonts.body}
                                     fontWeight="600"
@@ -223,7 +231,7 @@ export function OozoNavbar() {
                                     h="36px"
                                     px={5}
                                     display={{ base: "none", md: "flex" }}
-                                    _hover={{ bg: colors.crimsonDark }}
+                                    _hover={{ bg: colors.gold }}
                                     transition="all 0.2s"
                                     textDecoration="none"
                                     border="none"

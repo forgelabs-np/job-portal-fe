@@ -1,6 +1,7 @@
 import { CTASection } from "@/components/LandingPage/CTA";
 import { Footer } from "@/components/LandingPage/Footer";
 import { CertificationsSection, HeroSection, LeadershipSection, WhyChooseSection } from "./(components)/About";
+import { OozoCTASection } from "@/components/OozoHr/LandingPage/OozoCTA";
 
 export default function AboutPage() {
     return (
@@ -10,8 +11,9 @@ export default function AboutPage() {
             <LeadershipSection />
             {/* <OrgChartSection /> */}
             <CertificationsSection />
-            <CTASection />
-            <Footer />
+            {/* <CTASection /> */}
+            <OozoCTASection/>
+            {/* <Footer /> */}{/* This footer is for Interpid*/}
         </>
     );
 }
