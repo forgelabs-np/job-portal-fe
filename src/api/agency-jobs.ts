@@ -216,11 +216,11 @@ export const useCreateApplicationMutation = () => {
       });
     },
 
-    onError: ({
-      error,
-    }: {
-      error: AxiosError<{ message: string; error: string }>;
-    }) => {
+    onError: (
+      error: AxiosError<{ message: string; error: string }>
+    ) => {
+      console.log(error, "errrrrrrrrrr");
+
       errorNotification(error?.response?.data?.message);
     },
   });
@@ -289,7 +289,7 @@ export interface PaginatedAgencyApplicationResponse {
   totalElements: number;
 }
 
-export interface AgencyApplicationFilterParams{
+export interface AgencyApplicationFilterParams {
   status?: string;
   page?: number;
   size?: number;
@@ -345,12 +345,11 @@ export const useWithdrawApplicationMutation = () => {
       });
     },
 
-    onError: ({
-      error,
-    }: {
-      error: AxiosError<{ message: string; error: string }>;
-    }) => {
-      errorNotification(error?.response?.data?.message ?? "Failed to withdraw application");
+    onError: (
+      error: AxiosError<{ message: string; error: string }>
+    ) => {
+
+      errorNotification(error?.response?.data?.message);
     },
   });
 };

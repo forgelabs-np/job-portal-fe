@@ -82,11 +82,10 @@ export const useCreateAgencyProfile = () => {
       });
     },
 
-    onError: ({
-      error,
-    }: {
-      error: AxiosError<{ message: string; error: string }>;
-    }) => {
+    onError: (
+      error: AxiosError<{ message: string; error: string }>
+    ) => {
+
       errorNotification(error?.response?.data?.message);
     },
   });

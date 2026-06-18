@@ -225,11 +225,10 @@ export const useCreateJobMutation = () => {
       });
     },
 
-    onError: ({
-      error,
-    }: {
-      error: AxiosError<{ message: string; error: string }>;
-    }) => {
+    onError: (
+      error: AxiosError<{ message: string; error: string }>
+    ) => {
+
       errorNotification(error?.response?.data?.message);
     },
   });
@@ -269,12 +268,11 @@ export const useAssignJobMutation = () => {
       });
     },
 
-    onError: ({
-      error,
-    }: {
-      error: AxiosError<{ message: string; error: string }>;
-    }) => {
-      errorNotification(error?.message ?? "Failed to assign job");
+    onError: (
+      error: AxiosError<{ message: string; error: string }>
+    ) => {
+
+      errorNotification(error?.response?.data?.message);
     },
   });
 };
