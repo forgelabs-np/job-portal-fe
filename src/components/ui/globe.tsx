@@ -40,25 +40,130 @@ export interface GlobeProps {
 
 /** Default cities aligned with the former canvas globe corridors */
 export const DEFAULT_LANDING_GLOBE_MARKERS: CobeMarker[] = [
-  { id: "sf", location: [37.78, -122.42], label: "San Francisco" },
-  { id: "london", location: [51.51, -0.13], label: "London" },
-  { id: "tokyo", location: [35.68, 139.69], label: "Tokyo" },
-  { id: "sydney", location: [-33.87, 151.21], label: "Sydney" },
-  { id: "singapore", location: [1.35, 103.82], label: "Singapore" },
-  { id: "moscow", location: [55.76, 37.62], label: "Moscow" },
-  { id: "saopaulo", location: [-23.55, -46.63], label: "São Paulo" },
-  { id: "mexico", location: [19.43, -99.13], label: "Mexico City" },
-  { id: "delhi", location: [28.61, 77.21], label: "Delhi" },
-  { id: "erbil", location: [36.19, 44.01], label: "Erbil" },
+  {
+    id: "uae",
+    location: [24.4539, 54.3773], // Abu Dhabi
+    label: "United Arab Emirates",
+  },
+  {
+    id: "qatar",
+    location: [25.2854, 51.5310], // Doha
+    label: "Qatar",
+  },
+  {
+    id: "malta",
+    location: [35.8989, 14.5146], // Valletta
+    label: "Malta",
+  },
+  {
+    id: "saudi-arabia",
+    location: [24.7136, 46.6753], // Riyadh
+    label: "Saudi Arabia",
+  },
+  {
+    id: "oman",
+    location: [23.5880, 58.3829], // Muscat
+    label: "Oman",
+  },
+  {
+    id: "bahrain",
+    location: [26.2235, 50.5876], // Manama
+    label: "Bahrain",
+  },
+  {
+    id: "romania",
+    location: [44.4268, 26.1025], // Bucharest
+    label: "Romania",
+  },
+  {
+    id: "germany",
+    location: [52.5200, 13.4050], // Berlin
+    label: "Germany",
+  },
+  {
+    id: "cyprus",
+    location: [35.1856, 33.3823], // Nicosia
+    label: "Cyprus",
+  },
+  {
+    id: "cambodia",
+    location: [11.5564, 104.9282], // Phnom Penh
+    label: "Cambodia",
+  },
+  {
+    id: "iraq",
+    location: [33.3152, 44.3661], // Baghdad
+    label: "Iraq",
+  },
 ];
 
 /** Single corridor: one origin → one destination (no multi-country mesh). */
 export const DEFAULT_LANDING_GLOBE_ARCS: CobeArc[] = [
   {
-    id: "sf-london",
-    from: [37.78, -122.42],
-    to: [51.51, -0.13],
-    label: "San Francisco → London",
+    id: "nepal-uae",
+    from: [27.7172, 85.3240],
+    to: [24.4539, 54.3773],
+    label: "Nepal → UAE",
+  },
+  {
+    id: "nepal-qatar",
+    from: [27.7172, 85.3240],
+    to: [25.2854, 51.5310],
+    // label: "Nepal → Qatar",
+  },
+  {
+    id: "nepal-malta",
+    from: [27.7172, 85.3240],
+    to: [35.8989, 14.5146],
+    // label: "Nepal → Malta",
+  },
+  {
+    id: "nepal-saudi",
+    from: [27.7172, 85.3240],
+    to: [24.7136, 46.6753],
+    // label: "Nepal → Saudi Arabia",
+  },
+  {
+    id: "nepal-oman",
+    from: [27.7172, 85.3240],
+    to: [23.5880, 58.3829],
+    // label: "Nepal → Oman",
+  },
+  {
+    id: "nepal-bahrain",
+    from: [27.7172, 85.3240],
+    to: [26.2235, 50.5876],
+    // label: "Nepal → Bahrain",
+  },
+  {
+    id: "nepal-romania",
+    from: [27.7172, 85.3240],
+    to: [44.4268, 26.1025],
+    // label: "Nepal → Romania",
+  },
+  {
+    id: "nepal-germany",
+    from: [27.7172, 85.3240],
+    to: [52.5200, 13.4050],
+    // label: "Nepal → Germany",
+  },
+  {
+    id: "nepal-cyprus",
+    from: [27.7172, 85.3240],
+    to: [35.1856, 33.3823],
+    // label: "Nepal → Cyprus",
+  },
+  {
+    id: "nepal-cambodia",
+    from: [27.7172, 85.3240],
+    to: [11.5564, 104.9282],
+    // label: "Nepal → Cambodia",
+  },
+  {
+    id: "nepal-iraq",
+    from: [27.7172, 85.3240],
+    to: [33.3152, 44.3661],
+    // label: "Nepal → Iraq",
   },
 ];
 

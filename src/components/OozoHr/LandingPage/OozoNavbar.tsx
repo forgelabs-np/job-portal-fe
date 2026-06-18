@@ -15,7 +15,7 @@ import { RoleModal } from "@/components/ui/RoleModal";
 const navLinks = [
     { label: "About", href: ROUTES.PUBLIC.ABOUT },
     { label: "Job Listing", href: "/public/jobs" },
-    { label: "Hiring Companies", href: "#companies" },
+    // { label: "Hiring Companies", href: "#companies" },
     { label: "Our Specialization", href: ROUTES.PUBLIC.SPECIALIZATION },
     { label: "Recruitment Process", href: ROUTES.PUBLIC.RECRUITMENT_PROCESS },
     { label: "Contact Us", href: ROUTES.PUBLIC.CONTACT },
@@ -105,11 +105,11 @@ export function OozoNavbar() {
                         >
                             <Link href={ROUTES.HOME}>
                                <Flex align="baseline" gap={1} >
-                                                          <Text fontWeight="800" fontSize="2xl" color={colors.textMuted}
+                                                          <Text fontWeight="800" fontSize="2xl" color={"black"}
                                                           >
                                                               Oozo
                                                           </Text>
-                                                          <Text fontWeight="600" fontSize="2xl" color={landingColors.gold}>
+                                                          <Text fontWeight="600" fontSize="2xl" color={"yellow.500"}>
                                                               HR
                                                           </Text>
                                                       </Flex>

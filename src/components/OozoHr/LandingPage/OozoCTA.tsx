@@ -19,7 +19,8 @@ export function OozoCTASection() {
             // style={{
             //     background: `linear-gradient(135deg, ${landingColors.gold} 0%, ${landingColors.gold} 50%, #f4d54bff 100%)`,
             // }}
-            bg={`linear-gradient(120deg, ${landingColors.gold} 0%, #a88b2c 45%, ${landingColors.goldBright} 100%)`}
+            // bg={`linear-gradient(120deg, ${landingColors.gold} 0%, #a88b2c 45%, ${landingColors.goldBright} 100%)`}
+            bg={colors.bgWarm}
 
         >
             {/* Decorative waves */}
@@ -108,10 +109,10 @@ export function OozoCTASection() {
                             h="48px"
                             px={7}
                             borderRadius="md"
-                            bg={colors.crimson}
-                            color="white"
+                            bg={colors.gold}
+                            color="black"
                             fontSize="sm"
-                            _hover={{ bg: colors.crimsonLight, color: "white" }}
+                            _hover={{ bg: colors.goldDark, color: "white" }}
                             transition="all 0.25s"
                             gap={2}
                             onClick={() => openLoginModal()}

@@ -3,6 +3,7 @@ export const api = {
     AGENCY_LOGIN: "/auth/agency/login",
     ADMIN_LOGIN: "/auth/admin/login",
     CANDIDATE_LOGIN: "/auth/candidate/login",
+    STAFF_LOGIN: "/auth/staff/login",
     REGISTER: "/auth/signup",
     VERIFY_REGISTER: "/auth/verify-signup",
     ME: "/auth/me",

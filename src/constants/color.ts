@@ -17,3 +17,20 @@ export const BRAND_COLORS = {
     900: "#2D0505",
     950: "#1A0303",
 } as const;
+
+
+// export const WEBSITE_THEME_COLOR = "#D8A600";
+
+// export const BRAND_COLORS = {
+//   50: "#FFF9E5",
+//   100: "#FFF1B8",
+//   200: "#FFE680",
+//   300: "#FFD94D",
+//   400: "#FFCC1A",
+//   500: "#E6B800",
+//   600: "#D8A600", // WEBSITE_THEME_COLOR
+//   700: "#B38700",
+//   800: "#8C6A00",
+//   900: "#665000",
+//   950: "#3D2F00",
+// } as const;
