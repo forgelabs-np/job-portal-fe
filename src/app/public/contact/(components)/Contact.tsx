@@ -198,7 +198,7 @@ export default function ContactUsPage() {
                                                             as="a"
                                                             fontSize="sm"
                                                             fontWeight="700"
-                                                            color={c.crimson}
+                                                            color={c.gold}
                                                             textDecoration="none"
                                                             _hover={{ textDecoration: "underline" }}
                                                         >
@@ -206,7 +206,7 @@ export default function ContactUsPage() {
                                                         </Text>
                                                     </Link>
                                                 ) : (
-                                                    <Text fontSize="sm" fontWeight="700" color={c.crimson} >
+                                                    <Text fontSize="sm" fontWeight="700" color={c.gold} >
                                                         {m.detail}
                                                     </Text>
                                                 )}

@@ -163,11 +163,11 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
       <Box
         bg={colors.white}
         border="1px solid"
-        borderColor={colors.border}
+        borderColor={colors.goldMuted}
         borderRadius={radii.lg}
         p={5}
         _hover={{
-          borderColor: colors.crimson,
+          borderColor: colors.goldLight,
           boxShadow: "0 12px 40px rgba(139,26,26,0.08)",
           transform: "translateY(-2px)",
         }}
@@ -190,7 +190,7 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
             flexShrink={0}
             overflow="hidden"
           >
-            <Text fontSize="lg" fontWeight="800" color={colors.crimson}>
+            <Text fontSize="lg" fontWeight="800" color={colors.gold}>
               {companyName.charAt(0)}
             </Text>
           </Box>
@@ -315,12 +315,12 @@ function JobCard({ job, index }: { job: JobListing; index: number }) {
         {/* CTA */}
         <Button
           mt="auto"
-          bg={colors.crimson}
+          bg={colors.gold}
           color="white"
           fontWeight="700"
           fontSize="xs"
           borderRadius="md"
-          _hover={{ bg: colors.crimsonDark }}
+          _hover={{ bg: colors.goldLight }}
           transition="all 0.2s"
           gap={2}
           py={6}
@@ -379,7 +379,7 @@ export function JobsSection({ jobs: propJobs, isLoading = false }: Props) {
       <Container maxW="1280px">
         {/* Heading */}
         <Box mb={10}>
-          <Flex display="inline-flex" align="center" bg={colors.crimson} px={3} py={1} borderRadius={radii.sm} mb={4}>
+          <Flex display="inline-flex" align="center" bg={colors.gold} px={3} py={1} borderRadius={radii.sm} mb={4}>
             <Text fontSize="2xs" fontWeight="800" color="white" letterSpacing="widest" textTransform="uppercase">
               Current Hiring
             </Text>

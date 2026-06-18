@@ -106,12 +106,13 @@ export interface ResendOtpDetails {
   email: string;
 }
 
-export type LoginType = "agency" | "admin" | "candidate";
+export type LoginType = "agency" | "admin" | "candidate" | "staff";
 
 const loginEndpointMap: Record<LoginType, string> = {
   agency: api.AUTH.AGENCY_LOGIN,
   admin: api.AUTH.ADMIN_LOGIN,
   candidate: api.AUTH.CANDIDATE_LOGIN,
+  staff: api.AUTH.STAFF_LOGIN,
 };
 
 const initLogin = (data: LoginDetails, type: LoginType) => {
@@ -121,7 +122,6 @@ const initLogin = (data: LoginDetails, type: LoginType) => {
 export const useLoginMutation = (type: LoginType) => {
   return useMutation({
     mutationFn: (data: LoginDetails) => {
-      console.log("MUTATION CALLED", data);
       return initLogin(data, type);
     },
     onSuccess: (response) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetCandidateJobs } from "@/api/candidate-api";
-import { colors, radii } from "@/components/LandingPage/theme";
+import { colors, landingColors, radii } from "@/components/LandingPage/theme";
 import { FormProvider } from "@/shared";
 import { SelectFieldInput } from "@/shared/ui/Select";
 import {
@@ -208,7 +208,7 @@ function JobCard({
           borderRadius={radii.lg}
           p={5}
           _hover={{
-            borderColor: colors.crimson,
+            borderColor: colors.goldLight,
             boxShadow: "0 12px 40px rgba(139,26,26,0.08)",
             transform: "translateY(-4px)",
           }}
@@ -235,7 +235,7 @@ function JobCard({
               <Text
                 fontSize="lg"
                 fontWeight="800"
-                color={colors.crimson}
+                color={colors.gold}
               >
                 {companyName.charAt(0)}
               </Text>
@@ -415,12 +415,12 @@ function JobCard({
 
           <Button
             mt="auto"
-            bg={colors.crimson}
-            color="white"
+            bg={landingColors.gold}
+            color="black"
             fontWeight="700"
             fontSize="xs"
             borderRadius="md"
-            _hover={{ bg: colors.crimsonDark }}
+            _hover={{ bg: landingColors.goldBright }}
             transition="all 0.2s"
             gap={2}
             py={6}
@@ -586,9 +586,9 @@ function FilterSidebar({
         <Button
           mt={4}
           w="full"
-          bg={colors.crimson}
-          color="white"
+          bg={landingColors.gold}
           type="submit"
+          color={"white"}
         >
           Apply Filters
         </Button>
@@ -687,7 +687,7 @@ export default function JobsPage() {
               <Flex
                 display="inline-flex"
                 align="center"
-                bg={colors.crimson}
+                bg={landingColors.gold}
                 px={3}
                 py={1}
                 borderRadius={radii.sm}
@@ -696,7 +696,6 @@ export default function JobsPage() {
                 <Text
                   fontSize="2xs"
                   fontWeight="800"
-                  color="white"
                   letterSpacing="widest"
                   textTransform="uppercase"
                 >

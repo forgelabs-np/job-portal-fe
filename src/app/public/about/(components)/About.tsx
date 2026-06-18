@@ -9,6 +9,7 @@ import "yet-another-react-lightbox/styles.css";
 import Link from "next/link";
 import { AboutCompany, ChairmanImage, LicenseBackImage, LicenseImage, PanCertificate, PanImage, RegistrationImage } from "@/assets/images/landing";
 import { WEBSITE_THEME_COLOR } from "@/constants/color";
+import { colors } from "@/components/LandingPage/theme";
 
 // ─── Theme ───────────────────────────────────────────────────────────────────
 const c = {
@@ -82,12 +83,12 @@ export function HeroSection() {
                         letterSpacing="-0.02em"
                         mb={2}
                     >
-                        Interpid Recruitment Services Where
+                        Oozo Hr Recruitment Services Where
                     </Text>
                     <Text
                         fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}
                         fontWeight="900"
-                        color={WEBSITE_THEME_COLOR}
+                        color={colors.gold}
                         lineHeight={1.1}
                         letterSpacing="-0.02em"
                         mb={6}
@@ -100,14 +101,14 @@ export function HeroSection() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}>
                     <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={8} mb={10}>
                         <Text fontSize="sm" color={c.muted} lineHeight={1.85}>
-                            Welcome to Interpid Recruitment Services, your trusted partner in recruitment and talent
-                            acquisition. In Interpid Recruitment Services, we understand that finding the right talent is crucial
+                            Welcome to Oozo Hr Recruitment Services, your trusted partner in recruitment and talent
+                            acquisition. In Oozo Hr Recruitment Services, we understand that finding the right talent is crucial
                             to the success of any organization. That's why we are committed to providing exceptional
                             recruitment services that connect top talent with leading companies worldwide.
                         </Text>
                         <Text fontSize="sm" color={c.muted} lineHeight={1.85}>
                             Whether it's streamlining recruitment processes, implementing performance management
-                            systems, or designing employee development programs, Interpid Recruitment Services has a
+                            systems, or designing employee development programs, Oozo Hr Recruitment Services has a
                             team of experts ready to deliver solutions that meet the immediate needs and long-term goals
                             of our clients. Our strong network and deep industry knowledge in different sectors help your
                             company helps organizations to unlock the full potential of their workforce.
@@ -129,7 +130,7 @@ export function HeroSection() {
 
                 {/* Pull-quote */}
                 <RevealBox delay={0.08}>
-                    <Box borderLeft="4px solid" borderColor={c.crimson} pl={6} mt={10}>
+                    <Box borderLeft="4px solid" borderColor={colors.goldLight} pl={6} mt={10}>
                         <Text
                             fontSize={{ base: "md", md: "lg" }}
                             color={c.text}
@@ -176,7 +177,7 @@ export function WhyChooseSection() {
             <Container maxW="1400px" px={{ base: 4, md: 8 }}>
                 <RevealBox>
                     <Text textAlign="center" fontSize={{ base: "2xl", md: "4xl" }} fontWeight="800" color={c.text} mb={3}>
-                        Why Choose Interpid for Your Recruitment Needs
+                        Why Choose Oozo Hr for Your Recruitment Needs
                     </Text>
                     <Text textAlign="center" fontSize="sm" color={c.muted} maxW="520px" mx="auto" lineHeight={1.75} mb={12}>
                         We connect companies with skilled workers safely and quickly. Here's why global clients trust us.
@@ -205,7 +206,7 @@ export function WhyChooseSection() {
                                 </Flex>
                                 <Text fontSize="md" fontWeight="700" color={c.text} mb={1}>{card.title}</Text>
                                 <Text fontSize="xs" color={c.gold} fontWeight="600" mb={3}>{card.sub}</Text>
-                                <Box w="28px" h="2px" bg={c.crimson} borderRadius="full" mb={4} />
+                                <Box w="28px" h="2px" bg={c.gold} borderRadius="full" mb={4} />
                                 <Text fontSize="sm" color={c.muted} lineHeight={1.8}>{card.body}</Text>
                             </Box>
                         </RevealBox>
@@ -242,7 +243,7 @@ export function LeadershipSection() {
                         Message from Our Leadership
                     </Text>
                     <Text textAlign="center" fontSize="sm" color="rgba(255,255,255,0.65)" mb={10} maxW="500px" mx="auto" lineHeight={1.7}>
-                        Hear directly from the people who guide Interpid's vision and ensure safe, reliable recruitment for global clients.
+                        Hear directly from the people who guide Oozo Hr's vision and ensure safe, reliable recruitment for global clients.
                     </Text>
                 </RevealBox>
 
@@ -296,8 +297,8 @@ export function LeadershipSection() {
                                     <Quote size={32} fill="rgba(200,146,26,0.15)" />
                                 </Box>
                                 <Text fontSize={{ base: "sm", md: "md" }} color="rgba(255,255,255,0.88)" lineHeight={1.85} mb={6} >
-                                    As the {leaders[active].role} of Interpid Recruitment Services PVT LTD, I extend my warmest greetings to you.
-                                    At Interpid, we believe in the power of collaboration and partnerships. We recognize the vital role agency
+                                    As the {leaders[active].role} of Oozo Hr Recruitment Services PVT LTD, I extend my warmest greetings to you.
+                                    At Oozo Hr, we believe in the power of collaboration and partnerships. We recognize the vital role agency
                                     plays in the success of our recruitment efforts, and we are committed to building strong, mutually beneficial
                                     relationships with our clients. Our mission is to provide exceptional outsourcing services while maintaining
                                     the highest standards of integrity, professionalism, and ethical conduct.
@@ -306,11 +307,11 @@ export function LeadershipSection() {
                                     our strengths to achieve greater success for clients and candidates. Let us join forces to create opportunities,
                                     drive innovation, and make a positive impact in the recruitment industry.
                                     <br /><br />
-                                    Thank you for your continued support and trust in Interpid Recruitment Services PVT LTD. We look forward to
+                                    Thank you for your continued support and trust in Oozo Hr Recruitment Services PVT LTD. We look forward to
                                     forging enduring partnerships with you.
                                 </Text>
                                 <Text fontSize="md" fontWeight="700" color={c.gold} >{leaders[active].name}</Text>
-                                <Text fontSize="xs" color="rgba(255,255,255,0.55)">{leaders[active].role} · chairman@interpidhr.com</Text>
+                                <Text fontSize="xs" color="rgba(255,255,255,0.55)">{leaders[active].role} · chairman@Oozo Hrhr.com</Text>
                             </Box>
                         </Grid>
                     </Box>
@@ -508,7 +509,7 @@ export function CertificationsSection() {
                                 role="group"
                                 onClick={() => openAt(i)}
                                 transition="all 0.25s"
-                                _hover={{ borderColor: c.crimson, boxShadow: "0 8px 28px rgba(139,26,26,0.1)" }}
+                                _hover={{ borderColor: colors.goldLight, boxShadow: "0 8px 28px rgba(139,26,26,0.1)" }}
                             >
                                 {/* Thumbnail */}
                                 <Box h={{ base: "120px", md: "220px" }} overflow="hidden" bg={c.bgWarm}>
@@ -542,8 +543,8 @@ export function CertificationsSection() {
                                 </Box>
 
                                 {/* Label bar */}
-                                <Box bg={c.crimson} px={3} py={2}>
-                                    <Text fontSize="2xs" fontWeight="700" color="white" textAlign="center">
+                                <Box bg={colors.gold} px={3} py={2}>
+                                    <Text fontSize="2xs" fontWeight="700" color="black" textAlign="center">
                                         {doc.label}
                                     </Text>
                                 </Box>

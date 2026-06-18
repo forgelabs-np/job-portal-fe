@@ -8,6 +8,7 @@ import { generateNextPath } from "@/utils/router";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { BRAND_COLORS } from "@/constants/color";
+import { colors } from "../LandingPage/theme";
 
 // Icons
 const AgencyIcon = () => (
@@ -93,13 +94,13 @@ const hoverTokens: Record<
   }
 > = {
   red: {
-    bg: BRAND_COLORS[600],
+    bg: colors.goldDark,
     iconBg: "rgba(255,255,255,0.18)",
     iconColor: "white",
     text: "white",
     desc: "rgba(255,255,255,0.72)",
     link: "white",
-    border: BRAND_COLORS[500],
+    border: colors.goldDark,
   },
   dark: {
     bg: "#0f1f17",
@@ -127,11 +128,13 @@ const defaultTokens: Record<
   red: {
     bg: "white",
     iconBg: "white",
-    iconColor: BRAND_COLORS[500],
+    // iconColor: BRAND_COLORS[500],
+    iconColor: colors.gold,
     text: "#0f1f17",
     desc: "#6b7280",
-    link: BRAND_COLORS[500],
-    border: BRAND_COLORS[500],
+    // link: BRAND_COLORS[500],
+    link: colors.gold,
+    border: colors.gold,
   },
   dark: {
     bg: "#f9fafb",

@@ -61,7 +61,15 @@ export const LoginPage = ({
   const resolveRedirectPath = () => {
     const tokenDetails = TokenService.getTokenDetails();
     const role =
-      tokenDetails?.roles?.[0] ?? (userType === "admin" ? "ADMIN" : userType === "candidate" ? "CANDIDATE" : "AGENCY");
+    tokenDetails?.roles?.[0] ??
+    (userType === "admin"
+      ? "ADMIN"
+      : userType === "staff"
+      ? "STAFF"
+      : userType === "candidate"
+      ? "CANDIDATE"
+      : "AGENCY");
+    console.log("TOKEN DETAILS", tokenDetails, "ROLE", role);
 
     if (role === "ADMIN") {
       return ROUTES.ADMIN_DASHBOARD;
@@ -69,6 +77,10 @@ export const LoginPage = ({
 
     if (role === "CANDIDATE") {
       return ROUTES.CANDIDATE_DASHBOARD;
+    }
+
+    if (role === "STAFF") {
+      return ROUTES.ADMIN_DASHBOARD;
     }
 
     return ROUTES.AGENCY_DASHBOARD;
@@ -173,7 +185,7 @@ export const LoginPage = ({
           </Flex>
 
           {/* Footer */}
-          {userType !== "admin" ? (
+          {userType !== "admin" && userType !== "staff" ? (
             <Flex direction="column" align="center" gap={2} mt={6}>
               <Text fontSize="13px" color="#9ca3af">
                 {userType === "candidate"

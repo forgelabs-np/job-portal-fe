@@ -5,7 +5,7 @@ import { SidebarItemProps } from "@/shared/types";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { useAuthStore } from "@/store";
 import { useLogoutUserMutation } from "@/api/auth";
-import { Accordion, Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Accordion, Box, Button, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { Users2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -209,11 +209,14 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   // const [collapsed, setCollapsed] = useState(false);
   const isAdmin = user?.roles?.includes("ADMIN");
   const isCandidate = user?.roles?.includes("CANDIDATE");
+  const isStaff = user?.roles?.includes("STAFF");
   const sidebarItems = isAdmin
     ? ADMIN_SIDEBAR_ITEMS
-    : isCandidate
-      ? CANDIDATE_SIDEBAR_ITEMS
-      : AGENCY_SIDEBAR_ITEMS;
+    : isStaff
+      ? ADMIN_SIDEBAR_ITEMS
+      : isCandidate
+        ? CANDIDATE_SIDEBAR_ITEMS
+        : AGENCY_SIDEBAR_ITEMS;
   const router = useRouter();
   const pathname = usePathname();
 
@@ -274,10 +277,17 @@ const handleLogout = () => {
             </Box>
           }
           {!collapsed && (
-            <Box pl={5}>
+            <HStack pl={5}>
+               <Text fontWeight="800" fontSize="2xl" color={"black"}
+                                                          >
+                                                              Oozo
+                                                          </Text>
+                                                          <Text fontWeight="600" fontSize="2xl" color={"yellow.500"}>
+                                                              HR
+                                                          </Text>
 
-              <LogoIcon />
-            </Box>
+              {/* <LogoIcon /> */}
+            </HStack>
           )}
         </Flex>
 

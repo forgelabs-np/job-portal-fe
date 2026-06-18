@@ -6,6 +6,7 @@ export const colors = {
   gold: "#D4A017",
   goldLight: "#E6B830",
   goldMuted: "rgba(212,160,23,0.15)",
+  goldDark: "#be9224",
 
   // Neutrals
   bg: "#F5F0E8",
@@ -36,3 +37,18 @@ export const radii = {
   xl: "24px",
   full: "9999px",
 };
+
+
+
+export const landingColors = {
+  bg: "#030303",
+  surface: "#0f0f0f",
+  card: "#121212",
+  cardElevated: "#1a1a1a",
+  gold: "#d4af37",
+  goldBright: "#f0d78c",
+  goldMuted: "rgba(212, 175, 55, 0.35)",
+  text: "#f5f5f5",
+  textMuted: "#9ca3af",
+  border: "rgba(212, 175, 55, 0.2)",
+} as const;
