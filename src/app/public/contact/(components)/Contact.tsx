@@ -61,24 +61,24 @@ const contactMethods = [
         icon: Phone,
         title: "Call us",
         sub: "Anytime 24/7",
-        detail: "+977-9851194513  /  4560531  /",
+        detail: "(+971) 26783515",
         isLink: false,
     },
     {
         icon: MessageSquare,
         title: "Chat with us",
         sub: "Our Friendly team is here to help.",
-        detail: "info@interpidhr.com",
+        detail: "info@oozohr.com",
         isLink: true,
-        href: "mailto:info@interpidhr.com",
+        href: "mailto:info@oozohr.com",
     },
     {
         icon: MapPin,
         title: "Visit Us",
         sub: "Say hello at our Office.",
-        detail: "Sinamangal 9, Kathmandu, Nepal",
+        detail: "Office 10, 7th Floor, Block B, AL Saman Tower, Hamdan Bin Mohammed St - Al Danah - Zone 1 - Abu Dhabi.",
         isLink: true,
-        href: "https://maps.google.com/?q=Sinamangal+9+Kathmandu+Nepal",
+        href: "https://maps.google.com/?q=Office+10,+7th+Floor,+Block+B,+AL+Saman+Tower,+Hamdan+Bin+Mohammed+St+-+Al+Danah+-+Zone+1+-+Abu+Dhabi",
     },
 ];
 
@@ -356,7 +356,7 @@ export default function ContactUsPage() {
                                 boxShadow="0 4px 24px rgba(0,0,0,0.07)"
                             >
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.0!2d85.34!3d27.71!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb199a06c2eaf9%3A0xc5f0bd542e7d4f0b!2sSinamangal%2C%20Kathmandu%2044600!5e1!3m2!1sen!2snp!4v1234567890"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3512.659280167931!2d54.36085447535914!3d24.490617378172526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67bf0ebc003f%3A0xd4f9e4635c5e8029!2sAl%20Saman%20Tower!5e1!3m2!1sen!2snp!4v1782016877995!5m2!1sen!2snp"
                                     width="100%"
                                     height="100%"
                                     style={{ border: 0 }}

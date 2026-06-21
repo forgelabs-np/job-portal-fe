@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRoleModalStore } from "@/store/roleModalStore";
 import { colors, landingColors } from "@/components/LandingPage/theme";
+import { ROUTES } from "@/constants/routes";
+import Link from "next/link";
 
 export function OozoCTASection() {
     const { openLoginModal } = useRoleModalStore();
@@ -87,6 +89,8 @@ export function OozoCTASection() {
                     </Text>
 
                     <Flex justify="center" gap={4} flexWrap="wrap">
+<Link href={ROUTES.LOGIN}>
+
                         <Button
                             h="48px"
                             px={7}
@@ -100,11 +104,14 @@ export function OozoCTASection() {
                             _hover={{ bg: "gray.600", color: "white" }}
                             transition="all 0.25s"
                             gap={2}
-                            onClick={() => openLoginModal()}
-                        >
+                            // onClick={() => openLoginModal()}
+                            >
                             Looking to hire?
                             <ArrowRight size={16} />
                         </Button>
+                            </Link>
+                            <Link href={ROUTES.CANDIDATE_LOGIN}>
+
                         <Button
                             h="48px"
                             px={7}
@@ -115,11 +122,12 @@ export function OozoCTASection() {
                             _hover={{ bg: colors.goldDark, color: "white" }}
                             transition="all 0.25s"
                             gap={2}
-                            onClick={() => openLoginModal()}
-                        >
+                            // onClick={() => openLoginModal()}
+                            >
                             Looking for work?
                             <ArrowRight size={16} />
                         </Button>
+                            </Link>
                     </Flex>
                 </motion.div>
             </Container>
