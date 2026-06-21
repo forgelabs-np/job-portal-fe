@@ -44,16 +44,16 @@ export function OozoNavbar() {
                                 <Flex align="center" gap={1.5} >
                                     <PhoneWhiteIcon />
                                     <Text fontFamily={fonts.mono} fontSize="xs">
-                                        +977-9851194513 / 4560531
+                                        (+971) 26783515
                                     </Text>
                                 </Flex>
                                 <Flex align="center" gap={1.5}>
                                     <EnvelopeWhiteIcon />
-                                    <Text fontSize="xs">info@interpidhr.com</Text>
+                                    <Text fontSize="xs">info@oozohr.com</Text>
                                 </Flex>
                                 <Flex align="center" gap={1.5} display={{ base: "none", md: "flex" }}>
                                     <LocationMarkerIcon />
-                                    <Text fontSize="xs">Sinamangal 9, Kathmandu, Nepal</Text>
+                                    <Text fontSize="xs"> AL Saman Tower, Hamdan Bin Mohammed St,  Zone 1 - Abu Dhabi.</Text>
                                 </Flex>
                             </Flex>
 
@@ -194,6 +194,7 @@ export function OozoNavbar() {
                                 />
 
                                 {/* Log In */}
+                                <Link href={ROUTES.CANDIDATE_LOGIN}>
                                 <Button
                                     as="a"
                                     size="sm"
@@ -212,13 +213,16 @@ export function OozoNavbar() {
                                     _hover={{ bg: colors.gold, color: "white" }}
                                     transition="all 0.2s"
                                     textDecoration="none"
-                                    onClick={() => openLoginModal()}
-
-                                >
+                                    // onClick={() => openLoginModal()}
+                                    
+                                    >
                                     Log In
                                 </Button>
+                                    </Link>
 
                                 {/* Sign Up */}
+                                                            <Link href={ROUTES.CANDIDATE_SIGNUP}>
+
                                 <Button
                                     as="a"
                                     size="sm"
@@ -235,11 +239,12 @@ export function OozoNavbar() {
                                     transition="all 0.2s"
                                     textDecoration="none"
                                     border="none"
-                                    onClick={() => setRegisterOpen(true)}
-
-                                >
+                                    // onClick={() => setRegisterOpen(true)}
+                                    
+                                    >
                                     Sign Up
                                 </Button>
+                                    </Link>
 
                                 {/* Mobile hamburger */}
                                 <Box

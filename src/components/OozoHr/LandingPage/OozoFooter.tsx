@@ -87,7 +87,7 @@ export function OozoFooter() {
                                             <Text
                                                 fontSize="xs"
                                                 color={colors.textMuted}
-                                                _hover={{ color: landingColors.text }}
+                                                _hover={{ color: "gray.900" }}
                                                 transition="color 0.2s"
                                             >
                                                 {l.label}

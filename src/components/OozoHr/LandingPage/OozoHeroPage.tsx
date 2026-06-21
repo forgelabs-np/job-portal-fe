@@ -63,7 +63,7 @@ export function OozoHeroPage() {
 
                         {/* CTA */}
                         <Flex mt={10} gap={4} flexWrap="wrap">
-                            <Link href={ROUTES.SIGNUP}>
+                            <Link href={ROUTES.CANDIDATE_SIGNUP}>
                                 <Button
                                     size="lg"
                                     px={10}
@@ -82,7 +82,7 @@ export function OozoHeroPage() {
                                 </Button>
                             </Link>
 
-                            <Link href={ROUTES.LOGIN}>
+                            {/* <Link href={ROUTES.LOGIN}>
                                 <Button
                                     size="lg"
                                     px={10}
@@ -99,7 +99,7 @@ export function OozoHeroPage() {
                                 >
                                     Agency Login
                                 </Button>
-                            </Link>
+                            </Link> */}
                         </Flex>
                     </Box>
 
