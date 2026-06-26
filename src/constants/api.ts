@@ -113,4 +113,12 @@ export const api = {
       GET_LATEST: "/announcements/latest",
     },
   },
+  NOTIFICATION: {
+    SEND: "/notification/send",
+    GET_ALL: "/notifications",
+    GET_UNREAD: "/notifications/unread-count",
+    MARK_READ: "/notifications/{notificationId}/read",
+    MARK_ALL_READ: "/notifications/read-all",
+    DELETE: "/notifications/{notificationId}",
+  },
 };

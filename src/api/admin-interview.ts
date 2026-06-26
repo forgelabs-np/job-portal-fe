@@ -36,7 +36,7 @@ export interface InterviewResponse {
   venue?: string;
   adminNotes?: string;
   status: InterviewStatus;
-  result: "PENDING" | "PASS" | "FAIL" | "RE_INTERVIEW";
+  result: "SCHEDULED" | "PENDING" | "PASS" | "FAIL" | "RE_INTERVIEW";
   resultNotes?: string;
   resultUpdatedBy?: number;
   resultUpdatedAt?: string;
