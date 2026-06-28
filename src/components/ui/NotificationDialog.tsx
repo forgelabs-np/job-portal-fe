@@ -1,22 +1,21 @@
 "use client";
 
-import { Box, Flex, Text, VStack, HStack, Badge } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Badge } from "@chakra-ui/react";
 import { Button } from "@/shared/ui/button";
 import {
   MenuRoot,
   MenuTrigger,
   MenuContent,
-  MenuItem,
 } from "@/shared/ui/menu";
 import {
   useNotifications,
   useMarkAsReadMutation,
-  useMarkAllAsReadMutation,
-  useDeleteNotificationMutation,
   type Notification,
 } from "@/api/notification";
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface NotificationMenuProps {
   children: React.ReactNode;
@@ -26,29 +25,26 @@ type TabType = "all" | "unread";
 
 export const NotificationMenu = ({ children }: NotificationMenuProps) => {
   const [activeTab, setActiveTab] = useState<TabType>("unread");
+  const [open, setOpen] = useState(false);
   const { data: notificationsData, isLoading } = useNotifications();
   const markAsReadMutation = useMarkAsReadMutation();
-  const markAllAsReadMutation = useMarkAllAsReadMutation();
-  const deleteNotificationMutation = useDeleteNotificationMutation();
+  const router = useRouter();
 
   const notifications = notificationsData?.data?.data?.content || [];
 
   const unreadNotifications = notifications.filter((n) => !n.isRead);
-  const readNotifications = notifications.filter((n) => n.isRead);
+  // const readNotifications = notifications.filter((n) => n.isRead);
 
   const displayedNotifications =
-    activeTab === "unread" ? unreadNotifications : readNotifications;
+    activeTab === "unread" ? unreadNotifications : notifications;
 
   const handleMarkAsRead = (id: string) => {
     markAsReadMutation.mutate(id);
   };
 
-  const handleMarkAllAsRead = () => {
-    markAllAsReadMutation.mutate();
-  };
-
-  const handleDelete = (id: string) => {
-    deleteNotificationMutation.mutate(id);
+  const handleViewAll = () => {
+    setOpen(false);
+    router.push(ROUTES.NOTIFICATIONS);
   };
 
   const NotificationItem = ({ notification }: { notification: Notification }) => (
@@ -66,7 +62,7 @@ export const NotificationMenu = ({ children }: NotificationMenuProps) => {
           {notification.title}
         </Text>
         {!notification.isRead && (
-          <Badge colorPalette="blue" variant="solid" fontSize="xs">
+          <Badge colorScheme="blue" variant="solid" fontSize="xs">
             New
           </Badge>
         )}
@@ -74,29 +70,16 @@ export const NotificationMenu = ({ children }: NotificationMenuProps) => {
       <Text fontSize="sm" color="gray.600" mb={2}>
         {notification.body}
       </Text>
-      <Flex justify="space-between" align="center">
-        <Text fontSize="xs" color="gray.400">
-          {formatDistanceToNow(new Date(notification.createdAt), {
-            addSuffix: true,
-          })}
-        </Text>
-        <Button
-          size="xs"
-          variant="ghost"
-          color="red.500"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleDelete(notification.id);
-          }}
-        >
-          Delete
-        </Button>
-      </Flex>
+      <Text fontSize="xs" color="gray.400">
+        {formatDistanceToNow(new Date(notification.createdAt), {
+          addSuffix: true,
+        })}
+      </Text>
     </Box>
   );
 
   return (
-    <MenuRoot>
+    <MenuRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
       <MenuTrigger asChild>{children}</MenuTrigger>
       <MenuContent minWidth="380px" maxHeight="500px" overflow="auto">
         <VStack gap={0} align="stretch" p={4}>
@@ -105,17 +88,6 @@ export const NotificationMenu = ({ children }: NotificationMenuProps) => {
             <Text fontWeight={700} fontSize="md" color="gray.900">
               Notifications
             </Text>
-            {unreadNotifications.length > 0 && (
-              <Button
-                size="xs"
-                variant="ghost"
-                color="blue.500"
-                onClick={handleMarkAllAsRead}
-                loading={markAllAsReadMutation.isPending}
-              >
-                Mark all read
-              </Button>
-            )}
           </Flex>
 
           {/* Tabs */}
@@ -154,7 +126,7 @@ export const NotificationMenu = ({ children }: NotificationMenuProps) => {
               </Text>
             </Box>
           ) : (
-            <VStack gap={0} align="stretch" maxH="350px" overflowY="auto">
+            <VStack gap={0} align="stretch" maxH="300px" overflowY="auto">
               {displayedNotifications.map((notification) => (
                 <NotificationItem
                   key={notification.id}
@@ -163,6 +135,19 @@ export const NotificationMenu = ({ children }: NotificationMenuProps) => {
               ))}
             </VStack>
           )}
+
+          {/* View All Button */}
+          <Box pt={3} borderTop="1px solid" borderColor="gray.100">
+            <Button
+              size="sm"
+              variant="ghost"
+              color="blue.500"
+              width="full"
+              onClick={handleViewAll}
+            >
+              View all notifications
+            </Button>
+          </Box>
         </VStack>
       </MenuContent>
     </MenuRoot>

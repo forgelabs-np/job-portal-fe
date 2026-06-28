@@ -29,6 +29,7 @@ export const ROUTES = {
   CANDIDATE_LOGIN: "/login/candidate",
   CANDIDATE_SIGNUP: "/register/candidate",
   HOME: "/",
+  NOTIFICATIONS: "/notifications",
   PUBLIC: {
     RECRUITMENT_PROCESS: "/public/recuirement",
     SPECIALIZATION: "/public/specialization",

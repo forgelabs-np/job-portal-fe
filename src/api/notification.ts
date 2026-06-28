@@ -13,7 +13,7 @@ export interface Notification {
   userId: string;
 }
 
-export interface NotificationResponse{
+export interface NotificationResponse {
   content: Notification[];
 }
 
