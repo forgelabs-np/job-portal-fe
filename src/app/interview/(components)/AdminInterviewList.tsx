@@ -196,18 +196,18 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
           </Badge>
         ),
       },
-      {
-        accessorKey: "status",
-        header: "Status",
-        cell: ({ row }) => (
-          <Badge
-            colorPalette={statusColorScheme[row.original.status] || "gray"}
-            fontSize="xs"
-          >
-            {row.original.status}
-          </Badge>
-        ),
-      },
+      // {
+      //   accessorKey: "status",
+      //   header: "Status",
+      //   cell: ({ row }) => (
+      //     <Badge
+      //       colorPalette={statusColorScheme[row.original.status] || "gray"}
+      //       fontSize="xs"
+      //     >
+      //       {row.original.status}
+      //     </Badge>
+      //   ),
+      // },
       {
         accessorKey: "result",
         header: "Result",
@@ -236,30 +236,30 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
                   </IconButton>
                 </MenuTrigger>
                 <MenuContent>
-                  {(interview.status === "COMPLETED" || interview.status === "NO_SHOW") && (
+                  {/* {(interview.status === "COMPLETED" || interview.status === "NO_SHOW") && ( */}
                     <MenuItem value="set-result" onClick={() => setResultInterview(interview)}>
                       <HStack gap={2}>
                         <MdOutlineEdit size={16} />
                         <Text>Set Result</Text>
                       </HStack>
                     </MenuItem>
-                  )}
+                  {/* )} */}
 
-                  {interview.status !== "CANCELLED" && interview.status !== "COMPLETED" && interview.status !== "NO_SHOW" && (
+                  {/* {interview.status !== "CANCELLED" && interview.status !== "COMPLETED" && interview.status !== "NO_SHOW" && ( */}
                     <MenuItem value="reschedule" onClick={() => setRescheduleInterviewId(interview.id)}>
                       <HStack gap={2} >
                         <MdEventAvailable size={16} />
                         <Text>Reschedule</Text>
                       </HStack>
                     </MenuItem>
-                  )}
+                  {/* )} */}
 
-                  <MenuItem value="update-status" onClick={() => setStatusInterview(interview)}>
+                  {/* <MenuItem value="update-status" onClick={() => setStatusInterview(interview)}>
                     <HStack gap={2} >
                       <MdAutorenew size={16} />
                       <Text>Update Status</Text>
                     </HStack>
-                  </MenuItem>
+                  </MenuItem> */}
 
                   {interview.status !== "CANCELLED" && (
                     <MenuItem value="cancel" onClick={() => setCancelInterviewId(interview.id)}>
@@ -292,7 +292,7 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
       <HStack gap={3} wrap="wrap" justify="space-between">
         <FormProvider {...methods}>
           <HStack>
-            <SelectFieldInput
+            {/* <SelectFieldInput
               name="status"
               label="Status"
               options={[
@@ -302,12 +302,13 @@ export const AdminInterviewList: React.FC<AdminInterviewListProps> = ({
                 { label: "Cancelled", value: "CANCELLED" },
                 { label: "No Show", value: "NO_SHOW" },
               ]}
-            />
+            /> */}
 
             <SelectFieldInput
               name="result"
               label="Result"
               options={[
+                { label: "Scheduled", value: "SCHEDULED" },
                 { label: "Pending", value: "PENDING" },
                 { label: "Pass", value: "PASS" },
                 { label: "Fail", value: "FAIL" },

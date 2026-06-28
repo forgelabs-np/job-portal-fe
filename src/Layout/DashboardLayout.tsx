@@ -1,10 +1,13 @@
 "use client";
-import { Box, HStack, Text } from "@chakra-ui/react";
+import { Box, HStack, Text, Badge } from "@chakra-ui/react";
 import { useAuthStore } from "@/store";
 import { Avatar, MenuRoot } from "@/shared";
 import { Sidebar } from "./sidebar/Sidebar";
 import { useState } from "react";
 import { BRAND_COLORS } from "@/constants/color";
+import { NotificationMenu } from "@/components/ui/NotificationDialog";
+import { useUnreadNotifications } from "@/api/notification";
+import { Bell } from "lucide-react";
 
 const SIDEBAR_EXPANDED = "240px";
 const SIDEBAR_COLLAPSED = "72px";
@@ -20,6 +23,8 @@ export const DashboardLayout = ({
   const isAdmin = user?.roles?.includes("ADMIN");
   const isCandidate = user?.roles?.includes("CANDIDATE");
   const [collapsed, setCollapsed] = useState(false);
+  const { data: unreadData } = useUnreadNotifications();
+  const unreadCount = unreadData?.data?.data || 0;
 
   return (
     <Box display="flex" minH="100vh" bg="gray.50">
@@ -53,8 +58,33 @@ export const DashboardLayout = ({
             boxShadow="0 1px 0 rgba(0,0,0,0.06)"
           >
             <HStack gap={4}>
+              {/* Notification icon */}
+              <NotificationMenu>
+                <Box position="relative" cursor="pointer">
+                  <Bell size={20} color="#0f1f17" />
+                  {unreadCount > 0 && (
+                    <Badge
+                      position="absolute"
+                      top="-2"
+                      right="-2"
+                      bg="red.500"
+                      color="white"
+                      borderRadius="full"
+                      fontSize="10px"
+                      minWidth="16px"
+                      height="16px"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      padding="0"
+                    >
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </Badge>
+                  )}
+                </Box>
+              </NotificationMenu>
               <Box textAlign="right">
-                <Text fontSize="sm" fontWeight="600" color="gray.900">
+                <Text fontSize="sm" fontWeight={600} color="gray.900">
                   {user?.sub}
                 </Text>
                 <Text

@@ -19,6 +19,7 @@ import {
   MdLogout,
   MdPerson,
   MdCampaign,
+  MdNotifications,
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
 import { SidebarItem } from "./SidebarItems";
@@ -79,6 +80,11 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
     href: ROUTES.ADMIN_ANNOUNCEMENTS,
     icon: <MdCampaign />,
   },
+  {
+    name: "Notifications",
+    href: ROUTES.NOTIFICATIONS,
+    icon: <MdNotifications />,
+  },
 ];
 
 const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
@@ -97,6 +103,11 @@ const AGENCY_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Interviews", href: ROUTES.AGENCY_INTERVIEWS, icon: <MdVideoCall size={20} /> },
   { name: "Announcements", href: ROUTES.AGENCY_ANNOUNCEMENTS, icon: <MdCampaign /> },
   { name: "Profile", href: ROUTES.AGENCY_PROFILE, icon: <MdPerson /> },
+  {
+    name: "Notifications",
+    href: ROUTES.NOTIFICATIONS,
+    icon: <MdNotifications />,
+  },
 ];
 
 const CANDIDATE_SIDEBAR_ITEMS: SidebarItemProps[] = [
@@ -110,6 +121,11 @@ const CANDIDATE_SIDEBAR_ITEMS: SidebarItemProps[] = [
   { name: "Interviews", href: ROUTES.CANDIDATE_INTERVIEWS, icon: <MdVideoCall size={20} /> },
   { name: "Announcements", href: ROUTES.CANDIDATE_ANNOUNCEMENTS, icon: <MdCampaign /> },
   { name: "Profile", href: ROUTES.CANDIDATE_PROFILE, icon: <MdPerson /> },
+  {
+    name: "Notifications",
+    href: ROUTES.NOTIFICATIONS,
+    icon: <MdNotifications />,
+  },
 
 ];
 
@@ -205,7 +221,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const { user } = useAuthStore();
-  const {mutate:logoutMutation,isPending:isLogoutPending} = useLogoutUserMutation();
+  const { mutate: logoutMutation, isPending: isLogoutPending } = useLogoutUserMutation();
   // const [collapsed, setCollapsed] = useState(false);
   const isAdmin = user?.roles?.includes("ADMIN");
   const isCandidate = user?.roles?.includes("CANDIDATE");
@@ -221,13 +237,13 @@ export const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
   const pathname = usePathname();
 
 
-const handleLogout = () => {
-  logoutMutation(undefined, {
-    onSuccess: () => {
-      router.push("/");
-    },
-  });
-};
+  const handleLogout = () => {
+    logoutMutation(undefined, {
+      onSuccess: () => {
+        router.push("/");
+      },
+    });
+  };
 
   const sidebarWidth = collapsed ? "72px" : "240px";
 
@@ -278,13 +294,13 @@ const handleLogout = () => {
           }
           {!collapsed && (
             <HStack pl={5}>
-               <Text fontWeight="800" fontSize="2xl" color={"black"}
-                                                          >
-                                                              Oozo
-                                                          </Text>
-                                                          <Text fontWeight="600" fontSize="2xl" color={"yellow.500"}>
-                                                              HR
-                                                          </Text>
+              <Text fontWeight="800" fontSize="2xl" color={"black"}
+              >
+                Oozo
+              </Text>
+              <Text fontWeight="600" fontSize="2xl" color={"yellow.500"}>
+                HR
+              </Text>
 
               {/* <LogoIcon /> */}
             </HStack>
