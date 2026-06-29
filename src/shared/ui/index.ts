@@ -2,6 +2,7 @@ export * from "./accordion";
 export * from "./avatar";
 export * from "./breadcrumb";
 export * from "./button";
+export * from "./date-picker";
 export * from "./dialog";
 export * from "./drawer";
 export * from "./emptyState";
