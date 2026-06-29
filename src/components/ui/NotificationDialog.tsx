@@ -68,7 +68,7 @@ export const NotificationMenu = ({ children }: NotificationMenuProps) => {
         )}
       </Flex>
       <Text fontSize="sm" color="gray.600" mb={2}>
-        {notification.body}
+        {notification.message}
       </Text>
       <Text fontSize="xs" color="gray.400">
         {formatDistanceToNow(new Date(notification.createdAt), {
