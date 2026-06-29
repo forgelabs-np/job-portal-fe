@@ -189,7 +189,7 @@ const NotificationItem = ({
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            {notification.body}
+            {notification.message}
           </Text>
           <Text fontSize="xs" color="gray.400" mt={1}>
             {formatDistanceToNow(new Date(notification.createdAt), {
