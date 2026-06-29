@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export interface Notification {
   id: string;
   title: string;
-  body: string;
+  message: string;
   type: string;
   isRead: boolean;
   createdAt: string;
