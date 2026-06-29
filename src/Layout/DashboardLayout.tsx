@@ -22,6 +22,7 @@ export const DashboardLayout = ({
   const { user } = useAuthStore();
   const isAdmin = user?.roles?.includes("ADMIN");
   const isCandidate = user?.roles?.includes("CANDIDATE");
+  const isStaff=user?.roles.includes("STAFF")
   const [collapsed, setCollapsed] = useState(false);
   const { data: unreadData } = useUnreadNotifications();
   const unreadCount = unreadData?.data?.data || 0;
@@ -93,7 +94,7 @@ export const DashboardLayout = ({
                   letterSpacing="0.04em"
                   textTransform="uppercase"
                 >
-                  {isAdmin ? "Admin" : isCandidate ? "Candidate" : "Agency"}
+                  {isAdmin ? "Admin" : isCandidate ? "Candidate" : isStaff ? "Staff" : "Agency"}
                 </Text>
               </Box>
               <MenuRoot>
