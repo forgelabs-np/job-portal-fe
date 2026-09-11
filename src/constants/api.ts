@@ -121,4 +121,15 @@ export const api = {
     MARK_ALL_READ: "/notifications/read-all",
     DELETE: "/notifications/{notificationId}",
   },
+  LEADS: {
+    SUBMIT: "/leads",
+    GET_ALL: "/leads",
+    GET_BY_ID: "/leads/{id}",
+    UPDATE: "/leads/{id}",
+    DELETE: "/leads/{id}",
+    MARK_READ: "/leads/{id}/read",
+    MARK_PROCESSED: "/leads/{id}/processed",
+    UNREAD_COUNT: "/leads/unread-count",
+    UNPROCESSED_COUNT: "/leads/unprocessed-count",
+  },
 };

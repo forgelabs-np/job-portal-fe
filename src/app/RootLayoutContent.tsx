@@ -53,7 +53,8 @@ export default function RootLayoutContent({
     pathname.startsWith("/applications") ||
     pathname.startsWith("/interview") ||
     pathname.startsWith("/announcements") ||
-    pathname.startsWith("/notifications");
+    pathname.startsWith("/notifications") ||
+    pathname.startsWith("/leads");
 
 
   const resolveRedirectPath = () => {

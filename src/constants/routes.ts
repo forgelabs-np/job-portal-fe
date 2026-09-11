@@ -30,6 +30,7 @@ export const ROUTES = {
   CANDIDATE_SIGNUP: "/register/candidate",
   HOME: "/",
   NOTIFICATIONS: "/notifications",
+  LEADS: "/leads",
   PUBLIC: {
     RECRUITMENT_PROCESS: "/public/recuirement",
     SPECIALIZATION: "/public/specialization",
