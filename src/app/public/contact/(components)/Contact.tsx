@@ -12,8 +12,12 @@ import {
     Button,
 } from "@chakra-ui/react";
 import { motion, useInView } from "framer-motion";
-import { Phone, MessageSquare, MapPin, ArrowRight } from "lucide-react";
+import { Phone, MessageSquare, MapPin } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { leadFormSchema, type LeadFormValues, leadFormDefaultValues } from "@/schema/lead";
+import { useSubmitLeadMutation, LeadSubject } from "@/api/leads";
 
 // ─── Theme ───────────────────────────────────────────────────────────────────
 const c = {
@@ -83,14 +87,57 @@ const contactMethods = [
 ];
 
 const subjectOptions = [
-    "Job Inquiry",
-    "Partnership",
-    "Recruitment Services",
-    "Other",
+    { label: "Consultation", value: LeadSubject.CONSULTATION },
+    { label: "Partnership", value: LeadSubject.PARTNERSHIP },
+    { label: "Feedback", value: LeadSubject.FEEDBACK },
+    { label: "General Inquiry", value: LeadSubject.GENERAL_INQUIRY },
+    { label: "Support", value: LeadSubject.SUPPORT },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function ContactUsPage() {
+    const submitMutation = useSubmitLeadMutation();
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<LeadFormValues>({
+        resolver: yupResolver(leadFormSchema),
+        defaultValues: leadFormDefaultValues,
+    });
+
+    const onSubmit = (data: LeadFormValues) => {
+        submitMutation.mutate(
+            {
+                data: {
+                    fullName: data.fullName,
+                    phoneNumber: data.phoneNumber,
+                    email: data.email,
+                    location: data.location,
+                    subject: data.subject as LeadSubject,
+                    description: data.description,
+                },
+            },
+            {
+                onSuccess: () => {
+                    reset(leadFormDefaultValues);
+                },
+            },
+        );
+    };
+
+    const inputStyle = {
+        fontSize: "sm",
+        h: "46px",
+        borderColor: c.border,
+        borderRadius: "10px",
+        bg: c.white,
+        _placeholder: { color: c.light },
+        _focus: { borderColor: c.crimson, boxShadow: `0 0 0 1px ${c.crimson}` },
+    };
+
     return (
         <Box minH="100vh">
 
@@ -153,9 +200,7 @@ export default function ContactUsPage() {
                     </motion.div>
 
                     {/* ── Contact method cards ── */}
-                    <Reveal delay={0.12}>
-                        <Box
-                            // bg={c.white}
+                    <Reveal delay={0.12}>                                <Box
                             border="1px solid"
                             borderColor={c.border}
                             borderRadius="16px"
@@ -239,108 +284,137 @@ export default function ContactUsPage() {
                                     Fill out the form and we will be back to you shortly.
                                 </Text>
 
-                                <Flex direction="column" gap={4}>
-                                    {/* Row 1 */}
-                                    <Grid templateColumns={{ base: "1fr", sm: "1fr 1fr" }} gap={4}>
-                                        <Input
-                                            placeholder="Full Name"
-                                            fontSize="sm"
-                                            h="46px"
-                                            borderColor={c.border}
-                                            borderRadius="10px"
-                                            bg={c.white}
-                                            _placeholder={{ color: c.light }}
-                                            _focus={{ borderColor: c.crimson, boxShadow: `0 0 0 1px ${c.crimson}` }}
-                                        />
-                                        <Input
-                                            placeholder="Phone Number"
-                                            fontSize="sm"
-                                            h="46px"
-                                            borderColor={c.border}
-                                            borderRadius="10px"
-                                            bg={c.white}
-                                            _placeholder={{ color: c.light }}
-                                            _focus={{ borderColor: c.crimson, boxShadow: `0 0 0 1px ${c.crimson}` }}
-                                        />
-                                    </Grid>
+                                <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+                                    <Flex direction="column" gap={4}>
+                                        {/* Row 1 */}
+                                        <Grid templateColumns={{ base: "1fr", sm: "1fr 1fr" }} gap={4}>
+                                            <Box>
+                                                <Input
+                                                    {...register("fullName")}
+                                                    placeholder="Full Name"
+                                                    {...inputStyle}
+                                                />
+                                                {errors.fullName && (
+                                                    <Text fontSize="xs" color="red.500" mt={1}>
+                                                        {errors.fullName.message}
+                                                    </Text>
+                                                )}
+                                            </Box>
+                                            <Box>
+                                                <Input
+                                                    {...register("phoneNumber")}
+                                                    placeholder="Phone Number"
+                                                    {...inputStyle}
+                                                />
+                                                {errors.phoneNumber && (
+                                                    <Text fontSize="xs" color="red.500" mt={1}>
+                                                        {errors.phoneNumber.message}
+                                                    </Text>
+                                                )}
+                                            </Box>
+                                        </Grid>
 
-                                    {/* Row 2 */}
-                                    <Grid templateColumns={{ base: "1fr", sm: "1fr 1fr" }} gap={4}>
-                                        <Input
-                                            placeholder="Email Address"
-                                            type="email"
-                                            fontSize="sm"
-                                            h="46px"
-                                            borderColor={c.border}
-                                            borderRadius="10px"
-                                            bg={c.white}
-                                            _placeholder={{ color: c.light }}
-                                            _focus={{ borderColor: c.crimson, boxShadow: `0 0 0 1px ${c.crimson}` }}
-                                        />
-                                        <Input
-                                            placeholder="Location"
-                                            fontSize="sm"
-                                            h="46px"
-                                            borderColor={c.border}
-                                            borderRadius="10px"
-                                            bg={c.white}
-                                            _placeholder={{ color: c.light }}
-                                            _focus={{ borderColor: c.crimson, boxShadow: `0 0 0 1px ${c.crimson}` }}
-                                        />
-                                    </Grid>
+                                        {/* Row 2 */}
+                                        <Grid templateColumns={{ base: "1fr", sm: "1fr 1fr" }} gap={4}>
+                                            <Box>
+                                                <Input
+                                                    {...register("email")}
+                                                    placeholder="Email Address"
+                                                    type="email"
+                                                    {...inputStyle}
+                                                />
+                                                {errors.email && (
+                                                    <Text fontSize="xs" color="red.500" mt={1}>
+                                                        {errors.email.message}
+                                                    </Text>
+                                                )}
+                                            </Box>
+                                            <Box>
+                                                <Input
+                                                    {...register("location")}
+                                                    placeholder="Location"
+                                                    {...inputStyle}
+                                                />
+                                                {errors.location && (
+                                                    <Text fontSize="xs" color="red.500" mt={1}>
+                                                        {errors.location.message}
+                                                    </Text>
+                                                )}
+                                            </Box>
+                                        </Grid>
 
-                                    {/* Subject dropdown */}
-                                    <Box
-                                        as="select"
-                                        w="full"
-                                        h="46px"
-                                        px={3}
-                                        borderRadius="10px"
-                                        border="1px solid"
-                                        borderColor={c.border}
-                                        fontSize="sm"
-                                        color={c.light}
-                                        bg={c.white}
-                                        cursor="pointer"
-                                        style={{ outline: "none" }}
-                                        _focus={{ borderColor: c.crimson }}
-                                    >
-                                        <option value="" disabled selected>Select the Subject</option>
-                                        {subjectOptions.map((s) => (
-                                            <option key={s} value={s}>{s}</option>
-                                        ))}
-                                    </Box>
+                                        {/* Subject dropdown */}
+                                        <Box>
+                                            <Box
+                                                as="select"
+                                                w="full"
+                                                h="46px"
+                                                px={3}
+                                                borderRadius="10px"
+                                                border="1px solid"
+                                                borderColor={errors.subject ? "red.500" : c.border}
+                                                fontSize="sm"
+                                                color={c.light}
+                                                bg={c.white}
+                                                cursor="pointer"
+                                                style={{ outline: "none" }}
+                                                _focus={{ borderColor: c.crimson }}
+                                                {...register("subject")}
+                                            >
+                                                <option value="" disabled>Select the Subject</option>
+                                                {subjectOptions.map((s) => (
+                                                    <option key={s.value} value={s.value}>{s.label}</option>
+                                                ))}
+                                            </Box>
+                                            {errors.subject && (
+                                                <Text fontSize="xs" color="red.500" mt={1}>
+                                                    {errors.subject.message}
+                                                </Text>
+                                            )}
+                                        </Box>
 
-                                    {/* Message */}
-                                    <Textarea
-                                        placeholder="Your Message"
-                                        fontSize="sm"
-                                        borderColor={c.border}
-                                        borderRadius="10px"
-                                        bg={c.white}
-                                        rows={6}
-                                        resize="none"
-                                        _placeholder={{ color: c.light }}
-                                        _focus={{ borderColor: c.crimson, boxShadow: `0 0 0 1px ${c.crimson}` }}
-                                    />
+                                        {/* Message */}
+                                        <Box>
+                                            <Textarea
+                                                {...register("description")}
+                                                placeholder="Your Message"
+                                                fontSize="sm"
+                                                borderColor={errors.description ? "red.500" : c.border}
+                                                borderRadius="10px"
+                                                bg={c.white}
+                                                rows={6}
+                                                resize="none"
+                                                _placeholder={{ color: c.light }}
+                                                _focus={{ borderColor: c.crimson, boxShadow: `0 0 0 1px ${c.crimson}` }}
+                                            />
+                                            {errors.description && (
+                                                <Text fontSize="xs" color="red.500" mt={1}>
+                                                    {errors.description.message}
+                                                </Text>
+                                            )}
+                                        </Box>
 
-                                    {/* Submit */}
-                                    <Box>
-                                        <Button
-                                            bg={c.gold}
-                                            color="white"
-                                            fontWeight="700"
-                                            fontSize="sm"
-                                            h="46px"
-                                            px={8}
-                                            borderRadius="10px"
-                                            _hover={{ bg: c.goldLight, transform: "translateY(-1px)" }}
-                                            transition="all 0.2s"
-                                        >
-                                            Submit Now
-                                        </Button>
-                                    </Box>
-                                </Flex>
+                                        {/* Submit */}
+                                        <Box>
+                                            <Button
+                                                type="submit"
+                                                bg={c.gold}
+                                                color="white"
+                                                fontWeight="700"
+                                                fontSize="sm"
+                                                h="46px"
+                                                px={8}
+                                                borderRadius="10px"
+                                                _hover={{ bg: c.goldLight, transform: "translateY(-1px)" }}
+                                                transition="all 0.2s"
+                                                disabled={submitMutation.isPending}
+                                                loading={submitMutation.isPending}
+                                            >
+                                                {submitMutation.isPending ? "Submitting..." : "Submit Now"}
+                                            </Button>
+                                        </Box>
+                                    </Flex>
+                                </Box>
                             </Box>
                         </Reveal>
 

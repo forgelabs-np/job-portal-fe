@@ -6,9 +6,11 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   Banknote,
+  Briefcase,
   Calendar,
   Clock,
   MapPin,
+  SearchX,
   Users
 } from "lucide-react";
 import Link from "next/link";
@@ -361,13 +363,12 @@ function SkeletonCard() {
 }
 
 export function JobsSection({ jobs: propJobs, isLoading = false }: Props) {
-  const { data: apiData, isLoading: apiLoading } = useGetCandidateJobs();
+  const { data: apiData, isLoading: apiLoading, isError, refetch } = useGetCandidateJobs();
   
   // Use API data if available, otherwise use prop jobs
   const jobs = apiData || propJobs || [];
   const loading = isLoading || apiLoading;
-
-  console.log(jobs, "landing page jobs");
+  const hasError = isError && !loading;
 
   return (
     <Box
@@ -399,21 +400,127 @@ export function JobsSection({ jobs: propJobs, isLoading = false }: Props) {
           </Text>
         </Box>
 
+        {/* Loading State */}
+        {loading && (
+          <Box
+            display="grid"
+            gridTemplateColumns={{
+              base: "1fr",
+              md: "repeat(2, 1fr)",
+              lg: "repeat(3, 1fr)",
+            }}
+            gap={6}
+            mb={8}
+          >
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </Box>
+        )}
+
+        {/* Error State */}
+        {hasError && (
+          <Box textAlign="center" py={{ base: 12, md: 16 }} mb={8}>
+            <Flex
+              w="56px"
+              h="56px"
+              borderRadius="full"
+              bg="red.50"
+              align="center"
+              justify="center"
+              mx="auto"
+              mb={5}
+            >
+              <SearchX size={24} color="#E53E3E" />
+            </Flex>
+            <Text
+              fontSize="lg"
+              fontWeight="700"
+              color={colors.text}
+              mb={2}
+            >
+              Unable to load jobs
+            </Text>
+            <Text
+              fontSize="sm"
+              color={colors.textMuted}
+              mb={6}
+              maxW="360px"
+              mx="auto"
+              lineHeight={1.7}
+            >
+              We couldn&apos;t load the latest job openings. Please try again.
+            </Text>
+            <Button
+              bg={colors.gold}
+              color="white"
+              fontWeight="700"
+              fontSize="sm"
+              borderRadius="md"
+              _hover={{ bg: colors.goldLight }}
+              transition="all 0.2s"
+              gap={2}
+              onClick={() => refetch()}
+            >
+              Try Again
+            </Button>
+          </Box>
+        )}
+
+        {/* Empty State */}
+        {!loading && !hasError && jobs.length === 0 && (
+          <Box textAlign="center" py={{ base: 12, md: 16 }} mb={8}>
+            <Flex
+              w="56px"
+              h="56px"
+              borderRadius="full"
+              bg={colors.bgWarm}
+              align="center"
+              justify="center"
+              mx="auto"
+              mb={5}
+            >
+              <Briefcase size={24} color={colors.gold} />
+            </Flex>
+            <Text
+              fontSize="lg"
+              fontWeight="700"
+              color={colors.text}
+              mb={2}
+            >
+              No jobs available at the moment
+            </Text>
+            <Text
+              fontSize="sm"
+              color={colors.textMuted}
+              mb={2}
+              maxW="380px"
+              mx="auto"
+              lineHeight={1.7}
+            >
+              We don&apos;t have any current job openings right now. Please check back soon
+              for new opportunities.
+            </Text>
+          </Box>
+        )}
+
         {/* Job grid */}
-        <Box
-          display="grid"
-          gridTemplateColumns={{
-            base: "1fr",
-            md: "repeat(2, 1fr)",
-            lg: "repeat(3, 1fr)",
-          }}
-          gap={6}
-          mb={8}
-        >
-          {loading
-            ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
-            : jobs.map((job, i) => <JobCard key={job.id} job={job} index={i} />)}
-        </Box>
+        {!loading && !hasError && jobs.length > 0 && (
+          <Box
+            display="grid"
+            gridTemplateColumns={{
+              base: "1fr",
+              md: "repeat(2, 1fr)",
+              lg: "repeat(3, 1fr)",
+            }}
+            gap={6}
+            mb={8}
+          >
+            {jobs.map((job, i) => (
+              <JobCard key={job.id} job={job} index={i} />
+            ))}
+          </Box>
+        )}
 
         {/* View all */}
 <Flex justify="flex-end">

@@ -20,6 +20,7 @@ import {
   MdPerson,
   MdCampaign,
   MdNotifications,
+  MdContactMail,
 } from "react-icons/md";
 import { GlobeIcon } from "../Footer";
 import { SidebarItem } from "./SidebarItems";
@@ -84,6 +85,11 @@ const ADMIN_SIDEBAR_ITEMS: SidebarItemProps[] = [
     name: "Notifications",
     href: ROUTES.NOTIFICATIONS,
     icon: <MdNotifications />,
+  },
+  {
+    name: "Leads",
+    href: ROUTES.LEADS,
+    icon: <MdContactMail />,
   },
 ];
 
