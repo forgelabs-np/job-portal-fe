@@ -7,7 +7,7 @@ import ImageSection from "@/components/Homepage/ImageSection";
 import TrustedBy from "@/components/Homepage/TrustedBy";
 import LandingPageMainComponent from "@/components/LandingPage/LandingPageMainComponent";
 import OozoMainComponent from "@/components/OozoHr/LandingPage/OozoMainComponent";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Spinner, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
@@ -19,7 +19,12 @@ export default function Home() {
     },
   });
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return 
+  <Box
+    display="flex"
+    justifyContent="center">
+  <Spinner />;
+  </Box>
 
   return (
     <Box>
