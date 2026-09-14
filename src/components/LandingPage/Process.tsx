@@ -42,7 +42,6 @@ export function ProcessSection() {
       py={{ base: 16, md: 24 }}
     >
       <Container maxW="1300px">
-        {/* Badge */}
         <Flex justify="center" mb={6}>
           <Flex display="inline-flex" align="center" bg={colors.gold} px={4} py={1.5} borderRadius={radii.full}>
             <Text fontSize="2xs" fontWeight="800" color="white"  letterSpacing="widest" textTransform="uppercase">
@@ -73,13 +72,12 @@ export function ProcessSection() {
           Follow the steps and apply today – we will guide you from start to finish.
         </Text>
 
-        {/* Two-column: steps + form */}
         <Flex
           direction={{ base: "column", md: "row" }}
           gap={{ base: 10, md: 8 }}
           align="stretch"
         >
-          {/* Left — how to go abroad steps */}
+     
           <MotionBox
             flex={1}
             // borderRadius={radii.xl}
@@ -103,7 +101,7 @@ export function ProcessSection() {
               Follow 3 easy steps and start your dream job safely
             </Text>
 
-            {/* You are here badge */}
+   
             <Flex
               display="inline-flex"
               align="center"
@@ -123,7 +121,7 @@ export function ProcessSection() {
             <Flex direction="column" gap={0}>
               {steps.map((step, i) => (
                 <Flex key={step.number} gap={4} align="flex-start">
-                  {/* Step indicator + line */}
+              
                   <Flex direction="column" align="center">
                     <Flex
                       w="32px"

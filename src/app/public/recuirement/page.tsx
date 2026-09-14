@@ -9,7 +9,7 @@ const page = () => {
     return (
         <>
             <RecuirementProcess />
-            <ProcessSection />
+            {/* <ProcessSection /> */}
             {/* <CTASection /> */}
             <OozoCTASection/>
             {/* <Footer /> */} {/* This footer is for Interpid */}
