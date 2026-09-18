@@ -392,11 +392,9 @@ export function JobsSection({ jobs: propJobs, isLoading = false }: Props) {
             lineHeight={1.2}
             mb={3}
           >
-            Find latest jobs open for Nepali workers
-          </Text>
+Find a role that matches your experience.           </Text>
           <Text fontSize="sm" color={colors.textMuted} lineHeight={1.7} maxW="640px">
-            Interpid brings you the newest job openings in Nepal and abroad. Choose from many
-            trusted companies and apply easily with our simple process.
+            Vacancies change frequently. Review the basic requirements, then contact the relevant OOZO office for live availability and full terms.
           </Text>
         </Box>
 
