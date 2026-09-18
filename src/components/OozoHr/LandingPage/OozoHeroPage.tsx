@@ -43,11 +43,11 @@ export function OozoHeroPage() {
                             letterSpacing="-0.04em"
                             color="white"
                         >
-                            Global Talent{" "}
+                            Talent that is ready to {" "}
                             <Text as="span" color={landingColors.gold}>
-                                Seamlessly
+                                move.
                             </Text>{" "}
-                            Integrated
+                            Opportunity that is ready to grow
                         </Text>
 
                         <Text
@@ -57,8 +57,7 @@ export function OozoHeroPage() {
                             maxW="520px"
                             lineHeight="1.8"
                         >
-                            Empowering ambitious agencies and candidates with scalable,
-                            high-performance recruitment infrastructure built for the modern world.
+                            OOZO connects employers with skilled, screened and deployment-ready talent from South Asia and the GCC—while guiding candidates through every stage of international recruitment.
                         </Text>
 
                         {/* CTA */}
